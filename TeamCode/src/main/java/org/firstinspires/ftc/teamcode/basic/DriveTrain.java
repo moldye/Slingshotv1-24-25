@@ -46,7 +46,6 @@ public class DriveTrain {
     }
 
     // this is for testing, only used by testing methods
-    // TODO: does this affect efficiency/reload time?
     public DriveTrain(DcMotorEx lF, DcMotorEx rF, DcMotorEx lB, DcMotorEx rB, IMU imu) {
         leftFront = lF;
         rightFront = rF;
@@ -57,6 +56,11 @@ public class DriveTrain {
 
 
     public void moveRoboCentric(double strafe, double drive, double turn){
+        if (strafe == 0 && drive == 0 && turn == 0) {
+            double currentAngle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+            turn = lockHeading(currentAngle, currentAngle);
+        }
+
         // Denominator is the largest motor power (absolute value) or 1
         // This ensures all the powers maintain the same ratio,
         // but only if at least one is out of the range [-1, 1]
@@ -69,6 +73,10 @@ public class DriveTrain {
     }
 
     // this really should be called driver centric, but whatevs
+
+    // want to lock heading when not touching joystick
+    // but touching joystick changes lock (can drive normally)
+    // and dpad locks to each 90 (up is 90, down is 270, right is 0, left is 180) -> relative to field
     public void moveFieldCentric(double inX, double inY, double turn, double currentAngle){
         currentAngle += 90;
         double radian = Math.toRadians(currentAngle);
