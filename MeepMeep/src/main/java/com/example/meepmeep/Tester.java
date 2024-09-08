@@ -34,7 +34,7 @@ public class Tester {
 
 
         BufferedImage img = null;
-        try { img = ImageIO.read(new File("MeepMeep\\intothedeep.png")); }
+        try { img = ImageIO.read(new File("MeepMeep/intothedeep.png")); }
         catch (IOException e) {}
 
         meepMeep.setBackground(img)
