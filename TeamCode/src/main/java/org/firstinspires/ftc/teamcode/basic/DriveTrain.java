@@ -57,9 +57,9 @@ public class DriveTrain {
 
 
     public void moveRoboCentric(double strafe, double drive, double turn){
-        targetAngle -= turn * 10; // tune 10 depending on speed
-        double currentAngle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-        turn = lockHeading(targetAngle, currentAngle);
+//        targetAngle -= turn * 10; // tune 10 depending on speed
+//        double currentAngle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+//        turn = lockHeading(targetAngle, currentAngle);
 
         // Denominator is the largest motor power (absolute value) or 1
         // This ensures all the powers maintain the same ratio,
@@ -82,7 +82,7 @@ public class DriveTrain {
         newX = (-inX * sinTheta) - (inY * cosTheta);
         newY = (-inX * cosTheta) + (inY * sinTheta);
 
-        moveRoboCentric(-newX,-newY,-turn);
+        moveRoboCentric(newX,newY,-turn);
     }
 
     public double getHeading() {
@@ -94,7 +94,7 @@ public class DriveTrain {
         // Changes any angle between [-180,180] degrees
         // If rotation is greater than half a full rotation, it would be more efficient to turn the other way
         while (Math.abs(angle) > Math.PI)
-            angle -= 2 * Math.PI * (angle > 0 ? 1 : -1); // if angle > 0 * 1, < 0 * -1
+            angle -= 2 * Math.PI * (angle > 0 ? -1 : 1); // if angle > 0 * 1, < 0 * -1
         return Math.toDegrees(angle);
     }
 
