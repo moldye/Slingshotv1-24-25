@@ -21,9 +21,9 @@ public class FieldCentricTester extends OpMode {
 
     @Override
     public void loop() {
-        drive = -gamepad1.right_stick_y; // y stick is reversed
-        strafe = gamepad1.right_stick_x;
-        turn = gamepad1.left_stick_x;
+        drive = gamepad1.left_stick_y; // y stick is reversed
+        strafe = gamepad1.left_stick_x;
+        turn = gamepad1.right_stick_x;
         currentAngle = robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
 
         robot.drivetrain.moveFieldCentric(strafe, drive, turn, currentAngle);
