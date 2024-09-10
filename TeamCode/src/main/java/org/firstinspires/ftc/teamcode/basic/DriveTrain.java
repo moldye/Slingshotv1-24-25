@@ -23,7 +23,7 @@ public class DriveTrain {
     // private Telemetry telemetry;
     private double newX = 0;
     private double newY = 0;
-    private double targetAngle = 0;
+    private double targetAngle = 90;
 
     public DriveTrain(HardwareMap hardwareMap, IMU imu){
 
@@ -57,9 +57,9 @@ public class DriveTrain {
 
 
     public void moveRoboCentric(double strafe, double drive, double turn){
-//        targetAngle -= turn * 10; // tune 10 depending on speed
-//        double currentAngle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-//        turn = lockHeading(targetAngle, currentAngle);
+        // targetAngle -= turn * 10; // tune 10 depending on speed
+        double currentAngle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+        turn = lockHeading(targetAngle, currentAngle);
 
         // Denominator is the largest motor power (absolute value) or 1
         // This ensures all the powers maintain the same ratio,
@@ -93,8 +93,9 @@ public class DriveTrain {
         angle = Math.toRadians(angle);
         // Changes any angle between [-180,180] degrees
         // If rotation is greater than half a full rotation, it would be more efficient to turn the other way
-        while (Math.abs(angle) > Math.PI)
-            angle -= 2 * Math.PI * (angle > 0 ? -1 : 1); // if angle > 0 * 1, < 0 * -1
+        while (Math.abs(angle) > Math.PI) {
+            angle -= 2 * Math.PI * (angle > 0 ? 1 : -1); // if angle > 0 * 1, < 0 * -1
+        }
         return Math.toDegrees(angle);
     }
 
@@ -104,8 +105,23 @@ public class DriveTrain {
 
         // makes sure power is in the range of [-1, 1]
         // 100 is an arbitrary number, can change if needed
-        double wrap = Math.max(Math.abs(error/100), 1);
-        double rotPower = (error/100) / wrap;
+        // double wrap = Math.max(Math.abs(error/100), 1);
+        double rotPower = error/100;
+        if (error < angleToLock) {
+            rotPower *= -1;
+        } else if (error > angleToLock) {
+            rotPower *= 1;
+        }
+
+        // replace with wrap if the code actually works :D
+        if (rotPower == 0) {
+            rotPower = 0;
+        } else if (rotPower > 1) {
+            rotPower = 1;
+        } else {
+            rotPower = -1;
+        }
+
         return rotPower;
     }
 }
