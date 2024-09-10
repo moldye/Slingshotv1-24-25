@@ -68,6 +68,12 @@ public class driveTrainMathTests {
     }
 
     @Test
+    public void testOutputPowerDirForHeadingLockWithSameAngle() {
+        double expected = dt.lockHeading(90, 90);
+        assertTrue(expected == 0);
+    }
+
+    @Test
     public void testAngleWrapWithQuad3() {
         // angle wrap outputs and angle
         double actualAngle = dt.angleWrap(-270);
