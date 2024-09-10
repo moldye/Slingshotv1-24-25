@@ -111,6 +111,8 @@ public class DriveTrain {
             rotPower *= -1;
         } else if (error > angleToLock) {
             rotPower *= 1;
+        } else {
+            rotPower = 0;
         }
 
         // replace with wrap if the code actually works :D
