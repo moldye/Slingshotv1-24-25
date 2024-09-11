@@ -15,6 +15,8 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 public class DriveTrain {
+
+    // 435 -> TODO: Number Souren wants us to remember
     private DcMotorEx leftFront;
     private DcMotorEx rightFront;
     private DcMotorEx leftBack;
@@ -28,9 +30,9 @@ public class DriveTrain {
     private double targetAngle = 0;
 
     private boolean lockHeadingMode = true; // get a button that changes this probably
-    private double turnKP = .005;
-    private double turnKI = 0;
-    private double turnKD = 0;
+    private static double turnKP = .005;
+    private static double turnKI = 0;
+    private static double turnKD = 0;
     private PIDCoefficients turnCoeffs = new PIDCoefficients(turnKP, turnKI, turnKD);
     private PIDFController turnController = new PIDFController(turnCoeffs);
 
@@ -111,7 +113,7 @@ public class DriveTrain {
     }
 
     public double lockHeading(double angleToLock, double currentHeading) {
-        double error = currentHeading;
+        double error = angleWrap(angleToLock - currentHeading);
         turnController.setTargetPosition(angleToLock);
         return turnController.update(error);
 
@@ -137,5 +139,9 @@ public class DriveTrain {
 //        }
 //
 //        return rotPower;
+    }
+
+    public void toggleLockHeadingMode() {
+        lockHeadingMode = false;
     }
 }

@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.Robot;
 
 @TeleOp
 public class FieldCentricTester extends OpMode {
+    // ftc dashboard: 192.168.43.1:8080/dash
     private double drive;
     private double strafe;
     private double turn;
@@ -41,6 +42,10 @@ public class FieldCentricTester extends OpMode {
 //        } else if (gamepad1.dpad_down) {
 //            robot.drivetrain.lockHeading(270, currentAngle);
 //        }
+
+        if (gamepad1.a) {
+            robot.drivetrain.toggleLockHeadingMode();
+        }
 
     }
 }

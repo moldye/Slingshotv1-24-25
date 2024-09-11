@@ -21,7 +21,7 @@ public class ReLocalizer {
     private double offsetAngleS = Math.atan(xSOffset/-ySOffset);
 
     public ReLocalizer(HardwareMap hardwareMap, IMU usedImu){
-        backDS = hardwareMap.get(DistanceSensor.class, "frontDS");
+        backDS = hardwareMap.get(DistanceSensor.class, "backDS");
         sideDS = hardwareMap.get(DistanceSensor.class, "sideDS");
         imu = usedImu;
     }
