@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.basic;
 
+import com.acmerobotics.roadrunner.control.PIDCoefficients;
 import com.acmerobotics.roadrunner.control.PIDFController;
+import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -23,6 +25,14 @@ public class DriveTrain {
     // private Telemetry telemetry;
     private double newX = 0;
     private double newY = 0;
+    private double targetAngle = 0;
+
+    private boolean lockHeadingMode = true; // get a button that changes this probably
+    private double turnKP = .005;
+    private double turnKI = 0;
+    private double turnKD = 0;
+    private PIDCoefficients turnCoeffs = new PIDCoefficients(turnKP, turnKI, turnKD);
+    private PIDFController turnController = new PIDFController(turnCoeffs);
 
     public DriveTrain(HardwareMap hardwareMap, IMU imu){
 
@@ -56,9 +66,10 @@ public class DriveTrain {
 
 
     public void moveRoboCentric(double strafe, double drive, double turn){
-        if (strafe == 0 && drive == 0 && turn == 0) {
+        // targetAngle -= turn * 10; // tune 10 depending on speed
+        if (lockHeadingMode) {
             double currentAngle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-            turn = lockHeading(currentAngle, currentAngle);
+            turn = lockHeading(targetAngle, currentAngle);
         }
 
         // Denominator is the largest motor power (absolute value) or 1
@@ -74,9 +85,6 @@ public class DriveTrain {
 
     // this really should be called driver centric, but whatevs
 
-    // want to lock heading when not touching joystick
-    // but touching joystick changes lock (can drive normally)
-    // and dpad locks to each 90 (up is 90, down is 270, right is 0, left is 180) -> relative to field
     public void moveFieldCentric(double inX, double inY, double turn, double currentAngle){
         currentAngle += 90;
         double radian = Math.toRadians(currentAngle);
@@ -85,7 +93,7 @@ public class DriveTrain {
         newX = (-inX * sinTheta) - (inY * cosTheta);
         newY = (-inX * cosTheta) + (inY * sinTheta);
 
-        moveRoboCentric(-newX,-newY,-turn);
+        moveRoboCentric(newX,newY,-turn); // may need to get rid of this - on turn
     }
 
     public double getHeading() {
@@ -96,19 +104,38 @@ public class DriveTrain {
         angle = Math.toRadians(angle);
         // Changes any angle between [-180,180] degrees
         // If rotation is greater than half a full rotation, it would be more efficient to turn the other way
-        while (Math.abs(angle) > Math.PI)
+        while (Math.abs(angle) > Math.PI) {
             angle -= 2 * Math.PI * (angle > 0 ? 1 : -1); // if angle > 0 * 1, < 0 * -1
+        }
         return Math.toDegrees(angle);
     }
 
     public double lockHeading(double angleToLock, double currentHeading) {
-        double error = angleWrap(angleToLock - currentHeading);
-        error = Math.toRadians(error);
+        double error = currentHeading;
+        turnController.setTargetPosition(angleToLock);
+        return turnController.update(error);
 
         // makes sure power is in the range of [-1, 1]
         // 100 is an arbitrary number, can change if needed
-        double wrap = Math.max(Math.abs(error/100), 1);
-        double rotPower = (error/100) / wrap;
-        return rotPower;
+        // double wrap = Math.max(Math.abs(error/100), 1);
+//        double rotPower = error/100;
+//        if (error < angleToLock) {
+//            rotPower *= -1;
+//        } else if (error > angleToLock) {
+//            rotPower *= 1;
+//        } else {
+//            rotPower = 0;
+//        }
+
+        // replace with wrap if the code actually works :D
+//        if (rotPower == 0) {
+//            rotPower = 0;
+//        } else if (rotPower > 1) {
+//            rotPower = 1;
+//        } else if (rotPower < -1) {
+//            rotPower = -1;
+//        }
+//
+//        return rotPower;
     }
 }

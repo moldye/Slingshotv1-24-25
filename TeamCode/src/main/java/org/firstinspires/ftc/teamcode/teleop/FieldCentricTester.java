@@ -17,26 +17,30 @@ public class FieldCentricTester extends OpMode {
     @Override
     public void init() {
         robot = new Robot(hardwareMap);
+        telemetry.addData("currentAngle: ", robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
     }
 
     @Override
     public void loop() {
-        drive = -gamepad1.right_stick_y; // y stick is reversed
-        strafe = gamepad1.right_stick_x;
-        turn = gamepad1.left_stick_x;
+        drive = gamepad1.left_stick_y; // y stick is reversed
+        strafe = gamepad1.left_stick_x;
+        turn = gamepad1.right_stick_x;
         currentAngle = robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
 
         robot.drivetrain.moveFieldCentric(strafe, drive, turn, currentAngle);
 
-        if (gamepad1.dpad_left) {
-            robot.drivetrain.lockHeading(0, currentAngle);
-        } else if (gamepad1.dpad_up) {
-            robot.drivetrain.lockHeading(90, currentAngle);
-        } else if (gamepad1.dpad_right) {
-            robot.drivetrain.lockHeading(180, currentAngle);
-        } else if (gamepad1.dpad_down) {
-            robot.drivetrain.lockHeading(270, currentAngle);
-        }
+        telemetry.addData("currentAngle: ", currentAngle);
+        telemetry.addData("rotPower:", robot.drivetrain.lockHeading(90, currentAngle));
+
+//        if (gamepad1.dpad_left) {
+//            robot.drivetrain.lockHeading(0, currentAngle);
+//        } else if (gamepad1.dpad_up) {
+//            robot.drivetrain.lockHeading(90, currentAngle);
+//        } else if (gamepad1.dpad_right) {
+//            robot.drivetrain.lockHeading(180, currentAngle);
+//        } else if (gamepad1.dpad_down) {
+//            robot.drivetrain.lockHeading(270, currentAngle);
+//        }
 
     }
 }
