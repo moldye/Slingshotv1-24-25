@@ -18,7 +18,6 @@ public class FieldCentricTester extends OpMode {
     public void init() {
         robot = new Robot(hardwareMap);
         telemetry.addData("currentAngle: ", robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
-
     }
 
     @Override

@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.basic;
 
+import com.acmerobotics.roadrunner.control.PIDCoefficients;
 import com.acmerobotics.roadrunner.control.PIDFController;
+import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -23,7 +25,13 @@ public class DriveTrain {
     // private Telemetry telemetry;
     private double newX = 0;
     private double newY = 0;
-    private double targetAngle = 90;
+    private double targetAngle = 0;
+
+    private double turnKP = .005;
+    private double turnKI = 0;
+    private double turnKD = 0;
+    private PIDCoefficients turnCoeffs = new PIDCoefficients(turnKP, turnKI, turnKD);
+    private PIDFController turnController = new PIDFController(turnCoeffs);
 
     public DriveTrain(HardwareMap hardwareMap, IMU imu){
 
@@ -100,30 +108,31 @@ public class DriveTrain {
     }
 
     public double lockHeading(double angleToLock, double currentHeading) {
-        double error = angleWrap(angleToLock - currentHeading);
-        error = Math.toRadians(error);
+        double error = currentHeading;
+        turnController.setTargetPosition(angleToLock);
+        return turnController.update(error);
 
         // makes sure power is in the range of [-1, 1]
         // 100 is an arbitrary number, can change if needed
         // double wrap = Math.max(Math.abs(error/100), 1);
-        double rotPower = error/100;
-        if (error < angleToLock) {
-            rotPower *= -1;
-        } else if (error > angleToLock) {
-            rotPower *= 1;
-        } else {
-            rotPower = 0;
-        }
+//        double rotPower = error/100;
+//        if (error < angleToLock) {
+//            rotPower *= -1;
+//        } else if (error > angleToLock) {
+//            rotPower *= 1;
+//        } else {
+//            rotPower = 0;
+//        }
 
         // replace with wrap if the code actually works :D
-        if (rotPower == 0) {
-            rotPower = 0;
-        } else if (rotPower > 1) {
-            rotPower = 1;
-        } else {
-            rotPower = -1;
-        }
-
-        return rotPower;
+//        if (rotPower == 0) {
+//            rotPower = 0;
+//        } else if (rotPower > 1) {
+//            rotPower = 1;
+//        } else if (rotPower < -1) {
+//            rotPower = -1;
+//        }
+//
+//        return rotPower;
     }
 }
