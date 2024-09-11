@@ -27,6 +27,7 @@ public class DriveTrain {
     private double newY = 0;
     private double targetAngle = 0;
 
+    private boolean lockHeadingMode = true; // get a button that changes this probably
     private double turnKP = .005;
     private double turnKI = 0;
     private double turnKD = 0;
@@ -66,8 +67,10 @@ public class DriveTrain {
 
     public void moveRoboCentric(double strafe, double drive, double turn){
         // targetAngle -= turn * 10; // tune 10 depending on speed
-        double currentAngle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-        turn = lockHeading(targetAngle, currentAngle);
+        if (lockHeadingMode) {
+            double currentAngle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+            turn = lockHeading(targetAngle, currentAngle);
+        }
 
         // Denominator is the largest motor power (absolute value) or 1
         // This ensures all the powers maintain the same ratio,
@@ -90,7 +93,7 @@ public class DriveTrain {
         newX = (-inX * sinTheta) - (inY * cosTheta);
         newY = (-inX * cosTheta) + (inY * sinTheta);
 
-        moveRoboCentric(newX,newY,-turn);
+        moveRoboCentric(newX,newY,-turn); // may need to get rid of this - on turn
     }
 
     public double getHeading() {
