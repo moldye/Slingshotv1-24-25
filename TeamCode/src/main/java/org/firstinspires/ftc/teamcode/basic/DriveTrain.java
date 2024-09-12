@@ -23,20 +23,19 @@ public class DriveTrain {
     private DcMotorEx rightBack;
     private IMU imu;
 
-    // TODO: do we want telemety in opmodes only? or will there be data we want to display that we can put in here?
-    // private Telemetry telemetry;
+    private Telemetry telemetry;
     private double newX = 0;
     private double newY = 0;
     private double targetAngle = 0;
 
-    private boolean lockHeadingMode = true; // get a button that changes this probably
-    private static double turnKP = .005;
+    private boolean lockHeadingMode = false;
+    private static double turnKP = 0;
     private static double turnKI = 0;
     private static double turnKD = 0;
     private PIDCoefficients turnCoeffs = new PIDCoefficients(turnKP, turnKI, turnKD);
     private PIDFController turnController = new PIDFController(turnCoeffs);
 
-    public DriveTrain(HardwareMap hardwareMap, IMU imu){
+    public DriveTrain(HardwareMap hardwareMap, IMU imu, Telemetry telemetry){
 
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
         leftFront.setDirection(DcMotorEx.Direction.FORWARD);
@@ -55,6 +54,8 @@ public class DriveTrain {
         rightBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
         this.imu = imu;
+
+        this.telemetry = telemetry;
     }
 
     // this is for testing, only used by testing methods
@@ -69,10 +70,10 @@ public class DriveTrain {
 
     public void moveRoboCentric(double strafe, double drive, double turn){
         // targetAngle -= turn * 10; // tune 10 depending on speed
-        if (lockHeadingMode) {
+        //if (lockHeadingMode) {
             double currentAngle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
             turn = lockHeading(targetAngle, currentAngle);
-        }
+        //}
 
         // Denominator is the largest motor power (absolute value) or 1
         // This ensures all the powers maintain the same ratio,
@@ -113,35 +114,16 @@ public class DriveTrain {
     }
 
     public double lockHeading(double angleToLock, double currentHeading) {
+        // robot turns around to 270 by itself when I start moving joysticks
+        // to fix this got rid of - on turn
         double error = angleWrap(angleToLock - currentHeading);
-        turnController.setTargetPosition(angleToLock);
-        return turnController.update(error);
-
-        // makes sure power is in the range of [-1, 1]
-        // 100 is an arbitrary number, can change if needed
-        // double wrap = Math.max(Math.abs(error/100), 1);
-//        double rotPower = error/100;
-//        if (error < angleToLock) {
-//            rotPower *= -1;
-//        } else if (error > angleToLock) {
-//            rotPower *= 1;
-//        } else {
-//            rotPower = 0;
-//        }
-
-        // replace with wrap if the code actually works :D
-//        if (rotPower == 0) {
-//            rotPower = 0;
-//        } else if (rotPower > 1) {
-//            rotPower = 1;
-//        } else if (rotPower < -1) {
-//            rotPower = -1;
-//        }
-//
-//        return rotPower;
+        turnController.setTargetPosition(0);
+        return -turnController.update(error);
     }
 
     public void toggleLockHeadingMode() {
-        lockHeadingMode = false;
+        telemetry.addData("lock heading mode", lockHeadingMode);
+        lockHeadingMode = !lockHeadingMode;
+        telemetry.update();
     }
 }

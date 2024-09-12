@@ -5,6 +5,7 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.basic.*;
 
@@ -15,7 +16,7 @@ public class Robot{
     public ReLocalizer ultraSonics;
     public IMU imu;
 
-    public Robot(HardwareMap hardwareMap) {
+    public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
         imu = hardwareMap.get(IMU.class, "imu");
         // Adjust the orientation parameters to match your robot
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
@@ -25,7 +26,7 @@ public class Robot{
         imu.initialize(parameters);
         imu.resetYaw();
 
-        drivetrain = new DriveTrain(hardwareMap, imu);
+        drivetrain = new DriveTrain(hardwareMap, imu, telemetry);
         ultraSonics = new ReLocalizer(hardwareMap, imu);
     }
 
@@ -34,10 +35,6 @@ public class Robot{
         double backDistance = ultraSonics.getBackDistance(currentAngle);
         double sideDistance = ultraSonics.getSideDistance(currentAngle);
         return new Pose2d(-72 + backDistance, -72 + sideDistance, Math.toRadians(currentAngle));
-    }
-    public double getAng(){
-        double currentAngle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) + 90;
-        return currentAngle;
     }
 
 
