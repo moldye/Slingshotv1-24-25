@@ -29,13 +29,15 @@ public class DriveTrain {
 
     private double targetAngle = 0;
 
+    private double error;
+
 
     // public while being tuned on dashboard
     public static double turnKP;
     public static double turnKI;
     public static double turnKD;
     private PIDCoefficients turnCoeffs = new PIDCoefficients(turnKP, turnKI, turnKD);
-    private PIDFController turnController = new PIDFController(turnCoeffs);
+    private PIDController turnController = new PIDController(turnCoeffs);
 
     public DriveTrain(HardwareMap hardwareMap, IMU imu, Telemetry telemetry){
 
@@ -116,7 +118,7 @@ public class DriveTrain {
     }
 
     public double lockHeading(double angleToLock, double currentHeading) {
-        double error = angleWrap(angleToLock - currentHeading);
+        error = angleWrap(angleToLock - currentHeading);
         turnController.setTargetPosition(0);
         return -turnController.update(error);
     }
@@ -124,4 +126,9 @@ public class DriveTrain {
     public void changePID(double inP, double inI, double inD){
         turnKP = inP; turnKI = inI; turnKD = inD;
     }
+
+    public double getError() {
+        return error;
+    }
+
 }

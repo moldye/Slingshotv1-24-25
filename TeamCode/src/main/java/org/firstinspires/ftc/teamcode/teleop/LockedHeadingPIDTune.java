@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.button.Button;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
@@ -9,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Robot;
 
+@Config
 @TeleOp
 public class LockedHeadingPIDTune extends OpMode {
     // ftc dashboard: 192.168.43.1:8080/dash
@@ -37,8 +39,8 @@ public class LockedHeadingPIDTune extends OpMode {
         turn = gamepad1.right_stick_x;
         currentAngle = robot.drivetrain.getHeading();
 
-        robot.drivetrain.moveFieldCentric(strafe, drive, turn, currentAngle);
         robot.drivetrain.changePID(p,i,d);
+        robot.drivetrain.moveFieldCentric(strafe, drive, turn, currentAngle);
         telemetry.addData("position: ", robot.drivetrain.getHeading());
 
 //        if (gamepad1.dpad_left) {
@@ -51,6 +53,8 @@ public class LockedHeadingPIDTune extends OpMode {
 //            robot.drivetrain.lockHeading(270, currentAngle);
 //        }
 
-
+        telemetry.addData("target angle: ", target);
+        telemetry.addData("robot error: ", robot.drivetrain.getError());
+        telemetry.update();
     }
 }
