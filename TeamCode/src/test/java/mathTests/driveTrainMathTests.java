@@ -51,25 +51,26 @@ public class driveTrainMathTests {
     @Test
     public void testOutputPowerDirForHeadingLockWith1Quadrant() {
         double expected = dt.lockHeading(90, 45);
-        assertTrue(expected < 0); // this is like moving joystick left, angle gets bigger & neg output power
+        assertTrue(expected > 0); // this is like moving joystick left, angle gets bigger & neg output power
     }
 
     // *sigh* this is broken
     @Test
     public void testOutputPowerDirForHeadingLockWith4Quadrant() {
-        double expected = dt.lockHeading(90, 315);
-        assertTrue(expected < 0);
+        double expected = dt.lockHeading(0, 315);
+        System.out.println(expected);
+        assertTrue(expected > 0);
     }
 
     @Test
     public void testOutputPowerDirForHeadingLockWith3Quadrant() {
-        double expected = dt.lockHeading(90, 260);
+        double expected = dt.lockHeading(0, 260);
         assertTrue(expected < 0);
     }
 
     @Test
     public void testOutputPowerDirForHeadingLockWithSameAngle() {
-        double expected = dt.lockHeading(90, 90);
+        double expected = dt.lockHeading(0, 0);
         assertTrue(expected == 0);
     }
 

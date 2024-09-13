@@ -8,7 +8,7 @@ public class ReLocalizationTester extends OpMode {
     private Robot robot;
     @Override
     public void init() {
-        robot = new Robot(hardwareMap);
+        robot = new Robot(hardwareMap, telemetry);
     }
 
     @Override
