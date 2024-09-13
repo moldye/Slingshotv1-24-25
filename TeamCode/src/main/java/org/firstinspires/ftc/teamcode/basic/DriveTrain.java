@@ -37,7 +37,7 @@ public class DriveTrain {
     public static double turnKI;
     public static double turnKD;
     private PIDCoefficients turnCoeffs = new PIDCoefficients(turnKP, turnKI, turnKD);
-    private PIDController turnController = new PIDController(turnCoeffs);
+    private PIDFController
 
     public DriveTrain(HardwareMap hardwareMap, IMU imu, Telemetry telemetry){
 
