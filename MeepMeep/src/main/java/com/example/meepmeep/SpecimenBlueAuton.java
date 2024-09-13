@@ -21,10 +21,30 @@ public class SpecimenBlueAuton {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(new Pose2d(-60, -12, Math.toRadians(180)))
-                                .back(28)
-                                .splineToLinearHeading(new Pose2d(-30, -48, 0), Math.toRadians(0))
-                                .lineTo(new Vector2d(-55, -48))
 
+                                //goes to box
+                                //score specimen (preloaded)
+                                .setReversed(true)
+                                .back(20)
+                                .waitSeconds(.5)
+                                .setReversed(false)
+
+                                //get specimen from HP
+                                .splineToLinearHeading(new Pose2d(-55,-50, Math.toRadians(0)), Math.toRadians(255))
+
+                                .waitSeconds(0.5)
+                                .setReversed(false)
+                                //put specimen on box (farther down)
+                                .splineToLinearHeading(new Pose2d(-40, 5, Math.toRadians(180)),Math.toRadians(90))
+
+
+                                //get specimen from HP
+                                .splineToLinearHeading(new Pose2d(-55,-50, Math.toRadians(0)), Math.toRadians(255))
+                                .waitSeconds(0.5)
+                                .setReversed(false)
+
+                                //put specimen on box (farther forward)
+                                .splineToLinearHeading(new Pose2d(-40, 0, Math.toRadians(180)),Math.toRadians(90))
 
 
 
@@ -51,3 +71,5 @@ public class SpecimenBlueAuton {
                 .start();
     }
 }
+
+
