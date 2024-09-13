@@ -29,9 +29,9 @@ public class DriveTrain {
     private double targetAngle = 0;
 
     private boolean lockHeadingMode = false;
-    private static double turnKP = 0;
+    private static double turnKP = 2;
     private static double turnKI = 0;
-    private static double turnKD = 0;
+    private static double turnKD = 0.1;
     private PIDCoefficients turnCoeffs = new PIDCoefficients(turnKP, turnKI, turnKD);
     private PIDFController turnController = new PIDFController(turnCoeffs);
 
