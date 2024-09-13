@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class Tester {
+public class SpecimenBlueAuton {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
 
@@ -24,7 +24,7 @@ public class Tester {
                                 .back(28)
                                 .splineToLinearHeading(new Pose2d(-30, -48, 0), Math.toRadians(0))
                                 .lineTo(new Vector2d(-55, -48))
-                                
+
 
 
 
