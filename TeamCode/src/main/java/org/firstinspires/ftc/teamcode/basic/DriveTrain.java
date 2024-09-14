@@ -26,14 +26,18 @@ public class DriveTrain {
     private Telemetry telemetry;
     private double newX = 0;
     private double newY = 0;
+
     private double targetAngle = 0;
 
-    private boolean lockHeadingMode = false;
-    private static double turnKP = 0;
-    private static double turnKI = 0;
-    private static double turnKD = 0;
+    private double error;
+
+
+    // public while being tuned on dashboard
+    public static double turnKP;
+    public static double turnKI;
+    public static double turnKD;
     private PIDCoefficients turnCoeffs = new PIDCoefficients(turnKP, turnKI, turnKD);
-    private PIDFController turnController = new PIDFController(turnCoeffs);
+    private PIDFController
 
     public DriveTrain(HardwareMap hardwareMap, IMU imu, Telemetry telemetry){
 
@@ -71,8 +75,8 @@ public class DriveTrain {
     public void moveRoboCentric(double strafe, double drive, double turn){
         // targetAngle -= turn * 10; // tune 10 depending on speed
         //if (lockHeadingMode) {
-            double currentAngle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-            turn = lockHeading(targetAngle, currentAngle);
+        double currentAngle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+        turn = lockHeading(targetAngle, currentAngle);
         //}
 
         // Denominator is the largest motor power (absolute value) or 1
@@ -114,16 +118,17 @@ public class DriveTrain {
     }
 
     public double lockHeading(double angleToLock, double currentHeading) {
-        // robot turns around to 270 by itself when I start moving joysticks
-        // to fix this got rid of - on turn
-        double error = angleWrap(angleToLock - currentHeading);
+        error = angleWrap(angleToLock - currentHeading);
         turnController.setTargetPosition(0);
         return -turnController.update(error);
     }
 
-    public void toggleLockHeadingMode() {
-        telemetry.addData("lock heading mode", lockHeadingMode);
-        lockHeadingMode = !lockHeadingMode;
-        telemetry.update();
+    public void changePID(double inP, double inI, double inD){
+        turnKP = inP; turnKI = inI; turnKD = inD;
     }
+
+    public double getError() {
+        return error;
+    }
+
 }
