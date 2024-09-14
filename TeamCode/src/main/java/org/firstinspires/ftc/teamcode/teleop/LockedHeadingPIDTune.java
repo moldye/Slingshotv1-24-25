@@ -25,19 +25,19 @@ public class LockedHeadingPIDTune extends OpMode {
     public static int target = 0;
     public static double p = 0, i = 0, d = 0;
 
+    private Telemetry dashboardTelemetry;
+
     private Robot robot;
     @Override
     public void init() {
         robot = new Robot(hardwareMap, telemetry);
         telemetry.addData("currentAngle: ", Math.toDegrees(robot.drivetrain.getHeading()));
         currentAngle = robot.drivetrain.getHeading();
+        dashboardTelemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
     }
 
     @Override
     public void loop() {
-        telemetry.addData("target: ", target); // this while first tuning needs to match targetAngle in drivetrain class
-
-       Telemetry telemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
 
         drive = gamepad1.left_stick_y;
         strafe = gamepad1.left_stick_x;
@@ -46,7 +46,6 @@ public class LockedHeadingPIDTune extends OpMode {
 
         robot.drivetrain.changePID(p,i,d);
         robot.drivetrain.moveFieldCentric(strafe, drive, turn, currentAngle);
-        telemetry.addData("position: ", robot.drivetrain.getHeading());
 
 //        if (gamepad1.dpad_left) {
 //            robot.drivetrain.lockHeading(0, currentAngle);
@@ -58,8 +57,9 @@ public class LockedHeadingPIDTune extends OpMode {
 //            robot.drivetrain.lockHeading(270, currentAngle);
 //        }
 
-        telemetry.addData("target angle: ", target);
-        telemetry.addData("robot error: ", robot.drivetrain.getError());
-        telemetry.update();
+        dashboardTelemetry.addData("target angle: ", target);
+        dashboardTelemetry.addData("current heading: ", robot.drivetrain.getHeading());
+        dashboardTelemetry.addData("robot error: ", robot.drivetrain.getError());
+        dashboardTelemetry.update();
     }
 }
