@@ -23,7 +23,7 @@ public class LockedHeadingPIDTune extends OpMode {
     private double currentAngle;
 
     public static int target = 0;
-    public static double p = 0, i = 0, d = 0;
+    public static double p = 0, i = 0, d = 0, f = 0;
 
     private Telemetry dashboardTelemetry;
 
@@ -44,7 +44,7 @@ public class LockedHeadingPIDTune extends OpMode {
         turn = gamepad1.right_stick_x;
         currentAngle = robot.drivetrain.getHeading();
 
-        robot.drivetrain.changePID(p,i,d);
+        robot.drivetrain.changePID(p,i,d,f);
         robot.drivetrain.moveFieldCentric(strafe, drive, turn, currentAngle);
 
 //        if (gamepad1.dpad_left) {

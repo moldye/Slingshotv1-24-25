@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.basic;
+package org.firstinspires.ftc.teamcode.mechanisms;
 
 import com.acmerobotics.roadrunner.control.PIDCoefficients;
 import com.acmerobotics.roadrunner.control.PIDFController;
@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -33,11 +34,13 @@ public class DriveTrain {
 
 
     // public while being tuned on dashboard
-    public static double turnKP;
-    public static double turnKI;
-    public static double turnKD;
-    private PIDCoefficients turnCoeffs = new PIDCoefficients(turnKP, turnKI, turnKD);
-    private PIDFController
+    public static double turnP;
+    public static double turnI;
+    public static double turnD;
+    public static double turnF;
+
+    private PIDCoefficients turnCoeffs = new PIDCoefficients(turnP, turnI, turnD);
+    private PIDFController turnController = new PIDFController(turnCoeffs);
 
     public DriveTrain(HardwareMap hardwareMap, IMU imu, Telemetry telemetry){
 
@@ -120,11 +123,11 @@ public class DriveTrain {
     public double lockHeading(double angleToLock, double currentHeading) {
         error = angleWrap(angleToLock - currentHeading);
         turnController.setTargetPosition(0);
-        return -turnController.update(error);
+        return -turnController.update(error); // power value sent to motors
     }
 
-    public void changePID(double inP, double inI, double inD){
-        turnKP = inP; turnKI = inI; turnKD = inD;
+    public void changePID(double inP, double inI, double inD, double inF){
+        turnP = inP; turnI = inI; turnD = inD; turnF = inF;
     }
 
     public double getError() {
