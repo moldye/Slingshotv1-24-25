@@ -1,16 +1,9 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
-import com.acmerobotics.roadrunner.control.PIDCoefficients;
-import com.acmerobotics.roadrunner.control.PIDFController;
-import com.arcrobotics.ftclib.controller.PIDController;
-import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -30,20 +23,17 @@ public class DriveTrain {
 
     private double targetAngle = 0;
 
-    private double error;
-
 
     // public while being tuned on dashboard
-    public static double turnP;
-    public static double turnI;
-    public static double turnD;
-    public static double turnF;
-
-    private PIDCoefficients turnCoeffs = new PIDCoefficients(turnP, turnI, turnD);
-    private PIDFController turnController = new PIDFController(turnCoeffs);
+    public static double turnP = 0.04;
+    public static double turnI = 0;
+    public static double turnD = 0.003;
+    public static double turnF = 0.00001;
+    private PIDFController turnController = new PIDFController(turnP, turnI, turnD, turnF);
 
     public DriveTrain(HardwareMap hardwareMap, IMU imu, Telemetry telemetry){
 
+        // motors for slingshot bot
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
         leftFront.setDirection(DcMotorEx.Direction.FORWARD);
         leftFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
@@ -59,6 +49,23 @@ public class DriveTrain {
         rightBack = hardwareMap.get(DcMotorEx.class, "rightBack");
         rightBack.setDirection(DcMotorEx.Direction.REVERSE);
         rightBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
+        // motors for papaya (test bot)
+//        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
+//        leftFront.setDirection(DcMotorEx.Direction.REVERSE);
+//        leftFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+//
+//        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+//        rightFront.setDirection(DcMotorEx.Direction.FORWARD);
+//        rightFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+//
+//        leftBack = hardwareMap.get(DcMotorEx.class, "leftBack");
+//        leftBack.setDirection(DcMotorEx.Direction.REVERSE);
+//        leftBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+//
+//        rightBack = hardwareMap.get(DcMotorEx.class, "rightBack");
+//        rightBack.setDirection(DcMotorEx.Direction.FORWARD);
+//        rightBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
         this.imu = imu;
 
@@ -76,11 +83,10 @@ public class DriveTrain {
 
 
     public void moveRoboCentric(double strafe, double drive, double turn){
-        // targetAngle -= turn * 10; // tune 10 depending on speed
-        //if (lockHeadingMode) {
+        targetAngle = changeTargetAngleWithJoystick(turn);
+
         double currentAngle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
         turn = lockHeading(targetAngle, currentAngle);
-        //}
 
         // Denominator is the largest motor power (absolute value) or 1
         // This ensures all the powers maintain the same ratio,
@@ -112,26 +118,36 @@ public class DriveTrain {
 
     public double angleWrap(double angle) {
         angle = Math.toRadians(angle);
-        // Changes any angle between [-180,180] degrees
+        // Changes any angle between [-179,180] degrees
         // If rotation is greater than half a full rotation, it would be more efficient to turn the other way
         while (Math.abs(angle) > Math.PI) {
             angle -= 2 * Math.PI * (angle > 0 ? 1 : -1); // if angle > 0 * 1, < 0 * -1
         }
+        if (angle == -Math.PI) { // this should cover the test case where the target angle is 180 (and it tries to wrap it & goes back and forth btwn 180 & -180)
+            angle *= -1;
+        }
         return Math.toDegrees(angle);
     }
 
-    public double lockHeading(double angleToLock, double currentHeading) {
-        error = angleWrap(angleToLock - currentHeading);
-        turnController.setTargetPosition(0);
-        return -turnController.update(error); // power value sent to motors
+    public double lockHeading(double targetAngle, double currentHeading) {
+        double pid = turnController.calculate(angleWrap(targetAngle), angleWrap(currentHeading)); // test that adding angle wrap still works
+        double power = pid + turnF;
+        return -power;
     }
 
     public void changePID(double inP, double inI, double inD, double inF){
         turnP = inP; turnI = inI; turnD = inD; turnF = inF;
+        turnController.setPIDF(inP, inI, inD, inF);
     }
 
-    public double getError() {
-        return error;
+    public void setTargetAngle(double targetAngle) {
+        this.targetAngle = targetAngle;
     }
 
+    public double changeTargetAngleWithJoystick(double joystickTurn) {
+        if (joystickTurn == 0) {
+            return targetAngle; // no change to target angle if joysticks aren't moving
+        }
+        return targetAngle -= joystickTurn * 10; // tune 10 depending on speed
+    }
 }

@@ -21,13 +21,12 @@ public class LockedHeadingPIDTune extends OpMode {
     private double strafe;
     private double turn;
     private double currentAngle;
-
-    public static int target = 0;
-    public static double p = 0, i = 0, d = 0, f = 0;
+    private Robot robot;
+    public static double target = 0;
+    public static double p = 0.04, i = 0, d = 0.003, f = 0.00001;
 
     private Telemetry dashboardTelemetry;
 
-    private Robot robot;
     @Override
     public void init() {
         robot = new Robot(hardwareMap, telemetry);
@@ -38,28 +37,29 @@ public class LockedHeadingPIDTune extends OpMode {
 
     @Override
     public void loop() {
+        dashboardTelemetry.addData("target angle: ", target);
 
         drive = gamepad1.left_stick_y;
         strafe = gamepad1.left_stick_x;
         turn = gamepad1.right_stick_x;
         currentAngle = robot.drivetrain.getHeading();
 
+        // this is relative to the driver, also angles get wrapped in lockHeading()
+        if (gamepad1.dpad_left) {
+            robot.drivetrain.setTargetAngle(0);
+        } else if (gamepad1.dpad_up) {
+            robot.drivetrain.setTargetAngle(90);
+        } else if (gamepad1.dpad_right) {
+            robot.drivetrain.setTargetAngle(180);
+        } else if (gamepad1.dpad_down) {
+            robot.drivetrain.setTargetAngle(270);
+        }
+
         robot.drivetrain.changePID(p,i,d,f);
+        robot.drivetrain.setTargetAngle(target);
         robot.drivetrain.moveFieldCentric(strafe, drive, turn, currentAngle);
 
-//        if (gamepad1.dpad_left) {
-//            robot.drivetrain.lockHeading(0, currentAngle);
-//        } else if (gamepad1.dpad_up) {
-//            robot.drivetrain.lockHeading(90, currentAngle);
-//        } else if (gamepad1.dpad_right) {
-//            robot.drivetrain.lockHeading(180, currentAngle);
-//        } else if (gamepad1.dpad_down) {
-//            robot.drivetrain.lockHeading(270, currentAngle);
-//        }
-
-        dashboardTelemetry.addData("target angle: ", target);
         dashboardTelemetry.addData("current heading: ", robot.drivetrain.getHeading());
-        dashboardTelemetry.addData("robot error: ", robot.drivetrain.getError());
         dashboardTelemetry.update();
     }
 }
