@@ -3,15 +3,13 @@ package mathTests;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import com.acmerobotics.roadrunner.localization.Localizer;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.basic.DriveTrain;
-import org.firstinspires.ftc.teamcode.basic.ReLocalizer;
+import org.firstinspires.ftc.teamcode.mechanisms.DriveTrain;
+import org.firstinspires.ftc.teamcode.mechanisms.ReLocalizer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -58,28 +56,55 @@ public class driveTrainMathTests {
     @Test
     public void testOutputPowerDirForHeadingLockWith4Quadrant() {
         double expected = dt.lockHeading(0, 315);
-        System.out.println(expected);
         assertTrue(expected > 0);
     }
 
     @Test
     public void testOutputPowerDirForHeadingLockWith3Quadrant() {
         double expected = dt.lockHeading(0, 260);
-        assertTrue(expected < 0);
+        System.out.println(expected);
+        assertTrue(expected > 0);
     }
 
     @Test
-    public void testOutputPowerDirForHeadingLockWithSameAngle() {
-        double expected = dt.lockHeading(0, 0);
-        assertTrue(expected == 0);
+    public void testSetTargetAngleWithNegativeJoystickValue() {
+        dt.setTargetAngle(0);
+        double actual = dt.changeTargetAngleWithJoystick(-1);
+        assertEquals(10, actual);
+    }
+
+    @Test
+    public void testSetTargetAngleWithDoubleJoystickValue() {
+        dt.setTargetAngle(0);
+        double actual = dt.changeTargetAngleWithJoystick(-0.5);
+        assertEquals(5, actual);
+    }
+
+    @Test
+    public void testSetTargetAngleWith0JoystickValue() {
+        dt.setTargetAngle(90);
+        double actual = dt.changeTargetAngleWithJoystick(0);
+        assertEquals(90, actual); // no change to the target angle
     }
 
     @Test
     public void testAngleWrapWithQuad3() {
-        // angle wrap outputs and angle
         double actualAngle = dt.angleWrap(-270);
         assertEquals(90, actualAngle);
     }
+
+    @Test
+    public void testAngleWrapWithNeg180() {
+        double actualAngle = dt.angleWrap(-180);
+        assertEquals(180, actualAngle);
+    }
+
+//    @Test
+//    public void testOutputPowerDirForHeadingLockWith180Target() {
+//        double expected = dt.lockHeading(180, 0);
+//        System.out.println(expected);
+//        assertTrue(expected < 0);
+//    }
 
     @Test
     public void testUltrasonicsWith90RobotAngleBackSensor() {

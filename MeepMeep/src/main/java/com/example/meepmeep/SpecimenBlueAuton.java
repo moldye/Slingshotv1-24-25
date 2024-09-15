@@ -30,23 +30,70 @@ public class SpecimenBlueAuton {
                                 .setReversed(false)
 
                                 //get specimen from HP
-                                .splineToLinearHeading(new Pose2d(-55,-50, Math.toRadians(0)), Math.toRadians(255))
-
+                                .splineToSplineHeading(new Pose2d(-55,-25,Math.toRadians(-60)),Math.toRadians(270))
+                                .lineToSplineHeading(new Pose2d(-55, -50, Math.toRadians(0)))
+                                .setReversed(true)
+                                .back(5)
                                 .waitSeconds(0.5)
                                 .setReversed(false)
+                                .forward(5)
+
+
                                 //put specimen on box (farther down)
-                                .splineToLinearHeading(new Pose2d(-40, 5, Math.toRadians(180)),Math.toRadians(90))
+                                .splineToLinearHeading(new Pose2d(-40, 0, Math.toRadians(180)),Math.toRadians(90))
+                                .setReversed(true)
+                                .back(5)
+                                .waitSeconds(0.5)
+                                .setReversed(false)
+                                .forward(5)
+
 
 
                                 //get specimen from HP
-                                .splineToLinearHeading(new Pose2d(-55,-50, Math.toRadians(0)), Math.toRadians(255))
+                                .splineToSplineHeading(new Pose2d(-55,-25,Math.toRadians(-60)),Math.toRadians(270))
+                                .lineToSplineHeading(new Pose2d(-55, -50, Math.toRadians(0)))
+                                .setReversed(true)
+                                .back(5)
+                                .waitSeconds(0.5)
+                                .setReversed(false)
+                                .forward(5)
+
+
+
                                 .waitSeconds(0.5)
                                 .setReversed(false)
 
+
                                 //put specimen on box (farther forward)
-                                .splineToLinearHeading(new Pose2d(-40, 0, Math.toRadians(180)),Math.toRadians(90))
+                                .splineToLinearHeading(new Pose2d(-40, -5, Math.toRadians(180)),Math.toRadians(90))
+                                .setReversed(true)
+                                .back(5)
+                                .waitSeconds(0.5)
+                                .setReversed(false)
+                                .forward(5)
 
 
+                                //get sample
+                                .splineToSplineHeading(new Pose2d(-50,-25,Math.toRadians(-60)),Math.toRadians(270))
+                                .lineToSplineHeading(new Pose2d(-50, -48, Math.toRadians(0)))
+                                .waitSeconds(0.5)
+                                .turn(Math.toRadians(-40))
+                                .waitSeconds(0.5)
+                                .turn(Math.toRadians(40))
+                                .waitSeconds(0.5)
+                                .turn(Math.toRadians(-50))
+                                .waitSeconds(0.5)
+                                .turn(Math.toRadians(50))
+
+                                .splineToLinearHeading(new Pose2d(-40, -7, Math.toRadians(180)),Math.toRadians(90))
+                                .setReversed(true)
+                                .back(5)
+                                .waitSeconds(0.5)
+
+
+
+//                                .waitSeconds(0.5)
+//                                .turn(Math.toRadians(50))
 
 
                                 .build()
