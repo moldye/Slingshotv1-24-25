@@ -18,7 +18,7 @@ public class SampleBlueAuton {
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-                .setConstraints(80, 60, 6, 6, 14)
+                .setConstraints(70, 55, 2.5, 2, 14)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(new Pose2d(-60, 12, Math.toRadians(180)))
                                 .back(28)
