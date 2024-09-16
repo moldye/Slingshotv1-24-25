@@ -29,8 +29,8 @@ public class MechPIDTuning extends OpMode {
     private Telemetry dashboardTelemetry;
     @Override
     public void init() {
-        slide = new BasicSlides(hardwareMap, configName, p,i,d,f);
-        arm = new BasicArm(hardwareMap, configName, p,i,d,f, ticksPerDegree);
+        slide = new BasicSlides(hardwareMap, configName, 0,p,i,d,f);
+        arm = new BasicArm(hardwareMap, configName, 0, p,i,d,f, ticksPerDegree);
         dashboardTelemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
     }
 

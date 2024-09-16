@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class BasicArm {
@@ -14,9 +15,15 @@ public class BasicArm {
 
 
 
-    public BasicArm(HardwareMap hardwareMap, String configName, double inP, double inI, double inD, double inF, double tickDegree){
+    public BasicArm(HardwareMap hardwareMap, String configName, int direction, double inP, double inI, double inD, double inF, double tickDegree){
         arm = hardwareMap.get(DcMotorEx.class, configName);
         arm.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
+        if(direction == 0){
+            arm.setDirection(DcMotorEx.Direction.FORWARD);
+        }else{
+            arm.setDirection(DcMotorEx.Direction.REVERSE);
+        }
 
         controller = new PIDController(p,i,d);
 

@@ -18,9 +18,15 @@ public class BasicSlides {
     private static double p, i, d; //has to be tuned
     private static double f; //usually mass moved * constant G
 
-    public BasicSlides(HardwareMap hardwareMap, String configName, double inP, double inI, double inD, double inF){
+    public BasicSlides(HardwareMap hardwareMap, String configName, int direction, double inP, double inI, double inD, double inF){
         slide = hardwareMap.get(DcMotorEx.class, configName);
         slide.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
+        if(direction == 0){
+            slide.setDirection(DcMotorEx.Direction.FORWARD);
+        }else{
+            slide.setDirection(DcMotorEx.Direction.REVERSE);
+        }
 
         controller = new PIDController(p,i,d);
 
