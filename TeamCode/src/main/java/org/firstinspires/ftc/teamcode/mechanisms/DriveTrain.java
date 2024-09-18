@@ -109,7 +109,7 @@ public class DriveTrain {
         newX = (-inX * sinTheta) - (inY * cosTheta);
         newY = (-inX * cosTheta) + (inY * sinTheta);
 
-        moveRoboCentric(newX,newY,-turn); // may need to get rid of this - on turn
+        moveRoboCentric(newX,newY,-turn);
     }
 
     public double getHeading() {
