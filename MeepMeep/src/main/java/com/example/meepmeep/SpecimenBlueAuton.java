@@ -24,53 +24,42 @@ public class SpecimenBlueAuton {
 
                                 //goes to box
                                 //score specimen (preloaded)
-                                .setReversed(true)
-                                .back(20)
+
+                                .back(30)
                                 .waitSeconds(.5)
-                                .setReversed(false)
+                                .forward(5)
 
-                                //get specimen from HP
-                                .splineToSplineHeading(new Pose2d(-55,-25,Math.toRadians(-60)),Math.toRadians(270))
-                                .lineToSplineHeading(new Pose2d(-55, -50, Math.toRadians(0)))
+                                //go ti HP
                                 .setReversed(true)
-                                .back(5)
-                                .waitSeconds(0.5)
+                                .lineToSplineHeading(new Pose2d(-35, -36, Math.toRadians(90)))
+                                .splineTo(new Vector2d(-60, -60 ), Math.toRadians(180))
+                                .waitSeconds(.5)
+
+                                //go to box
                                 .setReversed(false)
+                                .splineTo(new Vector2d(-35, -36), Math.toRadians(90))
+                                .lineToSplineHeading(new Pose2d(-35, -9, Math.toRadians(180)))
+                                .back(5)
+                                .waitSeconds(.5)
+                                .forward(5)
+
+                                //go ti HP
+                                .setReversed(true)
+                                .lineToSplineHeading(new Pose2d(-35, -36, Math.toRadians(90)))
+                                .splineTo(new Vector2d(-60, -60 ), Math.toRadians(180))
+                                .waitSeconds(.5)
+
+                                //go to box
+                                .setReversed(false)
+                                .splineTo(new Vector2d(-35, -36), Math.toRadians(90))
+                                .lineToSplineHeading(new Pose2d(-35, -6, Math.toRadians(180)))
+                                .back(5)
+                                .waitSeconds(.5)
                                 .forward(5)
 
 
-                                //put specimen on box (farther down)
-                                .splineToLinearHeading(new Pose2d(-40, 0, Math.toRadians(180)),Math.toRadians(90))
-                                .setReversed(true)
-                                .back(5)
-                                .waitSeconds(0.5)
-                                .setReversed(false)
-                                .forward(5)
 
 
-
-                                //get specimen from HP
-                                .splineToSplineHeading(new Pose2d(-55,-25,Math.toRadians(-60)),Math.toRadians(270))
-                                .lineToSplineHeading(new Pose2d(-55, -50, Math.toRadians(0)))
-                                .setReversed(true)
-                                .back(5)
-                                .waitSeconds(0.5)
-                                .setReversed(false)
-                                .forward(5)
-
-
-
-                                .waitSeconds(0.5)
-                                .setReversed(false)
-
-
-                                //put specimen on box (farther forward)
-                                .splineToLinearHeading(new Pose2d(-40, -5, Math.toRadians(180)),Math.toRadians(90))
-                                .setReversed(true)
-                                .back(5)
-                                .waitSeconds(0.5)
-                                .setReversed(false)
-                                .forward(5)
 
 
                                 //get sample
