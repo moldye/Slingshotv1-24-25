@@ -20,9 +20,7 @@ public class DriveTrain {
     private Telemetry telemetry;
     private double newX = 0;
     private double newY = 0;
-
     private double targetAngle = 0;
-
 
     // public while being tuned on dashboard
     public static double turnP = 0.04;
@@ -83,7 +81,7 @@ public class DriveTrain {
 
 
     public void moveRoboCentric(double strafe, double drive, double turn){
-        targetAngle = changeTargetAngleWithJoystick(turn);
+        changeTargetAngleWithJoystick(turn);
 
         double currentAngle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
         turn = lockHeading(targetAngle, currentAngle);
@@ -141,13 +139,17 @@ public class DriveTrain {
     }
 
     public void setTargetAngle(double targetAngle) {
-        this.targetAngle = targetAngle;
+        this.targetAngle = angleWrap(targetAngle);
     }
 
-    public double changeTargetAngleWithJoystick(double joystickTurn) {
+    public double getTargetAngle() { return angleWrap(targetAngle);}
+
+    public void changeTargetAngleWithJoystick(double joystickTurn) {
         if (joystickTurn == 0) {
-            return targetAngle; // no change to target angle if joysticks aren't moving
+            setTargetAngle(targetAngle);
+        } else {
+            double newTargetAngle = targetAngle - joystickTurn * 10;
+            setTargetAngle(newTargetAngle);
         }
-        return targetAngle -= joystickTurn * 10; // tune 10 depending on speed
     }
 }

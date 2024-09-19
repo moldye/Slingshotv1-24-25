@@ -20,7 +20,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 public class driveTrainMathTests {
     // sensing distnace smae is target distance -? goal
     // robot angle 90
-
     // test constructor with the motors instead, hehe
     @Mock
     DcMotorEx leftFront;
@@ -62,29 +61,28 @@ public class driveTrainMathTests {
     @Test
     public void testOutputPowerDirForHeadingLockWith3Quadrant() {
         double expected = dt.lockHeading(0, 260);
-        System.out.println(expected);
         assertTrue(expected > 0);
     }
 
     @Test
     public void testSetTargetAngleWithNegativeJoystickValue() {
         dt.setTargetAngle(0);
-        double actual = dt.changeTargetAngleWithJoystick(-1);
-        assertEquals(10, actual);
+        dt.changeTargetAngleWithJoystick(-1);
+        assertEquals(10, dt.getTargetAngle());
     }
 
     @Test
     public void testSetTargetAngleWithDoubleJoystickValue() {
         dt.setTargetAngle(0);
-        double actual = dt.changeTargetAngleWithJoystick(-0.5);
-        assertEquals(5, actual);
+        dt.changeTargetAngleWithJoystick(-0.5);
+        assertEquals(5, dt.getTargetAngle());
     }
 
     @Test
     public void testSetTargetAngleWith0JoystickValue() {
         dt.setTargetAngle(90);
-        double actual = dt.changeTargetAngleWithJoystick(0);
-        assertEquals(90, actual); // no change to the target angle
+        dt.changeTargetAngleWithJoystick(0);
+        assertEquals(90, dt.getTargetAngle()); // no change to the target angle
     }
 
     @Test

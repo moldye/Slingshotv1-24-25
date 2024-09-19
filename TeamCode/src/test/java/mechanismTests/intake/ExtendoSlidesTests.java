@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.mechanisms.extendo.ExtendoSlides;
 import org.jetbrains.annotations.TestOnly;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,29 +20,37 @@ public class ExtendoSlidesTests {
     // likely going to need to be able to adjust slides by little increments
     // extendo slides powered by a servo, triangle things attach to slides for support & servo moves that
     @Mock
-    Servo rightExtendo;
+    Servo rightExtendoAxon;
+
+    private ExtendoSlides extendoSlides;
 
     // may need this? See when cad is done
-    // @Mock
-    // Servo leftExtendo;
+    @Mock
+    Servo leftExtendoAxon;
+
+    @BeforeEach
+    public void init() {
+        extendoSlides = new ExtendoSlides(rightExtendoAxon, leftExtendoAxon);
+    }
 
     @Test
     public void testExtendoFullExpansion() {
         // TODO get this from hardware/CAD when done
-    }
-
-    @Test
-    public void testExtendoCanSwitchStates() {
-        // Make states, full extension, locked, etc.
+        extendoSlides.extendoExtend();
+        verify(leftExtendoAxon).setPosition(anyDouble());
+        verify(rightExtendoAxon).setPosition(anyDouble());
     }
 
     @Test
     public void testExtendoFullyRetract() {
-        // see above
+        extendoSlides.extendoRetract();
+        verify(leftExtendoAxon).setPosition(anyDouble());
+        verify(rightExtendoAxon).setPosition(anyDouble());
     }
 
-    @Test
-    public void testExtendoLocks() {
-        // this will just set target pos for the servo to be at the retraction position (test for this too)
-    }
+    // May want this? TODO: Ask Jihoon
+//    @Test
+//    public void testExtendoLocks() {
+//        // this will just set target pos for the servo to be at the retraction position (test for this too)
+//    }
 }

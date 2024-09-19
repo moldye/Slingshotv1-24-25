@@ -31,21 +31,13 @@ public class IntakeTests {
     private Intake intake;
     @BeforeEach
     public void init() {
-        intake = new Intake(DcMotorEx rollerMotor, Servo pivotAxon, Servo backRollerServo);
+        intake = new Intake(rollerMotor, pivotAxon, backRollerServo);
     }
 
     @Test
     public void testMotorDoesRollForward() {
         // not running constantly, block held in place by the back roller
-        intake.forwardRollerOn();
-        verify(rollerMotor).setPower(anyDouble());
-    }
-
-    @Test
-    public void testMotorDoesRollBackward() {
-        // TODO runs when outaking? may not need this, since the back roller outtakes
-        intake.backwardRollerOn();
-        verify(rollerMotor).setDirection(DcMotorSimple.Direction.REVERSE);
+        intake.motorRollerOn();
         verify(rollerMotor).setPower(anyDouble());
     }
 
@@ -65,7 +57,28 @@ public class IntakeTests {
     }
 
     @Test
-    public void testPivotServoCanIncrementPos() {
-        // same as above
+    public void testPivotServoGoesToFullPos() {
+        intake.flipDown();
+        verify(pivotAxon).setPosition(anyDouble()); // tune with value
+    }
+
+    @Test
+    public void testPivotServoGoesTotallyIn() {
+        intake.flipUp();
+        verify(pivotAxon).setPosition(anyDouble()); // tune with value
+    }
+
+    @Test
+    public void resetIntakeHardware() {
+        // needs to happen when we return to base state (remember there can be no moving in the transition from auton to teleop)
+        intake.resetHardware();
+        verify(rollerMotor).setPower(0);
+        verify(rollerMotor).setDirection(DcMotorSimple.Direction.FORWARD);
+
+        verify(pivotAxon).setPosition(0);
+        verify(pivotAxon).setDirection(Servo.Direction.FORWARD);
+
+        verify(backRollerServo).setPower(0);
+        verify(backRollerServo).setDirection(DcMotorSimple.Direction.REVERSE);
     }
 }

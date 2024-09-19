@@ -9,12 +9,22 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.mechanisms.DriveTrain;
 import org.firstinspires.ftc.teamcode.mechanisms.ReLocalizer;
+import org.firstinspires.ftc.teamcode.mechanisms.extendo.ExtendoSlides;
+import org.firstinspires.ftc.teamcode.mechanisms.extendo.Intake;
+import org.firstinspires.ftc.teamcode.mechanisms.outtake.OuttakeBucket;
+import org.firstinspires.ftc.teamcode.mechanisms.outtake.OuttakeSlides;
+import org.firstinspires.ftc.teamcode.mechanisms.specimen.SpecimenClaw;
 
 public class Robot{
     // needs to be able to access all methods for all the mechanisms used in opmodes
     public DriveTrain drivetrain;
     public ReLocalizer ultraSonics;
     public IMU imu;
+//    public SpecimenClaw specimenClaw;
+//    public Intake intake;
+//    public ExtendoSlides extendoSlides;
+//    public OuttakeSlides outtakeSlides;
+//    public OuttakeBucket outtakeBucket;
 
     public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
         imu = hardwareMap.get(IMU.class, "imu");
@@ -33,6 +43,11 @@ public class Robot{
 
         drivetrain = new DriveTrain(hardwareMap, imu, telemetry);
         ultraSonics = new ReLocalizer(hardwareMap, imu);
+//        specimenClaw = new SpecimenClaw(hardwareMap);
+//        intake = new Intake(hardwareMap);
+//        extendoSlides = new ExtendoSlides(hardwareMap);
+//        outtakeSlides = new OuttakeSlides(hardwareMap, "outtakeSlide", 0, 0, 0, 0, 0); // obviously need to tune, these wouldn't all be 0
+//        outtakeBucket = new OuttakeBucket(hardwareMap);
     }
 
     public Pose2d reLocalize(){
