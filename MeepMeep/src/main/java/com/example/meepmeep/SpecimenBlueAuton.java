@@ -20,7 +20,7 @@ public class SpecimenBlueAuton {
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setConstraints(70, 55, 2.5, 2, 14)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(-60, -12, Math.toRadians(180)))
+                        drive.trajectorySequenceBuilder(new Pose2d(12, -60, Math.toRadians(270)))
 
                                 //goes to box
                                 //score specimen (preloaded)
@@ -31,28 +31,28 @@ public class SpecimenBlueAuton {
 
                                 //go ti HP
                                 .setReversed(true)
-                                .lineToSplineHeading(new Pose2d(-35, -36, Math.toRadians(90)))
-                                .splineTo(new Vector2d(-60, -60 ), Math.toRadians(180))
+                                .lineToSplineHeading(new Pose2d(36, -35, Math.toRadians(180)))
+                                .splineTo(new Vector2d(60, -60 ), Math.toRadians(270))
                                 .waitSeconds(.5)
 
                                 //go to box
                                 .setReversed(false)
-                                .splineTo(new Vector2d(-35, -36), Math.toRadians(90))
-                                .lineToSplineHeading(new Pose2d(-35, -9, Math.toRadians(180)))
+                                .splineTo(new Vector2d(36, -35), Math.toRadians(180))
+                                .lineToSplineHeading(new Pose2d(9, -35, Math.toRadians(270)))
                                 .back(5)
                                 .waitSeconds(.5)
                                 .forward(5)
 
                                 //go ti HP
                                 .setReversed(true)
-                                .lineToSplineHeading(new Pose2d(-35, -36, Math.toRadians(90)))
-                                .splineTo(new Vector2d(-60, -60 ), Math.toRadians(180))
+                                .lineToSplineHeading(new Pose2d(36, -35, Math.toRadians(180)))
+                                .splineTo(new Vector2d(60, -60 ), Math.toRadians(270))
                                 .waitSeconds(.5)
 
                                 //go to box
                                 .setReversed(false)
-                                .splineTo(new Vector2d(-35, -36), Math.toRadians(90))
-                                .lineToSplineHeading(new Pose2d(-35, -6, Math.toRadians(180)))
+                                .splineTo(new Vector2d(36, -35), Math.toRadians(180))
+                                .lineToSplineHeading(new Pose2d(6, -35, Math.toRadians(270)))
                                 .back(5)
                                 .waitSeconds(.5)
                                 .forward(5)
@@ -63,8 +63,8 @@ public class SpecimenBlueAuton {
 
 
                                 //get sample
-                                .splineToSplineHeading(new Pose2d(-50,-25,Math.toRadians(-60)),Math.toRadians(270))
-                                .lineToSplineHeading(new Pose2d(-50, -48, Math.toRadians(0)))
+                                .splineToSplineHeading(new Pose2d(25,-50,Math.toRadians(-60)),Math.toRadians(0))
+                                .lineToSplineHeading(new Pose2d(48, -50, Math.toRadians(90)))
                                 .waitSeconds(0.5)
                                 .turn(Math.toRadians(-40))
                                 .waitSeconds(0.5)
@@ -74,10 +74,7 @@ public class SpecimenBlueAuton {
                                 .waitSeconds(0.5)
                                 .turn(Math.toRadians(50))
 
-                                .splineToLinearHeading(new Pose2d(-40, -7, Math.toRadians(180)),Math.toRadians(90))
-                                .setReversed(true)
-                                .back(5)
-                                .waitSeconds(0.5)
+                                .back(10)
 
 
 
