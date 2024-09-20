@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.FSM;
+
 public class Intake {
     // motor spins the intake rollers
     // servo that pivots intake
@@ -20,7 +22,9 @@ public class Intake {
     private Servo pivotAxon;
     private CRServo backRollerServo;
 
+    private IntakeConstants.IntakeStates intakeState;
 
+    private boolean hardwareReset;
     public Intake(HardwareMap hwMap) {
         rollerMotor = hwMap.get(DcMotorEx.class, "rollerMotor");
         pivotAxon = hwMap.get(Servo.class, "pivotAxon");
@@ -32,6 +36,8 @@ public class Intake {
         pivotAxon.setDirection(Servo.Direction.FORWARD);
 
         backRollerServo.setDirection(DcMotorSimple.Direction.REVERSE); // reverse for servo to push samples out -> tune
+
+        intakeState = IntakeConstants.IntakeStates.FULLY_RETRACTED;
     }
 
     // This is for testing only :)
@@ -66,5 +72,23 @@ public class Intake {
 
         backRollerServo.setPower(0);
         backRollerServo.setDirection(DcMotorSimple.Direction.REVERSE);
+        hardwareReset = true;
     }
+    public void update(){
+        switch(intakeState){
+            case FULLY_RETRACTED:
+                // this will need to be done also when we come back in from fully extended
+//                if (gamepad button pressed)
+//                intakeState = IntakeConstants.IntakeStates.EXTENDING;
+                break;
+            case EXTENDING:
+
+                intakeState = IntakeConstants.IntakeStates.INTAKING;
+            case INTAKING:
+                flipDown();
+                motorRollerOn();
+
+        }
+    }
+
 }
