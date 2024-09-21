@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.teleop;
+package org.firstinspires.ftc.teamcode.testers;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -47,13 +47,13 @@ public class LockedHeadingPIDTune extends OpMode {
 
         // this is relative to the driver, also angles get wrapped in lockHeading()
         if (gamepad1.dpad_left) {
-            robot.drivetrain.setTargetAngle(0);
-        } else if (gamepad1.dpad_up) {
-            robot.drivetrain.setTargetAngle(90);
-        } else if (gamepad1.dpad_right) {
-            robot.drivetrain.setTargetAngle(180);
+            robot.drivetrain.setTargetAngle(0 + 90); // add 90 to each value bc of imu
         } else if (gamepad1.dpad_down) {
-            robot.drivetrain.setTargetAngle(270);
+            robot.drivetrain.setTargetAngle(90 + 90);
+        } else if (gamepad1.dpad_right) {
+            robot.drivetrain.setTargetAngle(180 + 90);
+        } else if (gamepad1.dpad_up) {
+            robot.drivetrain.setTargetAngle(270 + 90);
         }
 
         robot.drivetrain.changePID(p,i,d,f);

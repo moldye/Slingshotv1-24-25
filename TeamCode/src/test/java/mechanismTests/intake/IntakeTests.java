@@ -26,12 +26,21 @@ public class IntakeTests {
     @Mock
     CRServo backRollerServo; // CR Servo?
 
+    // extendo needs to retract out and back in, test full extension
+    // likely going to need to be able to adjust slides by little increments
+    // extendo slides powered by a servo, triangle things attach to slides for support & servo moves that
+    @Mock
+    Servo rightExtendo;
+    @Mock
+    Servo leftExtendo;
+
     // one motor for rollers, one servo for pivot of intake, one servo for back roller
     // have an intaking, outtaking mode, and wrong alliance color outtake in back
     private Intake intake;
+
     @BeforeEach
     public void init() {
-        intake = new Intake(rollerMotor, pivotAxon, backRollerServo);
+        intake = new Intake(rollerMotor, pivotAxon, backRollerServo, rightExtendo, leftExtendo);
     }
 
     @Test
@@ -80,5 +89,20 @@ public class IntakeTests {
 
         verify(backRollerServo).setPower(0);
         verify(backRollerServo).setDirection(DcMotorSimple.Direction.REVERSE);
+    }
+
+    @Test
+    public void testExtendoFullExpansion() {
+        // TODO get this from hardware/CAD when done
+        intake.extendoExtend();
+        verify(leftExtendo).setPosition(anyDouble());
+        verify(rightExtendo).setPosition(anyDouble());
+    }
+
+    @Test
+    public void testExtendoFullyRetract() {
+        intake.extendoRetract();
+        verify(leftExtendo).setPosition(anyDouble());
+        verify(rightExtendo).setPosition(anyDouble());
     }
 }

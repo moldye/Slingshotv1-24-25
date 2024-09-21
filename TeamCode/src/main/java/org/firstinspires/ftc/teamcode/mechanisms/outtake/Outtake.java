@@ -3,16 +3,21 @@ package org.firstinspires.ftc.teamcode.mechanisms.outtake;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
-public class OuttakeSlides {
+public class Outtake {
+
+    // SLIDES
     private PIDController controller;
     private DcMotorEx outtakeSlide;
     private static double p, i, d; //has to be tuned
     private static double f; //usually mass moved * constant G
-
     private SlidePositions slidePos;
 
-    public OuttakeSlides(HardwareMap hardwareMap, String configName, int direction, double inP, double inI, double inD, double inF){
+    // BUCKET
+    private Servo bucketFlipAxon;
+
+    public Outtake(HardwareMap hardwareMap, String configName, int direction, double inP, double inI, double inD, double inF){
         outtakeSlide = hardwareMap.get(DcMotorEx.class, configName);
         outtakeSlide.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
@@ -30,7 +35,7 @@ public class OuttakeSlides {
     }
 
     // this is for testing only
-    public OuttakeSlides(DcMotorEx slidesMotor) {
+    public Outtake(DcMotorEx slidesMotor) {
         this.outtakeSlide = slidesMotor;
     }
 

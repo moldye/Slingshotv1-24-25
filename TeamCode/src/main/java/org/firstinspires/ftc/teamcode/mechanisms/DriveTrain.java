@@ -32,38 +32,38 @@ public class DriveTrain {
     public DriveTrain(HardwareMap hardwareMap, IMU imu, Telemetry telemetry){
 
         // motors for slingshot bot
-        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
-        leftFront.setDirection(DcMotorEx.Direction.FORWARD);
-        leftFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-
-        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
-        rightFront.setDirection(DcMotorEx.Direction.REVERSE);
-        rightFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-
-        leftBack = hardwareMap.get(DcMotorEx.class, "leftBack");
-        leftBack.setDirection(DcMotorEx.Direction.FORWARD);
-        leftBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-
-        rightBack = hardwareMap.get(DcMotorEx.class, "rightBack");
-        rightBack.setDirection(DcMotorEx.Direction.REVERSE);
-        rightBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-
-        // motors for papaya (test bot)
 //        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
-//        leftFront.setDirection(DcMotorEx.Direction.REVERSE);
+//        leftFront.setDirection(DcMotorEx.Direction.FORWARD);
 //        leftFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 //
 //        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
-//        rightFront.setDirection(DcMotorEx.Direction.FORWARD);
+//        rightFront.setDirection(DcMotorEx.Direction.REVERSE);
 //        rightFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 //
 //        leftBack = hardwareMap.get(DcMotorEx.class, "leftBack");
-//        leftBack.setDirection(DcMotorEx.Direction.REVERSE);
+//        leftBack.setDirection(DcMotorEx.Direction.FORWARD);
 //        leftBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 //
 //        rightBack = hardwareMap.get(DcMotorEx.class, "rightBack");
-//        rightBack.setDirection(DcMotorEx.Direction.FORWARD);
+//        rightBack.setDirection(DcMotorEx.Direction.REVERSE);
 //        rightBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
+        // motors for papaya (test bot)
+        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
+        leftFront.setDirection(DcMotorEx.Direction.REVERSE);
+        leftFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
+        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+        rightFront.setDirection(DcMotorEx.Direction.FORWARD);
+        rightFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
+        leftBack = hardwareMap.get(DcMotorEx.class, "leftBack");
+        leftBack.setDirection(DcMotorEx.Direction.REVERSE);
+        leftBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
+        rightBack = hardwareMap.get(DcMotorEx.class, "rightBack");
+        rightBack.setDirection(DcMotorEx.Direction.FORWARD);
+        rightBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
         this.imu = imu;
 
@@ -121,14 +121,16 @@ public class DriveTrain {
         while (Math.abs(angle) > Math.PI) {
             angle -= 2 * Math.PI * (angle > 0 ? 1 : -1); // if angle > 0 * 1, < 0 * -1
         }
-        if (angle == -Math.PI) { // this should cover the test case where the target angle is 180 (and it tries to wrap it & goes back and forth btwn 180 & -180)
-            angle *= -1;
-        }
+//        if (angle == -Math.PI) { // this should cover the test case where the target angle is 180 (and it tries to wrap it & goes back and forth btwn 180 & -180)
+//            angle *= -1;
+//        }
         return Math.toDegrees(angle);
     }
 
     public double lockHeading(double targetAngle, double currentHeading) {
-        double pid = turnController.calculate(angleWrap(targetAngle), angleWrap(currentHeading)); // test that adding angle wrap still works
+        // we did this to wrap the error since we couldn't just directly put the error
+        double error = targetAngle - currentHeading;
+        double pid = turnController.calculate(0, -angleWrap(error));
         double power = pid + turnF;
         return -power;
     }
@@ -148,7 +150,12 @@ public class DriveTrain {
         if (joystickTurn == 0) {
             setTargetAngle(targetAngle);
         } else {
-            double newTargetAngle = targetAngle - joystickTurn * 10;
+            double newTargetAngle = targetAngle + joystickTurn * 7;
+            if(newTargetAngle > 360) {
+                newTargetAngle -= 360;
+            } else if (newTargetAngle < 0) {
+                newTargetAngle += 360;
+            }
             setTargetAngle(newTargetAngle);
         }
     }
