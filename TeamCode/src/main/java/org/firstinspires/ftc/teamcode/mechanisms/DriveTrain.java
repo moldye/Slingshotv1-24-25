@@ -32,38 +32,38 @@ public class DriveTrain {
     public DriveTrain(HardwareMap hardwareMap, IMU imu, Telemetry telemetry){
 
         // motors for slingshot bot
-//        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
-//        leftFront.setDirection(DcMotorEx.Direction.FORWARD);
-//        leftFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-//
-//        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
-//        rightFront.setDirection(DcMotorEx.Direction.REVERSE);
-//        rightFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-//
-//        leftBack = hardwareMap.get(DcMotorEx.class, "leftBack");
-//        leftBack.setDirection(DcMotorEx.Direction.FORWARD);
-//        leftBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-//
-//        rightBack = hardwareMap.get(DcMotorEx.class, "rightBack");
-//        rightBack.setDirection(DcMotorEx.Direction.REVERSE);
-//        rightBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-
-        // motors for papaya (test bot)
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
-        leftFront.setDirection(DcMotorEx.Direction.REVERSE);
+        leftFront.setDirection(DcMotorEx.Direction.FORWARD);
         leftFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
         rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
-        rightFront.setDirection(DcMotorEx.Direction.FORWARD);
+        rightFront.setDirection(DcMotorEx.Direction.REVERSE);
         rightFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
         leftBack = hardwareMap.get(DcMotorEx.class, "leftBack");
-        leftBack.setDirection(DcMotorEx.Direction.REVERSE);
+        leftBack.setDirection(DcMotorEx.Direction.FORWARD);
         leftBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
         rightBack = hardwareMap.get(DcMotorEx.class, "rightBack");
-        rightBack.setDirection(DcMotorEx.Direction.FORWARD);
+        rightBack.setDirection(DcMotorEx.Direction.REVERSE);
         rightBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
+        // motors for papaya (test bot)
+//        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
+//        leftFront.setDirection(DcMotorEx.Direction.REVERSE);
+//        leftFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+//
+//        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+//        rightFront.setDirection(DcMotorEx.Direction.FORWARD);
+//        rightFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+//
+//        leftBack = hardwareMap.get(DcMotorEx.class, "leftBack");
+//        leftBack.setDirection(DcMotorEx.Direction.REVERSE);
+//        leftBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+//
+//        rightBack = hardwareMap.get(DcMotorEx.class, "rightBack");
+//        rightBack.setDirection(DcMotorEx.Direction.FORWARD);
+//        rightBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
         this.imu = imu;
 
