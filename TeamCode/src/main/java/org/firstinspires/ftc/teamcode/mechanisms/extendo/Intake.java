@@ -4,11 +4,12 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.GamepadMapping;
+import org.firstinspires.ftc.teamcode.util.gamepad.GamepadMapping;
 
 public class Intake {
     // motor spins the intake rollers
@@ -27,10 +28,10 @@ public class Intake {
 
     private IntakeConstants.IntakeStates intakeState;
 
-    private GamepadMapping gamepadControls;
+    private GamepadMapping controls;
     private Telemetry telemetry;
 
-    public Intake(HardwareMap hwMap) {
+    public Intake(HardwareMap hwMap, Telemetry telemetry, Gamepad gamepad1, Gamepad gamepad2) {
         rollerMotor = hwMap.get(DcMotorEx.class, "rollerMotor");
         pivotAxon = hwMap.get(Servo.class, "pivotAxon");
         backRollerServo = hwMap.get(CRServo.class, "backRollerServo");
@@ -45,6 +46,9 @@ public class Intake {
         backRollerServo.setDirection(DcMotorSimple.Direction.REVERSE); // reverse for servo to push samples out -> tune
 
         intakeState = IntakeConstants.IntakeStates.FULLY_RETRACTED;
+
+        this.telemetry = telemetry;
+        controls = new GamepadMapping(gamepad1, gamepad2);
     }
 
     // This is for testing only :)
@@ -103,7 +107,7 @@ public class Intake {
         switch(intakeState){
             case FULLY_RETRACTED:
                 // this will need to be done also when we come back in from fully extended
-                if (gamepadControls.switchExtendo.value()) {
+                if (controls.switchExtendo.value()) {
                     intakeState = IntakeConstants.IntakeStates.EXTENDING;
                     // may need to add a button lock here? -> should already lock
                 } else {
@@ -122,7 +126,7 @@ public class Intake {
             case INTAKING:
                 flipDown();
                 motorRollerOn();
-                if (!gamepadControls.switchExtendo.value()) {
+                if (!controls.switchExtendo.value()) {
                     intakeState = IntakeConstants.IntakeStates.RETRACTING;
                 }
                 break;

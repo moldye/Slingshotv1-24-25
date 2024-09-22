@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.util.gamepad;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
@@ -29,13 +29,17 @@ public class GamepadMapping {
     public static Toggle switchExtendo; // extend & retract extendo
 
     // OUTTAKE
-    public static Toggle outtakeSlides;
+    public static Toggle outtakeSlides; // this needs to cycle through a few states, and then a button to bring slides back down whenever
+    public static Toggle resetSlides;
     public static Toggle bucketRelease;
+
+    public boolean outtakeSlidesButton;
 
     // SCORING
     public static Toggle latchSpecimen;
     public static Toggle switchClaw;
 
+    public static Toggle toBaseState;
 
     public GamepadMapping(Gamepad gamepad1, Gamepad gamepad2) {
         this.gamepad1 = gamepad1;
@@ -43,20 +47,26 @@ public class GamepadMapping {
 
         switchExtendo = new Toggle(false);
 
-        outtakeSlides = new Toggle(false);
+        resetSlides = new Toggle(false); // this might actually need to be true, idk
         bucketRelease = new Toggle(false);
 
         latchSpecimen = new Toggle(false);
         switchClaw = new Toggle(false);
+
+        toBaseState = new Toggle(false);
     }
 
     public void update() {
         switchExtendo.update(gamepad1.left_bumper);
 
-        outtakeSlides.update(gamepad1.right_bumper);
+        outtakeSlidesButton = gamepad1.right_bumper; // this may not work bc of goofy loop time, idk
+        resetSlides.update(gamepad1.right_trigger > 0.8);
         bucketRelease.update(gamepad1.a);
 
         latchSpecimen.update(gamepad2.a);
         switchClaw.update(gamepad1.x);
+
+        toBaseState.update(gamepad1.b);
     }
+
 }

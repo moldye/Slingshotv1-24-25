@@ -121,9 +121,6 @@ public class DriveTrain {
         while (Math.abs(angle) > Math.PI) {
             angle -= 2 * Math.PI * (angle > 0 ? 1 : -1); // if angle > 0 * 1, < 0 * -1
         }
-//        if (angle == -Math.PI) { // this should cover the test case where the target angle is 180 (and it tries to wrap it & goes back and forth btwn 180 & -180)
-//            angle *= -1;
-//        }
         return Math.toDegrees(angle);
     }
 

@@ -2,81 +2,145 @@ package org.firstinspires.ftc.teamcode.mechanisms.outtake;
 
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.util.gamepad.GamepadMapping;
 
 public class Outtake {
 
     // SLIDES
     private PIDController controller;
-    private DcMotorEx outtakeSlide;
+    private DcMotorEx outtakeSlideRight;
+    private DcMotorEx outtakeSlideLeft;
     private static double p, i, d; //has to be tuned
     private static double f; //usually mass moved * constant G
-    private SlidePositions slidePos;
+    private OuttakeConstants.SlidePositions slideState;
+    private int numOuttakeButtonPressed = 0;
 
     // BUCKET
-    private Servo bucketFlipAxon;
+    // private Servo bucketFlipAxon;
+    // TODO: FINISH OUTTAKE FSM WITH BUCKET WHEN CAD'S DONE
 
-    public Outtake(HardwareMap hardwareMap, String configName, int direction, double inP, double inI, double inD, double inF){
-        outtakeSlide = hardwareMap.get(DcMotorEx.class, configName);
-        outtakeSlide.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+    // OTHER
+    Telemetry telemetry;
+    GamepadMapping controls;
+
+    public Outtake(HardwareMap hardwareMap, String configName, int direction, double inP, double inI, double inD, double inF, Telemetry telemetry,
+    Gamepad gamepad1, Gamepad gamepad2){
+        outtakeSlideLeft = hardwareMap.get(DcMotorEx.class, configName);
+        outtakeSlideRight = hardwareMap.get(DcMotorEx.class, configName);
+        outtakeSlideLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        outtakeSlideRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
         if(direction == 0){
-            outtakeSlide.setDirection(DcMotorEx.Direction.FORWARD);
+            outtakeSlideLeft.setDirection(DcMotorEx.Direction.FORWARD);
+            outtakeSlideRight.setDirection(DcMotorEx.Direction.FORWARD);
         }else{
-            outtakeSlide.setDirection(DcMotorEx.Direction.REVERSE);
+            outtakeSlideLeft.setDirection(DcMotorEx.Direction.REVERSE);
+            outtakeSlideRight.setDirection(DcMotorEx.Direction.REVERSE);
         }
 
         controller = new PIDController(p,i,d);
 
         p = inP; i = inI; d = inD; f = inF;
 
-        slidePos = SlidePositions.BASE_STATE;
+        slideState = OuttakeConstants.SlidePositions.RETRACTED;
+
+        this.telemetry = telemetry;
+        controls = new GamepadMapping(gamepad1, gamepad2);
     }
 
     // this is for testing only
-    public Outtake(DcMotorEx slidesMotor) {
-        this.outtakeSlide = slidesMotor;
+    public Outtake(DcMotorEx slidesMotorLeft, DcMotorEx slidesMotorRight) {
+        this.outtakeSlideLeft = slidesMotorLeft;
+        this.outtakeSlideRight = slidesMotorRight;
     }
 
-    public void moveTicks(int target){
+    public void moveLeftTicks(int target){
         controller.setPID(p,i,d);
-        int pos = outtakeSlide.getCurrentPosition();
+        int pos = outtakeSlideLeft.getCurrentPosition();
         double pid = controller.calculate(pos, target);
         double power = pid + f;
-        outtakeSlide.setPower(power);
+        outtakeSlideLeft.setPower(power);
+    }
+
+    public void moveRightTicks(int target){
+        controller.setPID(p,i,d);
+        int pos = outtakeSlideLeft.getCurrentPosition();
+        double pid = controller.calculate(pos, target);
+        double power = pid + f;
+        outtakeSlideRight.setPower(power);
     }
     public void changePIDF(double inP, double inI, double inD, double inF){
         p = inP; i = inI; d = inD; f = inF;
     }
+
+    // so this should be the same for both motors?
     public int getPos(){
-        return outtakeSlide.getCurrentPosition();
+        return outtakeSlideLeft.getCurrentPosition();
     }
 
     public void extendToLowBasket() {
-        slidePos = SlidePositions.LOW_BASKET;
-        moveTicks(30); // tune target obviously
+        // slideState = OuttakeConstants.SlidePositions.LOW_BASKET;
+        moveLeftTicks(30); // tune target obviously
+        moveRightTicks(30);
     }
 
     public void extendToHighBasket() {
-        slidePos = SlidePositions.HIGH_BASKET;
-        moveTicks(60); // tune target obviously
+        // slideState = OuttakeConstants.SlidePositions.HIGH_BASKET;
+        moveLeftTicks(60); // tune target obviously
+        moveRightTicks(60);
     }
 
     public void extendToSpecimenHighRack() {
-        slidePos = SlidePositions.SPECIMEN_HIGH_RACK;
-        moveTicks(40); // tune target obviously
+        // slideState = OuttakeConstants.SlidePositions.SPECIMEN_HIGH_RACK;
+        moveLeftTicks(40); // tune target obviously
+        moveRightTicks(40);
     }
 
-    public void returnToBaseState() {
-        slidePos = SlidePositions.BASE_STATE;
-        moveTicks(0); // tune target obviously, this should lock the slides anyway bc of PID
+    public void returnToRetracted() {
+        // slideState = OuttakeConstants.SlidePositions.RETRACTED; // this should actually just get desired pos ticks when we tune (enum stuff)
+        moveLeftTicks(0); // tune target obviously, this should lock the slides anyway bc of PID
+        moveRightTicks(0);
     }
 
-    public enum SlidePositions {
-        BASE_STATE,
-        LOW_BASKET,
-        HIGH_BASKET,
-        SPECIMEN_HIGH_RACK
+    public void update() {
+        switch(slideState) {
+            case RETRACTED:
+                returnToRetracted();
+                updateOuttakeSlides();
+                break;
+            case LOW_BASKET:
+                extendToLowBasket();
+                updateOuttakeSlides();
+                break;
+            case HIGH_BASKET:
+                extendToHighBasket();
+                updateOuttakeSlides();
+                break;
+            case SPECIMEN_HIGH_RACK:
+                extendToSpecimenHighRack();
+                updateOuttakeSlides();
+                break;
+        }
+    }
+
+    public void updateOuttakeSlides() {
+        if (controls.outtakeSlidesButton) {
+            numOuttakeButtonPressed += 1;
+        }
+        if (numOuttakeButtonPressed == 1) {
+            slideState = OuttakeConstants.SlidePositions.LOW_BASKET;
+        } else if (numOuttakeButtonPressed == 2) {
+            slideState = OuttakeConstants.SlidePositions.HIGH_BASKET;
+        } else if (numOuttakeButtonPressed == 3) {
+            slideState = OuttakeConstants.SlidePositions.SPECIMEN_HIGH_RACK;
+            numOuttakeButtonPressed = 0;
+        }
+        if (controls.resetSlides.value()) {
+            slideState = OuttakeConstants.SlidePositions.RETRACTED;
+        }
     }
 }
