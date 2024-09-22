@@ -27,10 +27,10 @@ public class Outtake {
     Telemetry telemetry;
     GamepadMapping controls;
 
-    public Outtake(HardwareMap hardwareMap, String configName, int direction, double inP, double inI, double inD, double inF, Telemetry telemetry,
+    public Outtake(HardwareMap hardwareMap, int direction, double inP, double inI, double inD, double inF, Telemetry telemetry,
     Gamepad gamepad1, Gamepad gamepad2){
-        outtakeSlideLeft = hardwareMap.get(DcMotorEx.class, configName);
-        outtakeSlideRight = hardwareMap.get(DcMotorEx.class, configName);
+        outtakeSlideLeft = hardwareMap.get(DcMotorEx.class, "outtakeSlideLeft");
+        outtakeSlideRight = hardwareMap.get(DcMotorEx.class, "outtakeSlideRight");
         outtakeSlideLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         outtakeSlideRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 

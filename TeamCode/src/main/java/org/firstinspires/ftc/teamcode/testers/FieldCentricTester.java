@@ -33,8 +33,6 @@ public class FieldCentricTester extends OpMode {
         turn = gamepad1.right_stick_x;
         currentAngle = robot.drivetrain.getHeading();
 
-
         robot.drivetrain.moveFieldCentric(strafe, drive, turn, currentAngle);
-
     }
 }

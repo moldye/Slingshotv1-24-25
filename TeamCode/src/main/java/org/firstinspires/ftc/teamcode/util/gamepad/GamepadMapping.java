@@ -25,6 +25,11 @@ public class GamepadMapping {
     // slides increment pos -> button to latch on (button once to go up, again to latch)
     // claw releases/closes -> on misc controller, toggle, buttons on right side
 
+    // DRIVETRAIN
+    public double drive = 0.0;
+    public double strafe = 0.0;
+    public double turn = 0.0;
+
     // INTAKE (constructor when we have gamepads)
     public static Toggle switchExtendo; // extend & retract extendo
 
@@ -38,8 +43,12 @@ public class GamepadMapping {
     // SCORING
     public static Toggle latchSpecimen;
     public static Toggle switchClaw;
-
     public static Toggle toBaseState;
+
+    public static boolean lock90 = false;
+    public static boolean lock180 = false;
+    public static boolean lock270 = false;
+    public static boolean lock360 = false;
 
     public GamepadMapping(Gamepad gamepad1, Gamepad gamepad2) {
         this.gamepad1 = gamepad1;
@@ -57,6 +66,10 @@ public class GamepadMapping {
     }
 
     public void update() {
+        drive = gamepad1.left_stick_y;
+        strafe = gamepad1.left_stick_x;
+        turn = gamepad1.right_stick_x;
+
         switchExtendo.update(gamepad1.left_bumper);
 
         outtakeSlidesButton = gamepad1.right_bumper; // this may not work bc of goofy loop time, idk

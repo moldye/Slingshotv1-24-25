@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.util.gamepad.GamepadMapping;
 
 public class DriveTrain {
 
@@ -18,6 +19,8 @@ public class DriveTrain {
     private IMU imu;
 
     private Telemetry telemetry;
+    private GamepadMapping controls;
+
     private double newX = 0;
     private double newY = 0;
     private double targetAngle = 0;
@@ -28,6 +31,8 @@ public class DriveTrain {
     public static double turnD = 0.003;
     public static double turnF = 0.00001;
     private PIDFController turnController = new PIDFController(turnP, turnI, turnD, turnF);
+
+    private DriveMode driveMode = DriveMode.FIELD_CENTRIC;
 
     public DriveTrain(HardwareMap hardwareMap, IMU imu, Telemetry telemetry){
 
@@ -79,6 +84,27 @@ public class DriveTrain {
         this.imu = imu;
     }
 
+    public void update() {
+        double strafe = controls.strafe;
+        double drive = controls.drive;
+        double turn = controls.turn;
+
+        if (driveMode.equals(DriveMode.FIELD_CENTRIC)) {
+            moveFieldCentric(strafe, drive, turn, getHeading());
+        } else {
+            moveRoboCentric(strafe, drive, turn);
+        }
+
+        if (controls.lock180) {
+            setTargetAngle(0 + 90); // add 90 to each value bc of imu
+        } else if (controls.lock270) {
+            setTargetAngle(90 + 90);
+        } else if (controls.lock360) {
+           setTargetAngle(180 + 90);
+        } else if (controls.lock90) {
+            setTargetAngle(270 + 90);
+        }
+    }
 
     public void moveRoboCentric(double strafe, double drive, double turn){
         changeTargetAngleWithJoystick(turn);
@@ -155,5 +181,10 @@ public class DriveTrain {
             }
             setTargetAngle(newTargetAngle);
         }
+    }
+
+    public enum DriveMode {
+        FIELD_CENTRIC,
+        ROBO_CENTRIC
     }
 }

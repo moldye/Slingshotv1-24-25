@@ -45,19 +45,8 @@ public class LockedHeadingPIDTune extends OpMode {
         turn = gamepad1.right_stick_x;
         currentAngle = robot.drivetrain.getHeading();
 
-        // this is relative to the driver, also angles get wrapped in lockHeading()
-        if (gamepad1.dpad_left) {
-            robot.drivetrain.setTargetAngle(0 + 90); // add 90 to each value bc of imu
-        } else if (gamepad1.dpad_down) {
-            robot.drivetrain.setTargetAngle(90 + 90);
-        } else if (gamepad1.dpad_right) {
-            robot.drivetrain.setTargetAngle(180 + 90);
-        } else if (gamepad1.dpad_up) {
-            robot.drivetrain.setTargetAngle(270 + 90);
-        }
-
         robot.drivetrain.changePID(p,i,d,f);
-        robot.drivetrain.moveFieldCentric(strafe, drive, turn, currentAngle);
+        robot.drivetrain.update();
 
         dashboardTelemetry.addData("current heading: ", robot.drivetrain.getHeading());
         dashboardTelemetry.update();
