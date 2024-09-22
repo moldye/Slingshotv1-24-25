@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.util.gamepad.GamepadMapping;
+import org.firstinspires.ftc.teamcode.util.helper.PIDFControllerEx;
 
 public class DriveTrain {
 
@@ -30,7 +31,7 @@ public class DriveTrain {
     public static double turnI = 0;
     public static double turnD = 0.003;
     public static double turnF = 0.00001;
-    private PIDFController turnController = new PIDFController(turnP, turnI, turnD, turnF);
+    private PIDFControllerEx turnController = new PIDFControllerEx(turnP, turnI, turnD, turnF);
 
     private DriveMode driveMode = DriveMode.FIELD_CENTRIC;
 
@@ -151,9 +152,8 @@ public class DriveTrain {
     }
 
     public double lockHeading(double targetAngle, double currentHeading) {
-        // we did this to wrap the error since we couldn't just directly put the error
-        double error = targetAngle - currentHeading;
-        double pid = turnController.calculate(0, -angleWrap(error));
+        double error = angleWrap(targetAngle - currentHeading);
+        double pid = turnController.calculate(error);
         double power = pid + turnF;
         return -power;
     }

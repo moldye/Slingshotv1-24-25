@@ -9,7 +9,6 @@ public class GamepadMapping {
     private Gamepad gamepad1;
     private Gamepad gamepad2;
 
-
     // INTAKE
     // Extend/Retract Intake (Intake automatically runs, this extends linkage) -> left bumper
 
@@ -30,11 +29,10 @@ public class GamepadMapping {
     public double strafe = 0.0;
     public double turn = 0.0;
 
-    // INTAKE (constructor when we have gamepads)
+    // INTAKE
     public static Toggle switchExtendo; // extend & retract extendo
 
     // OUTTAKE
-    public static Toggle outtakeSlides; // this needs to cycle through a few states, and then a button to bring slides back down whenever
     public static Toggle resetSlides;
     public static Toggle bucketRelease;
 
@@ -81,5 +79,4 @@ public class GamepadMapping {
 
         toBaseState.update(gamepad1.b);
     }
-
 }
