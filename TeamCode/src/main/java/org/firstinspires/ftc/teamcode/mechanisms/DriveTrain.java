@@ -92,7 +92,7 @@ public class DriveTrain {
 
         if (driveMode.equals(DriveMode.FIELD_CENTRIC)) {
             moveFieldCentric(strafe, drive, turn, getHeading());
-        } else {
+        } else if (driveMode.equals(DriveMode.ROBO_CENTRIC)){
             moveRoboCentric(strafe, drive, turn);
         }
 

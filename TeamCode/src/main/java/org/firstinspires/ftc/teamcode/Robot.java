@@ -16,12 +16,6 @@ public class Robot{
     public ReLocalizer ultraSonics;
     public IMU imu;
 
-//    public SpecimenClaw specimenClaw;
-//    public Intake intake;
-//    public ExtendoSlides extendoSlides;
-//    public OuttakeSlides outtakeSlides;
-//    public OuttakeBucket outtakeBucket;
-
     public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
         imu = hardwareMap.get(IMU.class, "imu");
         // params for slingshot robot
@@ -39,11 +33,6 @@ public class Robot{
 
         drivetrain = new DriveTrain(hardwareMap, imu, telemetry);
         ultraSonics = new ReLocalizer(hardwareMap, imu);
-//        specimenClaw = new SpecimenClaw(hardwareMap);
-//        intake = new Intake(hardwareMap);
-//        extendoSlides = new ExtendoSlides(hardwareMap);
-//        outtakeSlides = new OuttakeSlides(hardwareMap, "outtakeSlide", 0, 0, 0, 0, 0); // obviously need to tune, these wouldn't all be 0
-//        outtakeBucket = new OuttakeBucket(hardwareMap);
     }
 
     public Pose2d reLocalize(){
