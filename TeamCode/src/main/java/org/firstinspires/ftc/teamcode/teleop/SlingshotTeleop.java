@@ -19,10 +19,10 @@ public class SlingshotTeleop extends OpMode {
     @Override
     public void init() {
         controls = new GamepadMapping(gamepad1, gamepad2);
-        robot = new Robot(hardwareMap, telemetry);
-        dt = new DriveTrain(hardwareMap, robot.imu, telemetry);
-        intake = new Intake(hardwareMap, telemetry, gamepad1, gamepad2);
-        outtake = new Outtake(hardwareMap, 0, 0, 0, 0, 0, telemetry, gamepad1, gamepad2); // tune PID values
+        robot = new Robot(hardwareMap, telemetry, controls);
+        dt = new DriveTrain(hardwareMap, robot.imu, telemetry, controls);
+        intake = new Intake(hardwareMap, telemetry, controls);
+        outtake = new Outtake(hardwareMap, 0, 0, 0, 0, 0, telemetry, controls); // tune PID values
     }
 
     @Override

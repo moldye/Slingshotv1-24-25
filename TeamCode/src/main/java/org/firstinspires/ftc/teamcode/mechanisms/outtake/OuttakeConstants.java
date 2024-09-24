@@ -5,6 +5,7 @@ public class OuttakeConstants {
         RETRACTED,
         LOW_BASKET, // probably could work for hang
         HIGH_BASKET,
-        SPECIMEN_HIGH_RACK
+        SPECIMEN_HIGH_RACK,
+        BASE_STATE
     }
 }

@@ -28,7 +28,7 @@ public class Outtake {
     GamepadMapping controls;
 
     public Outtake(HardwareMap hardwareMap, int direction, double inP, double inI, double inD, double inF, Telemetry telemetry,
-    Gamepad gamepad1, Gamepad gamepad2){
+    GamepadMapping controls){
         outtakeSlideLeft = hardwareMap.get(DcMotorEx.class, "outtakeSlideLeft");
         outtakeSlideRight = hardwareMap.get(DcMotorEx.class, "outtakeSlideRight");
         outtakeSlideLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
@@ -49,7 +49,7 @@ public class Outtake {
         slideState = OuttakeConstants.SlidePositions.RETRACTED;
 
         this.telemetry = telemetry;
-        controls = new GamepadMapping(gamepad1, gamepad2);
+        this.controls = controls;
     }
 
     // this is for testing only
@@ -106,10 +106,14 @@ public class Outtake {
         moveRightTicks(0);
     }
 
+    public void resetHardware() {
+        returnToRetracted();
+        // other resetting bucket stuff here
+    }
+
     public void update() {
         switch(slideState) {
             case RETRACTED:
-                returnToRetracted();
                 updateOuttakeSlides();
                 break;
             case LOW_BASKET:
@@ -124,10 +128,21 @@ public class Outtake {
                 extendToSpecimenHighRack();
                 updateOuttakeSlides();
                 break;
+            case BASE_STATE:
+                resetHardware();
+                slideState = OuttakeConstants.SlidePositions.RETRACTED;
+                break;
         }
     }
 
     public void updateOuttakeSlides() {
+        if (controls.botToBaseState.value()) {
+            slideState = OuttakeConstants.SlidePositions.BASE_STATE;
+        }
+        if (controls.resetSlides.value()) {
+            returnToRetracted();
+            slideState = OuttakeConstants.SlidePositions.RETRACTED;
+        }
         if (controls.outtakeSlidesButton) {
             numOuttakeButtonPressed += 1;
         }
@@ -138,9 +153,6 @@ public class Outtake {
         } else if (numOuttakeButtonPressed == 3) {
             slideState = OuttakeConstants.SlidePositions.SPECIMEN_HIGH_RACK;
             numOuttakeButtonPressed = 0;
-        }
-        if (controls.resetSlides.value()) {
-            slideState = OuttakeConstants.SlidePositions.RETRACTED;
         }
     }
 }

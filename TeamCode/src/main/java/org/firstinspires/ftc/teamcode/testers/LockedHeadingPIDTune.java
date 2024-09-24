@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.teamcode.util.gamepad.GamepadMapping;
 
 @Config
 @TeleOp
@@ -26,10 +27,12 @@ public class LockedHeadingPIDTune extends OpMode {
     public static double p = 0.04, i = 0, d = 0.003, f = 0.00001;
 
     private Telemetry dashboardTelemetry;
+    private GamepadMapping controls;
 
     @Override
     public void init() {
-        robot = new Robot(hardwareMap, telemetry);
+        controls = new GamepadMapping(gamepad1, gamepad2);
+        robot = new Robot(hardwareMap, telemetry, controls);
         telemetry.addData("currentAngle: ", Math.toDegrees(robot.drivetrain.getHeading()));
         currentAngle = robot.drivetrain.getHeading();
         dashboardTelemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -40,10 +43,10 @@ public class LockedHeadingPIDTune extends OpMode {
     public void loop() {
         dashboardTelemetry.addData("target angle: ", target);
 
-        drive = gamepad1.left_stick_y;
-        strafe = gamepad1.left_stick_x;
-        turn = gamepad1.right_stick_x;
-        currentAngle = robot.drivetrain.getHeading();
+//        drive = gamepad1.left_stick_y;
+//        strafe = gamepad1.left_stick_x;
+//        turn = gamepad1.right_stick_x;
+//        currentAngle = robot.drivetrain.getHeading();
 
         robot.drivetrain.changePID(p,i,d,f);
         robot.drivetrain.update();

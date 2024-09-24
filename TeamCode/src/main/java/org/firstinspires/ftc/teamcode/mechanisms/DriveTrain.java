@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
@@ -35,45 +36,46 @@ public class DriveTrain {
 
     private DriveMode driveMode = DriveMode.FIELD_CENTRIC;
 
-    public DriveTrain(HardwareMap hardwareMap, IMU imu, Telemetry telemetry){
+    public DriveTrain(HardwareMap hardwareMap, IMU imu, Telemetry telemetry, GamepadMapping controls){
 
         // motors for slingshot bot
-        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
-        leftFront.setDirection(DcMotorEx.Direction.FORWARD);
-        leftFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-
-        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
-        rightFront.setDirection(DcMotorEx.Direction.REVERSE);
-        rightFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-
-        leftBack = hardwareMap.get(DcMotorEx.class, "leftBack");
-        leftBack.setDirection(DcMotorEx.Direction.FORWARD);
-        leftBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-
-        rightBack = hardwareMap.get(DcMotorEx.class, "rightBack");
-        rightBack.setDirection(DcMotorEx.Direction.REVERSE);
-        rightBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-
-        // motors for papaya (test bot)
 //        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
-//        leftFront.setDirection(DcMotorEx.Direction.REVERSE);
+//        leftFront.setDirection(DcMotorEx.Direction.FORWARD);
 //        leftFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 //
 //        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
-//        rightFront.setDirection(DcMotorEx.Direction.FORWARD);
+//        rightFront.setDirection(DcMotorEx.Direction.REVERSE);
 //        rightFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 //
 //        leftBack = hardwareMap.get(DcMotorEx.class, "leftBack");
-//        leftBack.setDirection(DcMotorEx.Direction.REVERSE);
+//        leftBack.setDirection(DcMotorEx.Direction.FORWARD);
 //        leftBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 //
 //        rightBack = hardwareMap.get(DcMotorEx.class, "rightBack");
-//        rightBack.setDirection(DcMotorEx.Direction.FORWARD);
+//        rightBack.setDirection(DcMotorEx.Direction.REVERSE);
 //        rightBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
+         // motors for papaya (test bot)
+        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
+        leftFront.setDirection(DcMotorEx.Direction.REVERSE);
+        leftFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
+        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+        rightFront.setDirection(DcMotorEx.Direction.FORWARD);
+        rightFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
+        leftBack = hardwareMap.get(DcMotorEx.class, "leftBack");
+        leftBack.setDirection(DcMotorEx.Direction.REVERSE);
+        leftBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
+        rightBack = hardwareMap.get(DcMotorEx.class, "rightBack");
+        rightBack.setDirection(DcMotorEx.Direction.FORWARD);
+        rightBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
         this.imu = imu;
 
         this.telemetry = telemetry;
+        this.controls = controls;
     }
 
     // this is for testing, only used by testing methods
@@ -97,13 +99,13 @@ public class DriveTrain {
         }
 
         if (controls.lock180) {
-            setTargetAngle(0 + 90); // add 90 to each value bc of imu
+            setTargetAngle(90); // add/subtract 90 to each value bc of imu
         } else if (controls.lock270) {
-            setTargetAngle(90 + 90);
+            setTargetAngle(180);
         } else if (controls.lock360) {
-           setTargetAngle(180 + 90);
+           setTargetAngle(270);
         } else if (controls.lock90) {
-            setTargetAngle(270 + 90);
+            setTargetAngle(360);
         }
     }
 
@@ -123,8 +125,6 @@ public class DriveTrain {
         rightFront.setPower((drive - strafe - turn) / denominator);
         rightBack.setPower((drive + strafe - turn) / denominator);
     }
-
-    // this really should be called driver centric, but whatevs
 
     public void moveFieldCentric(double inX, double inY, double turn, double currentAngle){
         currentAngle += 90;
@@ -153,7 +153,7 @@ public class DriveTrain {
 
     public double lockHeading(double targetAngle, double currentHeading) {
         double error = angleWrap(targetAngle - currentHeading);
-        double pid = turnController.calculate(error);
+        double pid = turnController.calculate(error, false);
         double power = pid + turnF;
         return -power;
     }

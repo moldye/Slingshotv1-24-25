@@ -20,18 +20,25 @@ public class Intake {
     // spin the rollers to intake samples
     // push out samples from back
 
+    // HARDWARE
+    // -----------
     private DcMotorEx rollerMotor;
     private Servo pivotAxon;
     private CRServo backRollerServo;
     private Servo leftExtendo;
     private Servo rightExtendo;
 
+    // OTHER
+    // ----------
     private IntakeConstants.IntakeStates intakeState;
-
     private GamepadMapping controls;
     private Telemetry telemetry;
 
-    public Intake(HardwareMap hwMap, Telemetry telemetry, Gamepad gamepad1, Gamepad gamepad2) {
+    // CONTROLS
+    // -----------
+    private boolean pivotUp; // true if pivot it is initial position (flipped up)
+
+    public Intake(HardwareMap hwMap, Telemetry telemetry, GamepadMapping controls) {
         rollerMotor = hwMap.get(DcMotorEx.class, "rollerMotor");
         pivotAxon = hwMap.get(Servo.class, "pivotAxon");
         backRollerServo = hwMap.get(CRServo.class, "backRollerServo");
@@ -48,7 +55,9 @@ public class Intake {
         intakeState = IntakeConstants.IntakeStates.FULLY_RETRACTED;
 
         this.telemetry = telemetry;
-        controls = new GamepadMapping(gamepad1, gamepad2);
+        this.controls = controls;
+
+        pivotUp = true; // true initially
     }
 
     // This is for testing only :)
@@ -62,10 +71,12 @@ public class Intake {
 
     public void flipDown() {
         pivotAxon.setPosition(1); // this will need to be tuned
+        pivotUp = false;
     }
 
     public void flipUp() {
         pivotAxon.setPosition(0); // this will need to be tuned
+        pivotUp = true;
     }
 
     public void pushOutSample() {
@@ -95,10 +106,8 @@ public class Intake {
         rollerMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
         pivotAxon.setPosition(0);
-        pivotAxon.setDirection(Servo.Direction.FORWARD);
 
         backRollerServo.setPower(0);
-        backRollerServo.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     // TODO Ask James about adding a method for detection of wrong alliance color
@@ -106,11 +115,11 @@ public class Intake {
     public void update(){
         switch(intakeState){
             case FULLY_RETRACTED:
-                // this will need to be done also when we come back in from fully extended
+                // this may automatically start switching to extending?
                 if (controls.switchExtendo.value()) {
                     intakeState = IntakeConstants.IntakeStates.EXTENDING;
                     // may need to add a button lock here? -> should already lock
-                } else {
+                } else if (!controls.switchExtendo.value()){
                     intakeState = IntakeConstants.IntakeStates.RETRACTING;
                 }
                 break;
@@ -118,16 +127,25 @@ public class Intake {
             case FULLY_EXTENDED:
                 // should come back from pushing out wrong sample and go immediately back to intaking again
                 intakeState = IntakeConstants.IntakeStates.INTAKING;
+                if (controls.botToBaseState.value() && pivotUp) {
+                    intakeState = IntakeConstants.IntakeStates.BASE_STATE;
+                }
                 break;
             case EXTENDING:
                 extendoExtend();
                 intakeState = IntakeConstants.IntakeStates.INTAKING;
+                if (controls.botToBaseState.value() && pivotUp) {
+                    intakeState = IntakeConstants.IntakeStates.BASE_STATE;
+                }
                 break;
             case INTAKING:
                 flipDown();
                 motorRollerOn();
                 if (!controls.switchExtendo.value()) {
                     intakeState = IntakeConstants.IntakeStates.RETRACTING;
+                }
+                if (controls.botToBaseState.value() && pivotUp) {
+                    intakeState = IntakeConstants.IntakeStates.BASE_STATE;
                 }
                 break;
             case RETRACTING:
@@ -140,6 +158,11 @@ public class Intake {
                 // probably need to do this for some amount of time, test later
                 pushOutSample();
                 intakeState = IntakeConstants.IntakeStates.FULLY_EXTENDED;
+                break;
+            case BASE_STATE:
+                // reset button pressed and pivot is flipped up
+                resetHardware();
+                intakeState = IntakeConstants.IntakeStates.FULLY_RETRACTED;
                 break;
         }
         telemetry.addData("intakeState:", intakeState);

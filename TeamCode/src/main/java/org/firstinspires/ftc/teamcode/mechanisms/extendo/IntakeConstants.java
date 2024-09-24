@@ -7,6 +7,7 @@ public class IntakeConstants {
         INTAKING,
         RETRACTING,
         WRONG_ALLIANCE_COLOR_SAMPLE,
-        FULLY_EXTENDED
+        FULLY_EXTENDED,
+        BASE_STATE // we're trying this, hopefully the same state in each mechanism that resets that specific mechanism (keyed to same button across robot)
     }
 }

@@ -25,20 +25,24 @@ public class GamepadMapping {
     // claw releases/closes -> on misc controller, toggle, buttons on right side
 
     // DRIVETRAIN
-    public double drive = 0.0;
-    public double strafe = 0.0;
-    public double turn = 0.0;
+    // --------------
+    public static double drive = 0.0;
+    public static double strafe = 0.0;
+    public static double turn = 0.0;
 
     // INTAKE
+    // --------------
     public static Toggle switchExtendo; // extend & retract extendo
 
     // OUTTAKE
+    // --------------
     public static Toggle resetSlides;
     public static Toggle bucketRelease;
 
-    public boolean outtakeSlidesButton;
+    public static boolean outtakeSlidesButton;
 
     // SCORING
+    // --------------
     public static Toggle latchSpecimen;
     public static Toggle switchClaw;
     public static Toggle toBaseState;
@@ -47,6 +51,10 @@ public class GamepadMapping {
     public static boolean lock180 = false;
     public static boolean lock270 = false;
     public static boolean lock360 = false;
+
+    // OTHER
+    // --------------
+    public static Toggle botToBaseState;
 
     public GamepadMapping(Gamepad gamepad1, Gamepad gamepad2) {
         this.gamepad1 = gamepad1;
@@ -60,7 +68,7 @@ public class GamepadMapping {
         latchSpecimen = new Toggle(false);
         switchClaw = new Toggle(false);
 
-        toBaseState = new Toggle(false);
+        botToBaseState = new Toggle(false);
     }
 
     public void update() {
@@ -77,6 +85,11 @@ public class GamepadMapping {
         latchSpecimen.update(gamepad2.a);
         switchClaw.update(gamepad1.x);
 
-        toBaseState.update(gamepad1.b);
+        lock90 = gamepad1.dpad_up;
+        lock180 = gamepad1.dpad_left;
+        lock270 = gamepad1.dpad_down;
+        lock360 = gamepad1.dpad_right;
+
+        botToBaseState.update(gamepad1.b);
     }
 }
