@@ -163,18 +163,19 @@ public class DriveTrain {
     }
 
     // our class
-//    public double lockHeading(double targetAngle, double currentHeading) {
-//        double error = angleWrap(targetAngle - currentHeading);
-//        double pid = turnController.calculate(error, false);
-//        double power = pid + turnF;
-//        return -power;
-//    }
     public double lockHeading(double targetAngle, double currentHeading) {
         double error = angleWrap(targetAngle - currentHeading);
-        double pid = turnController.calculate(0, -error);
+        double pid = turnController.calculate(error, false);
         double power = pid + turnF;
         return -power;
     }
+    // This for sure works
+//    public double lockHeading(double targetAngle, double currentHeading) {
+//        double error = angleWrap(targetAngle - currentHeading);
+//        double pid = turnController.calculate(0, -error);
+//        double power = pid + turnF;
+//        return -power;
+//    }
 
     public void changePID(double inP, double inI, double inD, double inF){
         turnP = inP; turnI = inI; turnD = inD; turnF = inF;

@@ -107,11 +107,11 @@ private double kP;
 
     public double calculate(double error, boolean addF) {
         // we did this to add the ability to control the state of our error so heading lock would work
-        setSetPoint(0);
+        this.setSetPoint(-error);
         if (addF) {
-            return this.calculate(-error) + this.kF;
+            return this.calculate(-0) + this.kF;
         }
-        return this.calculate(-error);
+        return this.calculate(-0);
     }
 
     public double calculate(double pv) {
