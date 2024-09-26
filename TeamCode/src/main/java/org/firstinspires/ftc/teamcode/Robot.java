@@ -29,9 +29,9 @@ public class Robot{
 //        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
 //                RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD,
 //                RevHubOrientationOnRobot.UsbFacingDirection.LEFT));
-//        // Without this, the REV Hub's orientation is assumed to be logo up / USB forward
-//        imu.initialize(parameters);
-//        imu.resetYaw();
+        // Without this, the REV Hub's orientation is assumed to be logo up / USB forward
+        imu.initialize(parameters);
+        imu.resetYaw();
 
         drivetrain = new DriveTrain(hardwareMap, imu, telemetry, controls);
        // ultraSonics = new ReLocalizer(hardwareMap, imu);

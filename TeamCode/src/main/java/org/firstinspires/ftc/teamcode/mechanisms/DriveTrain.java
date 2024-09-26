@@ -34,7 +34,7 @@ public class DriveTrain {
     public static double turnF = 0.00001;
     private PIDFControllerEx turnController = new PIDFControllerEx(turnP, turnI, turnD, turnF);
 
-    private DriveMode driveMode = DriveMode.ROBO_CENTRIC;
+    private DriveMode driveMode;
     private boolean lockedHeadingMode = false;
 
     public DriveTrain(HardwareMap hardwareMap, IMU imu, Telemetry telemetry, GamepadMapping controls){
@@ -84,6 +84,8 @@ public class DriveTrain {
 
         this.telemetry = telemetry;
         this.controls = controls;
+
+        driveMode = DriveMode.FIELD_CENTRIC;
     }
 
     // this is for testing, only used by testing methods

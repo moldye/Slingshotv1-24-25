@@ -36,7 +36,6 @@ public class LockedHeadingPIDTune extends OpMode {
         telemetry.addData("currentAngle: ", Math.toDegrees(robot.drivetrain.getHeading()));
         currentAngle = robot.drivetrain.getHeading();
         dashboardTelemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
-        target = 0;
     }
 
     @Override
@@ -49,8 +48,8 @@ public class LockedHeadingPIDTune extends OpMode {
 //        currentAngle = robot.drivetrain.getHeading();
 
         robot.drivetrain.changePID(p,i,d,f);
-        robot.drivetrain.update();
         controls.update();
+        robot.drivetrain.update();
 
         dashboardTelemetry.addData("current heading: ", robot.drivetrain.getHeading());
         dashboardTelemetry.update();
