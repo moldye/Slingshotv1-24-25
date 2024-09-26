@@ -27,15 +27,17 @@ public class FieldCentricTester extends OpMode {
         robot = new Robot(hardwareMap, telemetry, controls);
         telemetry.addData("currentAngle: ", Math.toDegrees(robot.drivetrain.getHeading()));
         currentAngle = robot.drivetrain.getHeading();
+        controls = new GamepadMapping(gamepad1, gamepad2);
     }
 
     @Override
     public void loop() {
-//        drive = gamepad1.left_stick_y;
-//        strafe = gamepad1.left_stick_x;
-//        turn = gamepad1.right_stick_x;
+        telemetry.clearAll();
+        telemetry.addData("currentAngle: ", Math.toDegrees(robot.drivetrain.getHeading()));
+
         currentAngle = robot.drivetrain.getHeading();
 
+        controls.update();
         robot.drivetrain.update();
     }
 }

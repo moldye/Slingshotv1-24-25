@@ -15,34 +15,34 @@ import org.firstinspires.ftc.teamcode.util.gamepad.GamepadMapping;
 public class Robot{
     // needs to be able to access all methods for all the mechanisms used in opmodes
     public DriveTrain drivetrain;
-    public ReLocalizer ultraSonics;
+    //public ReLocalizer ultraSonics;
     public IMU imu;
 
     public Robot(HardwareMap hardwareMap, Telemetry telemetry, GamepadMapping controls) {
         imu = hardwareMap.get(IMU.class, "imu");
         // params for slingshot robot
-//        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-//                RevHubOrientationOnRobot.LogoFacingDirection.UP,
-//                RevHubOrientationOnRobot.UsbFacingDirection.LEFT));
+        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                RevHubOrientationOnRobot.UsbFacingDirection.LEFT));
 
           // params for papaya (tester bot)
-        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD,
-                RevHubOrientationOnRobot.UsbFacingDirection.LEFT));
-        // Without this, the REV Hub's orientation is assumed to be logo up / USB forward
-        imu.initialize(parameters);
-        imu.resetYaw();
+//        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+//                RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD,
+//                RevHubOrientationOnRobot.UsbFacingDirection.LEFT));
+//        // Without this, the REV Hub's orientation is assumed to be logo up / USB forward
+//        imu.initialize(parameters);
+//        imu.resetYaw();
 
         drivetrain = new DriveTrain(hardwareMap, imu, telemetry, controls);
-        ultraSonics = new ReLocalizer(hardwareMap, imu);
+       // ultraSonics = new ReLocalizer(hardwareMap, imu);
     }
 
-    public Pose2d reLocalize(){
-        double currentAngle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) + 90;
-        double backDistance = ultraSonics.getBackDistance(currentAngle);
-        double sideDistance = ultraSonics.getSideDistance(currentAngle);
-        return new Pose2d(-72 + backDistance, -72 + sideDistance, Math.toRadians(currentAngle));
-    }
+//    public Pose2d reLocalize(){
+//        double currentAngle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) + 90;
+//        double backDistance = ultraSonics.getBackDistance(currentAngle);
+//        double sideDistance = ultraSonics.getSideDistance(currentAngle);
+//        return new Pose2d(-72 + backDistance, -72 + sideDistance, Math.toRadians(currentAngle));
+//    }
 
 
 }

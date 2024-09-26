@@ -50,6 +50,7 @@ public class LockedHeadingPIDTune extends OpMode {
 
         robot.drivetrain.changePID(p,i,d,f);
         robot.drivetrain.update();
+        controls.update();
 
         dashboardTelemetry.addData("current heading: ", robot.drivetrain.getHeading());
         dashboardTelemetry.update();

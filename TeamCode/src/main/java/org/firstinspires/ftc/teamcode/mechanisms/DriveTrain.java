@@ -34,43 +34,51 @@ public class DriveTrain {
     public static double turnF = 0.00001;
     private PIDFControllerEx turnController = new PIDFControllerEx(turnP, turnI, turnD, turnF);
 
-    private DriveMode driveMode = DriveMode.FIELD_CENTRIC;
+    private DriveMode driveMode = DriveMode.ROBO_CENTRIC;
+    private boolean lockedHeadingMode = false;
 
     public DriveTrain(HardwareMap hardwareMap, IMU imu, Telemetry telemetry, GamepadMapping controls){
 
-        // motors for slingshot bot
-//        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
-//        leftFront.setDirection(DcMotorEx.Direction.FORWARD);
-//        leftFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-//
-//        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
-//        rightFront.setDirection(DcMotorEx.Direction.REVERSE);
-//        rightFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-//
-//        leftBack = hardwareMap.get(DcMotorEx.class, "leftBack");
-//        leftBack.setDirection(DcMotorEx.Direction.FORWARD);
-//        leftBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-//
-//        rightBack = hardwareMap.get(DcMotorEx.class, "rightBack");
-//        rightBack.setDirection(DcMotorEx.Direction.REVERSE);
-//        rightBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        // rightBack = 0
+        // rightFront = 1
+        // leftBack = 3
+        // leftFront = 2
+        // slideLeft = expansion 3
+        // slideRight = expansion 2
 
-         // motors for papaya (test bot)
+        // motors for slingshot bot
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
-        leftFront.setDirection(DcMotorEx.Direction.REVERSE);
+        leftFront.setDirection(DcMotorEx.Direction.FORWARD);
         leftFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
         rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
-        rightFront.setDirection(DcMotorEx.Direction.FORWARD);
+        rightFront.setDirection(DcMotorEx.Direction.REVERSE);
         rightFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
         leftBack = hardwareMap.get(DcMotorEx.class, "leftBack");
-        leftBack.setDirection(DcMotorEx.Direction.REVERSE);
+        leftBack.setDirection(DcMotorEx.Direction.FORWARD);
         leftBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
         rightBack = hardwareMap.get(DcMotorEx.class, "rightBack");
-        rightBack.setDirection(DcMotorEx.Direction.FORWARD);
+        rightBack.setDirection(DcMotorEx.Direction.REVERSE);
         rightBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
+         // motors for papaya (test bot)
+//        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
+//        leftFront.setDirection(DcMotorEx.Direction.REVERSE);
+//        leftFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+//
+//        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+//        rightFront.setDirection(DcMotorEx.Direction.FORWARD);
+//        rightFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+//
+//        leftBack = hardwareMap.get(DcMotorEx.class, "leftBack");
+//        leftBack.setDirection(DcMotorEx.Direction.REVERSE);
+//        leftBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+//
+//        rightBack = hardwareMap.get(DcMotorEx.class, "rightBack");
+//        rightBack.setDirection(DcMotorEx.Direction.FORWARD);
+//        rightBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
         this.imu = imu;
 
@@ -95,26 +103,29 @@ public class DriveTrain {
         if (driveMode.equals(DriveMode.FIELD_CENTRIC)) {
             moveFieldCentric(strafe, drive, turn, getHeading());
         } else if (driveMode.equals(DriveMode.ROBO_CENTRIC)){
-            moveRoboCentric(strafe, drive, turn);
+            moveRoboCentric(-strafe, drive, -turn);
         }
 
-        if (controls.lock180) {
-            setTargetAngle(90); // add/subtract 90 to each value bc of imu
-        } else if (controls.lock270) {
-            setTargetAngle(180);
-        } else if (controls.lock360) {
-           setTargetAngle(270);
-        } else if (controls.lock90) {
-            setTargetAngle(360);
+        if (lockedHeadingMode) {
+            if (controls.lock180) {
+                setTargetAngle(90); // add/subtract 90 to each value bc of imu
+            } else if (controls.lock270) {
+                setTargetAngle(180);
+            } else if (controls.lock360) {
+                setTargetAngle(270);
+            } else if (controls.lock90) {
+                setTargetAngle(360);
+            }
         }
     }
 
     public void moveRoboCentric(double strafe, double drive, double turn){
-        changeTargetAngleWithJoystick(turn);
+        if (lockedHeadingMode) {
+            changeTargetAngleWithJoystick(turn);
 
-        double currentAngle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-        turn = lockHeading(targetAngle, currentAngle);
-
+            double currentAngle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+            turn = lockHeading(targetAngle, currentAngle);
+        }
         // Denominator is the largest motor power (absolute value) or 1
         // This ensures all the powers maintain the same ratio,
         // but only if at least one is out of the range [-1, 1]
@@ -151,12 +162,20 @@ public class DriveTrain {
         return Math.toDegrees(angle);
     }
 
+    // our class
     public double lockHeading(double targetAngle, double currentHeading) {
         double error = angleWrap(targetAngle - currentHeading);
         double pid = turnController.calculate(error, false);
         double power = pid + turnF;
         return -power;
     }
+    // This for sure works
+//    public double lockHeading(double targetAngle, double currentHeading) {
+//        double error = angleWrap(targetAngle - currentHeading);
+//        double pid = turnController.calculate(0, -error);
+//        double power = pid + turnF;
+//        return -power;
+//    }
 
     public void changePID(double inP, double inI, double inD, double inF){
         turnP = inP; turnI = inI; turnD = inD; turnF = inF;
