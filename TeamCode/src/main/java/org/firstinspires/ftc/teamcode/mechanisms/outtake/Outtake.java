@@ -111,6 +111,8 @@ public class Outtake {
         // other resetting bucket stuff here
     }
 
+    // TODO Slow down robot as slides go up (or make extendo go out a bit) so extendo doesn't tip
+
     public void update() {
         switch(slideState) {
             case RETRACTED:
