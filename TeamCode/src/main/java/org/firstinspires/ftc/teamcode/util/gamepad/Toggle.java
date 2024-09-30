@@ -14,7 +14,6 @@ public class Toggle {
 
     private boolean fallingEdge = false;
 
-
     public Toggle(boolean initialValue) { this.value = initialValue; }
 
     public void update(boolean buttonPressed) {

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.teleop;
+package org.firstinspires.ftc.teamcode.testers;
 
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.button.Button;
@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.teamcode.util.gamepad.GamepadMapping;
 
 @TeleOp
 public class FieldCentricTester extends OpMode {
@@ -18,23 +19,25 @@ public class FieldCentricTester extends OpMode {
     private double turn;
     private double currentAngle;
 
+    private GamepadMapping controls;
+
     private Robot robot;
     @Override
     public void init() {
-        robot = new Robot(hardwareMap, telemetry);
+        robot = new Robot(hardwareMap, telemetry, controls);
         telemetry.addData("currentAngle: ", Math.toDegrees(robot.drivetrain.getHeading()));
         currentAngle = robot.drivetrain.getHeading();
+        controls = new GamepadMapping(gamepad1, gamepad2);
     }
 
     @Override
     public void loop() {
-        drive = gamepad1.left_stick_y;
-        strafe = gamepad1.left_stick_x;
-        turn = gamepad1.right_stick_x;
+        telemetry.clearAll();
+        telemetry.addData("currentAngle: ", Math.toDegrees(robot.drivetrain.getHeading()));
+
         currentAngle = robot.drivetrain.getHeading();
 
-
-        robot.drivetrain.moveFieldCentric(strafe, drive, turn, currentAngle);
-
+        controls.update();
+        robot.drivetrain.update();
     }
 }

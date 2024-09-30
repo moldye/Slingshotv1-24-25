@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class SampleBlueAuton {
+public class Sample16BlueAuton {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
 
