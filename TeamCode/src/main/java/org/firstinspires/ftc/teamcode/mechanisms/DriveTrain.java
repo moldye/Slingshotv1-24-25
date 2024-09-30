@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
 import org.firstinspires.ftc.teamcode.util.gamepad.GamepadMapping;
 import org.firstinspires.ftc.teamcode.util.helper.PIDFControllerEx;
 
@@ -22,6 +23,7 @@ public class DriveTrain {
 
     private Telemetry telemetry;
     private GamepadMapping controls;
+    private Outtake outtake;
 
     private double newX = 0;
     private double newY = 0;
@@ -36,6 +38,7 @@ public class DriveTrain {
 
     private DriveMode driveMode;
     private boolean lockedHeadingMode = false;
+    private double slowMultiplier = 0.25;
 
     public DriveTrain(HardwareMap hardwareMap, IMU imu, Telemetry telemetry, GamepadMapping controls){
 
@@ -133,10 +136,14 @@ public class DriveTrain {
         // but only if at least one is out of the range [-1, 1]
         double denominator = Math.max(Math.abs(drive) + Math.abs(strafe) + Math.abs(turn), 1);
 
-        leftFront.setPower((drive + strafe + turn) / denominator);
-        leftBack.setPower((drive - strafe + turn) / denominator);
-        rightFront.setPower((drive - strafe - turn) / denominator);
-        rightBack.setPower((drive + strafe - turn) / denominator);
+        if (!outtake.getOuttakeDTSlow()) {
+            slowMultiplier = 1;
+        }
+
+        leftFront.setPower(((drive + strafe + turn) / denominator) * slowMultiplier);
+        leftBack.setPower(((drive - strafe + turn) / denominator) * slowMultiplier);
+        rightFront.setPower(((drive - strafe - turn) / denominator) * slowMultiplier);
+        rightBack.setPower(((drive + strafe - turn) / denominator) * slowMultiplier);
     }
 
     public void moveFieldCentric(double inX, double inY, double turn, double currentAngle){

@@ -26,6 +26,7 @@ public class Outtake {
     // OTHER
     Telemetry telemetry;
     GamepadMapping controls;
+    private boolean outtakeDTSlow = false;
 
     public Outtake(HardwareMap hardwareMap, int direction, double inP, double inI, double inD, double inF, Telemetry telemetry,
     GamepadMapping controls){
@@ -137,6 +138,10 @@ public class Outtake {
         }
     }
 
+    public boolean getOuttakeDTSlow() {
+        return outtakeDTSlow;
+    }
+
     public void updateOuttakeSlides() {
         if (controls.botToBaseState.value()) {
             slideState = OuttakeConstants.SlidePositions.BASE_STATE;
@@ -146,6 +151,7 @@ public class Outtake {
             slideState = OuttakeConstants.SlidePositions.RETRACTED;
         }
         if (controls.outtakeSlidesButton) {
+            outtakeDTSlow = true;
             numOuttakeButtonPressed += 1;
         }
         if (numOuttakeButtonPressed == 1) {

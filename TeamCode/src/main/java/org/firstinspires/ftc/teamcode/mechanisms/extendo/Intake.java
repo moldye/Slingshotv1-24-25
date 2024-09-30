@@ -179,6 +179,7 @@ public class Intake {
             case TRANSFER:
                 // automatically, if right colored sample, rolls it into the bucket
                 transferSample();
+                break;
         }
         telemetry.addData("intakeState:", intakeState);
     }
