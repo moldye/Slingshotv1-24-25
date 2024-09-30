@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.mechanisms.extendo;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -33,6 +34,7 @@ public class Intake {
     // CONTROLS
     // -----------
     private boolean pivotUp; // true if pivot it is initial position (flipped up)
+    private boolean extendoIn;
 
     public Intake(HardwareMap hwMap, Telemetry telemetry, GamepadMapping controls) {
         rollerMotor = hwMap.get(DcMotorEx.class, "rollerMotor");
@@ -53,6 +55,7 @@ public class Intake {
         this.controls = controls;
 
         pivotUp = true; // true initially
+        extendoIn = true;
     }
 
     // This is for testing only :)
@@ -89,20 +92,32 @@ public class Intake {
     public void extendoExtend() {
         rightExtendo.setPosition(1); // obviously tune
         leftExtendo.setPosition(0); // same here too (also these can be different based on hardware)
+        extendoIn = false;
     }
 
     public void extendoRetract() {
         rightExtendo.setPosition(0); // obviously tune
         leftExtendo.setPosition(1); // same here too (also these can be different based on hardware)
+        extendoIn = true;
     }
 
     public void resetHardware() {
         rollerMotor.setPower(0);
         rollerMotor.setDirection(DcMotorEx.Direction.FORWARD);
 
-        pivotAxon.setPosition(0);
+        flipUp();
 
         backRollerServo.setPosition(0.5);
+
+        extendoRetract();
+    }
+
+    public void transferSample() {
+        if (extendoIn && pivotUp) {
+            // run roller motor backwards
+            rollerMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+            rollerMotor.setPower(1);
+        }
     }
 
     // TODO Ask James about adding a method for detection of wrong alliance color
@@ -147,6 +162,8 @@ public class Intake {
                 flipUp();
                 motorRollerOff();
                 extendoRetract();
+                // we may need to add an if statement here so it only does this when a sample is actually in the intake, not anytime we retract slides
+                transferSample();
                 intakeState = IntakeConstants.IntakeStates.FULLY_RETRACTED;
                 break;
             case WRONG_ALLIANCE_COLOR_SAMPLE:
@@ -159,6 +176,9 @@ public class Intake {
                 resetHardware();
                 intakeState = IntakeConstants.IntakeStates.FULLY_RETRACTED;
                 break;
+            case TRANSFER:
+                // automatically, if right colored sample, rolls it into the bucket
+                transferSample();
         }
         telemetry.addData("intakeState:", intakeState);
     }
