@@ -36,10 +36,10 @@ public class Outtake {
 
         if(direction == 0){
             outtakeSlideLeft.setDirection(DcMotorEx.Direction.FORWARD);
-            outtakeSlideRight.setDirection(DcMotorEx.Direction.FORWARD);
+            outtakeSlideRight.setDirection(DcMotorEx.Direction.REVERSE);
         }else{
             outtakeSlideLeft.setDirection(DcMotorEx.Direction.REVERSE);
-            outtakeSlideRight.setDirection(DcMotorEx.Direction.REVERSE);
+            outtakeSlideRight.setDirection(DcMotorEx.Direction.FORWARD);
         }
 
         controller = new PIDController(p,i,d);

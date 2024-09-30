@@ -1,10 +1,6 @@
 package org.firstinspires.ftc.teamcode.mechanisms.extendo;
 
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -24,7 +20,7 @@ public class Intake {
     // -----------
     private DcMotorEx rollerMotor;
     private Servo pivotAxon;
-    private CRServo backRollerServo;
+    private Servo backRollerServo;
     private Servo leftExtendo;
     private Servo rightExtendo;
 
@@ -41,16 +37,15 @@ public class Intake {
     public Intake(HardwareMap hwMap, Telemetry telemetry, GamepadMapping controls) {
         rollerMotor = hwMap.get(DcMotorEx.class, "rollerMotor");
         pivotAxon = hwMap.get(Servo.class, "pivotAxon");
-        backRollerServo = hwMap.get(CRServo.class, "backRollerServo");
+        backRollerServo = hwMap.get(Servo.class, "backRollerServo");
         rightExtendo = hwMap.get(Servo.class, "rightExtendo"); // both these servos axons
         leftExtendo = hwMap.get(Servo.class, "leftExtendo");
 
-        rollerMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        rollerMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rollerMotor.setDirection(DcMotorEx.Direction.FORWARD);
+        rollerMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
         pivotAxon.setDirection(Servo.Direction.FORWARD);
 
-        backRollerServo.setDirection(DcMotorSimple.Direction.REVERSE); // reverse for servo to push samples out -> tune
 
         intakeState = IntakeConstants.IntakeStates.FULLY_RETRACTED;
 
@@ -61,7 +56,7 @@ public class Intake {
     }
 
     // This is for testing only :)
-    public Intake(DcMotorEx rollerMotor, Servo pivotAxon, CRServo backRollerServo, Servo rightExtendo, Servo leftExtendo) {
+    public Intake(DcMotorEx rollerMotor, Servo pivotAxon, Servo backRollerServo, Servo rightExtendo, Servo leftExtendo) {
         this.rollerMotor = rollerMotor;
         this.pivotAxon = pivotAxon;
         this.backRollerServo = backRollerServo;
@@ -80,7 +75,7 @@ public class Intake {
     }
 
     public void pushOutSample() {
-        backRollerServo.setPower(1);
+        backRollerServo.setPosition(1); // tune wether it should be pos 1 or 0 to run which way
     }
 
     public void motorRollerOn() {
@@ -93,21 +88,21 @@ public class Intake {
 
     public void extendoExtend() {
         rightExtendo.setPosition(1); // obviously tune
-        leftExtendo.setPosition(1); // same here too (also these can be different based on hardware)
+        leftExtendo.setPosition(0); // same here too (also these can be different based on hardware)
     }
 
     public void extendoRetract() {
         rightExtendo.setPosition(0); // obviously tune
-        leftExtendo.setPosition(0); // same here too (also these can be different based on hardware)
+        leftExtendo.setPosition(1); // same here too (also these can be different based on hardware)
     }
 
     public void resetHardware() {
         rollerMotor.setPower(0);
-        rollerMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        rollerMotor.setDirection(DcMotorEx.Direction.FORWARD);
 
         pivotAxon.setPosition(0);
 
-        backRollerServo.setPower(0);
+        backRollerServo.setPosition(0.5);
     }
 
     // TODO Ask James about adding a method for detection of wrong alliance color
