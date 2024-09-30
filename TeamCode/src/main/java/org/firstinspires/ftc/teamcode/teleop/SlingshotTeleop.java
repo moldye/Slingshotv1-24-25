@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.mechanisms.DriveTrain;
 import org.firstinspires.ftc.teamcode.mechanisms.extendo.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
-import org.firstinspires.ftc.teamcode.util.gamepad.GamepadMapping;
+import org.firstinspires.ftc.teamcode.gamepad.GamepadMapping;
 
 @TeleOp
 public class SlingshotTeleop extends OpMode {

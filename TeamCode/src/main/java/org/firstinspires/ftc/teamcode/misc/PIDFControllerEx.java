@@ -1,6 +1,4 @@
-package org.firstinspires.ftc.teamcode.util.helper;
-
-import com.arcrobotics.ftclib.controller.PIDFController;
+package org.firstinspires.ftc.teamcode.misc;
 
 public class PIDFControllerEx {
 //    public PIDFControllerEx(double kp, double ki, double kd, double kf) {

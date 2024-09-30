@@ -1,16 +1,14 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
-import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
-import org.firstinspires.ftc.teamcode.util.gamepad.GamepadMapping;
-import org.firstinspires.ftc.teamcode.util.helper.PIDFControllerEx;
+import org.firstinspires.ftc.teamcode.gamepad.GamepadMapping;
+import org.firstinspires.ftc.teamcode.misc.PIDFControllerEx;
 
 public class DriveTrain {
 

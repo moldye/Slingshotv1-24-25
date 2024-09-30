@@ -2,9 +2,8 @@ package org.firstinspires.ftc.teamcode.testers;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Robot;
-import org.firstinspires.ftc.teamcode.util.gamepad.GamepadMapping;
+import org.firstinspires.ftc.teamcode.gamepad.GamepadMapping;
 
 public class ReLocalizationTester extends OpMode {
     private Robot robot;

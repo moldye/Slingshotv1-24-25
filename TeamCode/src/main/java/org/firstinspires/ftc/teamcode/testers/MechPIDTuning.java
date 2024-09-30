@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.mechanisms.BasicArm;
-import org.firstinspires.ftc.teamcode.mechanisms.BasicSlides;
+import org.firstinspires.ftc.teamcode.mechanisms.template.BasicArm;
+import org.firstinspires.ftc.teamcode.mechanisms.template.BasicSlides;
 
 @TeleOp
 @Config

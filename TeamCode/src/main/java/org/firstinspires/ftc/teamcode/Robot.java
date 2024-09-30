@@ -1,16 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.mechanisms.DriveTrain;
-import org.firstinspires.ftc.teamcode.mechanisms.ReLocalizer;
-import org.firstinspires.ftc.teamcode.util.gamepad.GamepadMapping;
+import org.firstinspires.ftc.teamcode.gamepad.GamepadMapping;
 
 public class Robot{
     // needs to be able to access all methods for all the mechanisms used in opmodes
