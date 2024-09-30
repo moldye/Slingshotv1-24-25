@@ -29,7 +29,7 @@ public class Specimen13BlueAuton {
                                 .waitSeconds(.5)
                                 .forward(5)
 
-                                //go ti HP
+                                //go to HP
                                 .setReversed(true)
                                 .lineToSplineHeading(new Pose2d(36, -35, Math.toRadians(180)))
                                 .splineTo(new Vector2d(60, -60 ), Math.toRadians(270))
@@ -43,7 +43,7 @@ public class Specimen13BlueAuton {
                                 .waitSeconds(.5)
                                 .forward(5)
 
-                                //go ti HP
+                                //go to HP
                                 .setReversed(true)
                                 .lineToSplineHeading(new Pose2d(36, -35, Math.toRadians(180)))
                                 .splineTo(new Vector2d(60, -60 ), Math.toRadians(270))
