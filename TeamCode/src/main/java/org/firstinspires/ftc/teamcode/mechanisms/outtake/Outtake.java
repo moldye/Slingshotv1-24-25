@@ -14,7 +14,7 @@ public class Outtake {
     private DcMotorEx outtakeSlideRight;
     private DcMotorEx outtakeSlideLeft;
     private static double p, i, d; //has to be tuned
-    private static double f; //usually mass moved * constant G
+    private static double f; // usually mass moved * constant G
     private OuttakeConstants.SlidePositions slideState;
     private int numOuttakeButtonPressed = 0;
 

@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
@@ -13,7 +12,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
 
 public class Robot{
     // needs to be able to access all methods for all the mechanisms used in opmodes
-    public DriveTrain dt;
+    public DriveTrain drivetrain;
     //public ReLocalizer ultraSonics;
     public IMU imu;
     public Outtake outtake;
@@ -36,7 +35,7 @@ public class Robot{
         imu.resetYaw();
 
         this.controls = controls;
-        dt = new DriveTrain(hardwareMap, imu, telemetry, controls);
+        drivetrain = new DriveTrain(hardwareMap, imu, telemetry, controls);
         intake = new Intake(hardwareMap, telemetry, controls);
         outtake = new Outtake(hardwareMap, 0, 0, 0, 0, 0, telemetry, controls); // tune PID values
        // ultraSonics = new ReLocalizer(hardwareMap, imu);

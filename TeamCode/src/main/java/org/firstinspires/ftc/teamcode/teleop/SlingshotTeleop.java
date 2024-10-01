@@ -20,7 +20,7 @@ public class SlingshotTeleop extends OpMode {
     public void init() {
         controls = new GamepadMapping(gamepad1, gamepad2);
         robot = new Robot(hardwareMap, telemetry, controls);
-        dt = robot.dt;
+        dt = robot.drivetrain;
         intake = robot.intake;
         outtake = robot.outtake;
     }
