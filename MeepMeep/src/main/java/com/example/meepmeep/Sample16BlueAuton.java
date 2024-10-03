@@ -6,13 +6,23 @@ import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
+import java.awt.Robot;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+
+
+
+import java.util.List;
+
+
 import javax.imageio.ImageIO;
+import java.awt.Robot;
 
 public class Sample16BlueAuton {
+
+
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
 
@@ -21,19 +31,91 @@ public class Sample16BlueAuton {
                 .setConstraints(70, 55, 2.5, 2, 14)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(new Pose2d(-12, -60, Math.toRadians(270)))
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                     //raise slides
+                                })
                                 .back(28)
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                    //place specimen
+                                    //lower  slides
+                                })
+
+                                //SAMPLE INTAKE STARTS HERE
                                 .splineToLinearHeading(new Pose2d(-50,-50,Math.toRadians(90)),Math.toRadians(180))
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                    //extendo out
+                                    //run intkw
+                                })
                                 .waitSeconds(0.5)
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                    //deeextend
+                                })
                                 .turn(Math.toRadians(-45))
+                                .UNSTABLE_addTemporalMarkerOffset(0., () -> {
+                                    //transfer sample
+                                })
+                                .UNSTABLE_addTemporalMarkerOffset(0.3, () -> {
+                                    //raise slides
+                                })
                                 .waitSeconds(0.5)
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                    //flip outtake
+                                    //lower slides
+                                })
+
+
+
+                                //MNEXT SAMPLE
                                 .turn(Math.toRadians(60))
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                    //extendo out
+                                    //run intkw
+                                })
+
                                 .waitSeconds(0.5)
+
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                    //deeextend
+                                })
+
                                 .turn(Math.toRadians(-60))
+                                .UNSTABLE_addTemporalMarkerOffset(0., () -> {
+                                    //transfer sample
+                                })
+                                .UNSTABLE_addTemporalMarkerOffset(0.3, () -> {
+                                    //raise slides
+                                })
                                 .waitSeconds(0.5)
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                    //flip outtake
+                                    //lower slides
+                                })
+
+
+                                //NEXT SAMPLE
                                 .turn(Math.toRadians(90))
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                    //extendo out
+                                    //run intkw
+                                })
+
                                 .waitSeconds(0.5)
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                    //deeextend
+                                })
                                 .turn(Math.toRadians(-90))
+                                .UNSTABLE_addTemporalMarkerOffset(0., () -> {
+                                    //transfer sample
+                                })
+                                .UNSTABLE_addTemporalMarkerOffset(0.3, () -> {
+                                    //raise slides
+                                })
                                 .waitSeconds(0.5)
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                    //flip outtake
+                                    //lower slides
+                                })
+
 
                                 //beyond this point is the other 3 samples
                                 .splineTo(new Vector2d(-12,-36),Math.toRadians(0))
