@@ -51,7 +51,7 @@ public class Sample16BlueAuton {
                                     //deeextend
                                 })
                                 .turn(Math.toRadians(-45))
-                                .UNSTABLE_addTemporalMarkerOffset(0., () -> {
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                                     //transfer sample
                                 })
                                 .UNSTABLE_addTemporalMarkerOffset(0.3, () -> {
@@ -120,30 +120,86 @@ public class Sample16BlueAuton {
                                 //beyond this point is the other 3 samples
                                 .splineTo(new Vector2d(-12,-36),Math.toRadians(0))
                                 .lineToSplineHeading(new Pose2d(30,-36,Math.toRadians(30)))
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                    //extendo out
+                                    //run intkw
+                                })
                                 .waitSeconds(0.5)
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                    //deeextend
+                                })
                                 .setReversed(true)
                                 .lineToSplineHeading(new Pose2d(-12,-36, Math.toRadians(0)))
                                 .splineTo(new Vector2d(-50,-50),Math.toRadians(225))
+                                .UNSTABLE_addTemporalMarkerOffset(0., () -> {
+                                    //transfer sample
+                                })
+                                .UNSTABLE_addTemporalMarkerOffset(0.3, () -> {
+                                    //raise slides
+                                })
                                 .waitSeconds(0.5)
                                 .setReversed(false)
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                    //flip outtake
+                                    //lower slides
+                                })
+
+
+
 
                                 .splineTo(new Vector2d(-12,-36),Math.toRadians(0))
                                 .lineToSplineHeading(new Pose2d(36,-36,Math.toRadians(30)))
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                    //extendo out
+                                    //run intkw
+                                })
                                 .waitSeconds(0.5)
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                    //deeextend
+                                })
                                 .setReversed(true)
                                 .lineToSplineHeading(new Pose2d(-12,-36, Math.toRadians(0)))
                                 .splineTo(new Vector2d(-50,-50),Math.toRadians(225))
+                                .UNSTABLE_addTemporalMarkerOffset(0., () -> {
+                                    //transfer sample
+                                })
+                                .UNSTABLE_addTemporalMarkerOffset(0.3, () -> {
+                                    //raise slides
+                                })
                                 .waitSeconds(0.5)
                                 .setReversed(false)
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                    //flip outtake
+                                    //lower slides
+                                })
+
+
 
                                 .splineTo(new Vector2d(-12,-36),Math.toRadians(0))
                                 .lineToSplineHeading(new Pose2d(40,-36,Math.toRadians(30)))
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                    //extendo out
+                                    //run intkw
+                                })
                                 .waitSeconds(0.5)
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                    //deeextend
+                                })
                                 .setReversed(true)
                                 .lineToSplineHeading(new Pose2d(-12,-36, Math.toRadians(0)))
                                 .splineTo(new Vector2d(-50,-50),Math.toRadians(225))
+                                .UNSTABLE_addTemporalMarkerOffset(0., () -> {
+                                    //transfer sample
+                                })
+                                .UNSTABLE_addTemporalMarkerOffset(0.3, () -> {
+                                    //raise slides
+                                })
                                 .waitSeconds(0.5)
                                 .setReversed(false)
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                    //flip outtake
+                                    //lower slides
+                                })
                                 .build()
                 );
 
