@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.gamepad.GamepadMapping;
+import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
 public class Outtake {
 

@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.mechanisms.DriveTrain;
-import org.firstinspires.ftc.teamcode.gamepad.GamepadMapping;
+import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 import org.firstinspires.ftc.teamcode.mechanisms.extendo.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
 
@@ -48,5 +48,10 @@ public class Robot{
 //        return new Pose2d(-72 + backDistance, -72 + sideDistance, Math.toRadians(currentAngle));
 //    }
 
+    public void update() {
+        drivetrain.update();
+        outtake.update();
+        intake.update();
+    }
 
 }

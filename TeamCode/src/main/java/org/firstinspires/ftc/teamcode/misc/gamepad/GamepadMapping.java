@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.gamepad;
+package org.firstinspires.ftc.teamcode.misc.gamepad;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
@@ -43,7 +43,6 @@ public class GamepadMapping {
     // --------------
     public static Toggle latchSpecimen;
     public static Toggle switchClaw;
-    public static Toggle toBaseState;
 
     public static boolean lock90 = false;
     public static boolean lock180 = false;
@@ -53,6 +52,11 @@ public class GamepadMapping {
     // OTHER
     // --------------
     public static Toggle botToBaseState;
+
+    // TESTING BUTTONS
+    // NOT TO BE USED FOR COMP
+    // -------------------------------
+    public static Toggle toggleIntakePower;
 
     public GamepadMapping(Gamepad gamepad1, Gamepad gamepad2) {
         this.gamepad1 = gamepad1;
@@ -67,6 +71,9 @@ public class GamepadMapping {
         switchClaw = new Toggle(false);
 
         botToBaseState = new Toggle(false);
+
+        // TESTING BUTTONS
+        toggleIntakePower = new Toggle(false);
     }
 
     public void update() {

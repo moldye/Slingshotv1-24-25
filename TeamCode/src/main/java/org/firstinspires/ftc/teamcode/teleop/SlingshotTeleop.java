@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.mechanisms.DriveTrain;
 import org.firstinspires.ftc.teamcode.mechanisms.extendo.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
-import org.firstinspires.ftc.teamcode.gamepad.GamepadMapping;
+import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
 @TeleOp
 public class SlingshotTeleop extends OpMode {
@@ -28,8 +28,6 @@ public class SlingshotTeleop extends OpMode {
     @Override
     public void loop() {
         controls.update();
-        dt.update();
-        intake.update();
-        outtake.update();
+        robot.update();
     }
 }

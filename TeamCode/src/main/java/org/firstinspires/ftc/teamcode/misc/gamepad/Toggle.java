@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.gamepad;
+package org.firstinspires.ftc.teamcode.misc.gamepad;
 
 public class Toggle {
     private boolean value;
