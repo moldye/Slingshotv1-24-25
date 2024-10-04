@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.mechanisms.DriveTrain;
 import org.firstinspires.ftc.teamcode.mechanisms.extendo.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
-import org.firstinspires.ftc.teamcode.util.gamepad.GamepadMapping;
+import org.firstinspires.ftc.teamcode.gamepad.GamepadMapping;
 
 @TeleOp
 public class SlingshotTeleop extends OpMode {
@@ -20,9 +20,9 @@ public class SlingshotTeleop extends OpMode {
     public void init() {
         controls = new GamepadMapping(gamepad1, gamepad2);
         robot = new Robot(hardwareMap, telemetry, controls);
-        dt = new DriveTrain(hardwareMap, robot.imu, telemetry, controls);
-        intake = new Intake(hardwareMap, telemetry, controls);
-        outtake = new Outtake(hardwareMap, 0, 0, 0, 0, 0, telemetry, controls); // tune PID values
+        dt = robot.drivetrain;
+        intake = robot.intake;
+        outtake = robot.outtake;
     }
 
     @Override

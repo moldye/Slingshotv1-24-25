@@ -1,8 +1,6 @@
-package org.firstinspires.ftc.teamcode.util.gamepad;
+package org.firstinspires.ftc.teamcode.gamepad;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
-
-import org.firstinspires.ftc.teamcode.util.gamepad.Toggle;
 
 public class GamepadMapping {
 

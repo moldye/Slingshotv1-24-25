@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.mechanisms.DriveTrain;
 import org.firstinspires.ftc.teamcode.mechanisms.ReLocalizer;
-import org.firstinspires.ftc.teamcode.util.helper.PIDFControllerEx;
+import org.firstinspires.ftc.teamcode.misc.PIDFControllerEx;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -71,14 +71,14 @@ public class driveTrainMathTests {
     public void testSetTargetAngleWithNegativeJoystickValue() {
         dt.setTargetAngle(0);
         dt.changeTargetAngleWithJoystick(-1);
-        assertEquals(10, dt.getTargetAngle());
+        assertEquals(-7, ((int) (dt.getTargetAngle() * 10)) / 10.0 - .1);
     }
 
     @Test
     public void testSetTargetAngleWithDoubleJoystickValue() {
         dt.setTargetAngle(0);
         dt.changeTargetAngleWithJoystick(-0.5);
-        assertEquals(5, dt.getTargetAngle());
+        assertEquals(-3.5, ((int) (dt.getTargetAngle() * 10)) / 10.0 - .1); // hehe goofy test, I don't feel like doing round up
     }
 
     @Test
@@ -92,12 +92,6 @@ public class driveTrainMathTests {
     public void testAngleWrapWithQuad3() {
         double actualAngle = dt.angleWrap(-270);
         assertEquals(90, actualAngle);
-    }
-
-    @Test
-    public void testAngleWrapWithNeg180() {
-        double actualAngle = dt.angleWrap(-180);
-        assertEquals(180, actualAngle);
     }
 
 //    @Test

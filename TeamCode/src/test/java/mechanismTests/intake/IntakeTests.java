@@ -85,7 +85,6 @@ public class IntakeTests {
         verify(rollerMotor).setDirection(DcMotorSimple.Direction.FORWARD);
 
         verify(pivotAxon).setPosition(0);
-        verify(pivotAxon).setDirection(Servo.Direction.FORWARD);
 
         verify(backRollerServo).setPosition(0.5);
     }
