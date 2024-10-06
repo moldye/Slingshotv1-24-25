@@ -52,11 +52,13 @@ public class GamepadMapping {
     // OTHER
     // --------------
     public static Toggle botToBaseState;
+    public static Toggle pivot;
 
     // TESTING BUTTONS
     // NOT TO BE USED FOR COMP
     // -------------------------------
     public static Toggle toggleIntakePower;
+    public static Toggle powerIntake;
 
     public GamepadMapping(Gamepad gamepad1, Gamepad gamepad2) {
         this.gamepad1 = gamepad1;
@@ -74,12 +76,12 @@ public class GamepadMapping {
 
         // TESTING BUTTONS
         toggleIntakePower = new Toggle(false);
+        pivot = new Toggle(false);
+        powerIntake = new Toggle(false);
     }
 
     public void update() {
-        drive = gamepad1.left_stick_y;
-        strafe = gamepad1.left_stick_x;
-        turn = gamepad1.right_stick_x;
+        joystickUpdate();
 
         switchExtendo.update(gamepad1.left_bumper);
 
@@ -96,5 +98,11 @@ public class GamepadMapping {
         lock360 = gamepad1.dpad_right;
 
         botToBaseState.update(gamepad1.b);
+    }
+
+    public void joystickUpdate() {
+        drive = gamepad1.left_stick_y;
+        strafe = gamepad1.left_stick_x;
+        turn = gamepad1.right_stick_x;
     }
 }

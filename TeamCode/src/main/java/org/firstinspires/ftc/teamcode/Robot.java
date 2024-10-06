@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.mechanisms.DriveTrain;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
-import org.firstinspires.ftc.teamcode.mechanisms.extendo.Intake;
+import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
 
 public class Robot{
@@ -15,7 +15,7 @@ public class Robot{
     public DriveTrain drivetrain;
     //public ReLocalizer ultraSonics;
     public IMU imu;
-    public Outtake outtake;
+    //public Outtake outtake;
     public Intake intake;
     public GamepadMapping controls;
 
@@ -37,7 +37,7 @@ public class Robot{
         this.controls = controls;
         drivetrain = new DriveTrain(hardwareMap, imu, telemetry, controls);
         intake = new Intake(hardwareMap, telemetry, controls);
-        outtake = new Outtake(hardwareMap, 0, 0, 0, 0, 0, telemetry, controls); // tune PID values
+        //outtake = new Outtake(hardwareMap, 0, 0, 0, 0, 0, telemetry, controls); // tune PID values
        // ultraSonics = new ReLocalizer(hardwareMap, imu);
     }
 
@@ -50,7 +50,7 @@ public class Robot{
 
     public void update() {
         drivetrain.update();
-        outtake.update();
+        //outtake.update();
         intake.update();
     }
 

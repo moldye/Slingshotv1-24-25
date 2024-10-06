@@ -29,8 +29,8 @@ public class Outtake {
 
     public Outtake(HardwareMap hardwareMap, int direction, double inP, double inI, double inD, double inF, Telemetry telemetry,
     GamepadMapping controls){
-        outtakeSlideLeft = hardwareMap.get(DcMotorEx.class, "outtakeSlideLeft");
-        outtakeSlideRight = hardwareMap.get(DcMotorEx.class, "outtakeSlideRight");
+        outtakeSlideLeft = hardwareMap.get(DcMotorEx.class, "slideLeft");
+        outtakeSlideRight = hardwareMap.get(DcMotorEx.class, "slideRight");
         outtakeSlideLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         outtakeSlideRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 

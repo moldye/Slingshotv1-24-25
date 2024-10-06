@@ -1,6 +1,5 @@
 package mechanismTests.intake;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -8,8 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.mechanisms.extendo.Intake;
-import org.jetbrains.annotations.TestOnly;
+import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,7 +22,7 @@ public class IntakeTests {
     @Mock
     Servo pivotAxon;
     @Mock
-    Servo backRollerServo; // CR Servo?
+    CRServo backRollerServo; // CR Servo?
 
     // extendo needs to retract out and back in, test full extension
     // likely going to need to be able to adjust slides by little increments
@@ -55,7 +53,7 @@ public class IntakeTests {
         // servo should be set to backwards, only run when detects non-alliance colored block
         // should already be set to reverse
         intake.pushOutSample();
-        verify(backRollerServo).setPosition(anyDouble());
+        verify(backRollerServo).setPower(anyDouble());
     }
 
     @Test
@@ -86,7 +84,7 @@ public class IntakeTests {
 
         verify(pivotAxon).setPosition(0);
 
-        verify(backRollerServo).setPosition(0.5);
+        verify(backRollerServo).setPower(0);
     }
 
     @Test
