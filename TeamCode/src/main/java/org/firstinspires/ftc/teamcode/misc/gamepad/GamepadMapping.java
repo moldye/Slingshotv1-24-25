@@ -30,7 +30,8 @@ public class GamepadMapping {
 
     // INTAKE
     // --------------
-    public static Toggle switchExtendo; // extend & retract extendo
+    public static Trigger extend; // extend intake
+    public static Trigger retract; // retract intake
 
     // OUTTAKE
     // --------------
@@ -64,7 +65,8 @@ public class GamepadMapping {
         this.gamepad1 = gamepad1;
         this.gamepad2 = gamepad2;
 
-        switchExtendo = new Toggle(false);
+        extend = new Trigger(0, 0.7);
+        retract = new Trigger(0, 0.7);
 
         resetSlides = new Toggle(false); // this might actually need to be true, idk
         bucketRelease = new Toggle(false);
@@ -83,10 +85,11 @@ public class GamepadMapping {
     public void update() {
         joystickUpdate();
 
-        switchExtendo.update(gamepad1.left_bumper);
+        extend.update(gamepad1.left_trigger);
+        retract.update(gamepad1.right_trigger);
 
         outtakeSlidesButton = gamepad1.right_bumper; // this may not work bc of goofy loop time, idk
-        resetSlides.update(gamepad1.right_trigger > 0.8);
+        resetSlides.update(gamepad1.left_bumper);
         bucketRelease.update(gamepad1.a);
 
         latchSpecimen.update(gamepad2.a);

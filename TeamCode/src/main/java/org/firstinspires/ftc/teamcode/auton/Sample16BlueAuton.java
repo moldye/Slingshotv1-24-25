@@ -13,6 +13,7 @@
 //    private SampleMecanumDrive drive = new SampleMecanumDrive();
 //
 //    public void sample16BlueAuton() {
+            // TODO: Don't forget to call reset Hardware here
 //        // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
 //                        drive.trajectorySequenceBuilder(new Pose2d(-12, -60, Math.toRadians(270)))
 //                                .setConstraints(70, 55, 2.5, 2, 14)

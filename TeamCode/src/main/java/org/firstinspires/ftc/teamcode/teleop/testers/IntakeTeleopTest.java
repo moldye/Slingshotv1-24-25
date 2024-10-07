@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.teleop.testers;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.mechanisms.DriveTrain;
@@ -18,16 +17,7 @@ public class IntakeTeleopTest extends OpMode {
     private Robot robot;
     private GamepadMapping controls;
     private Intake intake;
-    private ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
     private DriveTrain dt;
-
-    // TUNING VARS
-    public static final double rExLinkagePos = 1; // extend
-    public static final double lExLinkagePos = 0; // extend
-
-    public static final double rRLinkagePos = 0; // retract
-    public static final double lRLinkagePos = 1; // retract
-    public static final double motorPower = 0.1;
 
     @Override
     public void init() {
@@ -39,37 +29,35 @@ public class IntakeTeleopTest extends OpMode {
 
     @Override
     public void loop() {
-        //
-        //
         controls.pivot.update(gamepad1.a);
-        controls.switchExtendo.update(gamepad1.b);
+        controls.extend.update(gamepad1.left_trigger);
+        controls.retract.update(gamepad1.right_trigger);
         controls.powerIntake.update(gamepad1.x);
 
+        intake.updateTelemetry();
+        controls.joystickUpdate();
+        dt.update();
 
-        if(controls.switchExtendo.value()) {
-            // intake.intakeState.setExtendLinkagePositions(rExLinkagePos, lExLinkagePos);
-            intake.extendoExtend();
-            intake.motorRollerOn();
+        if(controls.extend.getTriggerValue() > controls.extend.getThreshold()) {
+            intake.extendoExtend(controls.extend.getTriggerValue());
+            intake.motorRollerOnBackwards();
             if (controls.pivot.value()) {
+                intake.motorRollerOnForward();
                 intake.flipDown();
             } else {
                 intake.flipUp();
+                intake.motorRollerOff();
             }
             if (controls.powerIntake.value()) {
                 intake.motorRollerOff();
             } else {
-                intake.motorRollerOn();
+                intake.motorRollerOnForward();
             }
-        } else {
+        }
+        if(controls.retract.getTriggerValue() > controls.retract.getThreshold()) {
             intake.flipUp();
-            // intake.intakeState.setRetractLinkagePositions(rRLinkagePos, lRLinkagePos);
-            intake.extendoRetract();
+            intake.extendoRetract(controls.retract.getTriggerValue());
             intake.motorRollerOff();
         }
-
-        intake.updateTelemetry();
-
-        controls.joystickUpdate();
-        dt.update();
     }
 }

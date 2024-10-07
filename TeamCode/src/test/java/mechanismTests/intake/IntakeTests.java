@@ -2,7 +2,6 @@ package mechanismTests.intake;
 
 import static org.mockito.Mockito.*;
 
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -22,7 +21,7 @@ public class IntakeTests {
     @Mock
     Servo pivotAxon;
     @Mock
-    CRServo backRollerServo; // CR Servo?
+    Servo backRollerServo; // CR Servo?
 
     // extendo needs to retract out and back in, test full extension
     // likely going to need to be able to adjust slides by little increments
@@ -44,7 +43,7 @@ public class IntakeTests {
     @Test
     public void testMotorDoesRollForward() {
         // not running constantly, block held in place by the back roller
-        intake.motorRollerOn();
+        intake.motorRollerOnForward();
         verify(rollerMotor).setPower(anyDouble());
     }
 
@@ -53,7 +52,7 @@ public class IntakeTests {
         // servo should be set to backwards, only run when detects non-alliance colored block
         // should already be set to reverse
         intake.pushOutSample();
-        verify(backRollerServo).setPower(anyDouble());
+        verify(backRollerServo).setPosition(anyDouble());
     }
 
     @Test
@@ -84,21 +83,32 @@ public class IntakeTests {
 
         verify(pivotAxon).setPosition(0);
 
-        verify(backRollerServo).setPower(0);
+        verify(backRollerServo).setPosition(0.5);
     }
 
     @Test
     public void testExtendoFullExpansion() {
         // TODO get this from hardware/CAD when done
-        intake.extendoExtend();
+        intake.extendoFullExtend();
         verify(leftExtendo).setPosition(anyDouble());
         verify(rightExtendo).setPosition(anyDouble());
     }
 
     @Test
     public void testExtendoFullyRetract() {
-        intake.extendoRetract();
+        intake.extendoFullRetract();
         verify(leftExtendo).setPosition(anyDouble());
         verify(rightExtendo).setPosition(anyDouble());
+    }
+
+    @Test
+    public void testGradualExtend() {
+        // TODO: implement this tmrw
+        // getPos should work bc axons :D
+        double triggerVal = 0.8;
+        when(rightExtendo.getPosition()).thenReturn(0.0);
+        double newPos = rightExtendo.getPosition() + .1 * (triggerVal * 10) / 5; // tune this val
+        intake.extendoExtend(triggerVal);
+        verify(rightExtendo).setPosition(newPos);
     }
 }

@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.mechanisms.intake;
 
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -22,7 +21,7 @@ public class Intake {
     // -----------
     private DcMotorEx rollerMotor;
     public Servo pivotAxon;
-    public CRServo backRollerServo;
+    public Servo backRollerServo; // set pos to 0.5 to get it to stop
     public Servo leftExtendo; // axon
     public Servo rightExtendo; // axon
 
@@ -49,7 +48,7 @@ public class Intake {
         // roller motor -> 1 on expansion hub
         rollerMotor = hwMap.get(DcMotorEx.class, "rollerMotor");
         pivotAxon = hwMap.get(Servo.class, "pivotAxon");
-        backRollerServo = hwMap.get(CRServo.class, "backRoller");
+        backRollerServo = hwMap.get(Servo.class, "backRoller");
         rightExtendo = hwMap.get(Servo.class, "rightLinkage"); // both these servos axons
         leftExtendo = hwMap.get(Servo.class, "leftLinkage"); // reverse this one w/ servo programmer
 
@@ -68,7 +67,7 @@ public class Intake {
     }
 
     // This is for testing only :)
-    public Intake(DcMotorEx rollerMotor, Servo pivotAxon, CRServo backRollerServo, Servo rightExtendo, Servo leftExtendo) {
+    public Intake(DcMotorEx rollerMotor, Servo pivotAxon, Servo backRollerServo, Servo rightExtendo, Servo leftExtendo) {
         this.rollerMotor = rollerMotor;
         this.pivotAxon = pivotAxon; // axon programmer: 0-255, 0-1
         this.backRollerServo = backRollerServo; // 1 power
@@ -87,24 +86,40 @@ public class Intake {
     }
 
     public void pushOutSample() {
-        backRollerServo.setPower(1); // tune wether it should be pos 1 or 0 to run which way
+        backRollerServo.setPosition(1);
     }
 
-    public void motorRollerOn() {
-        rollerMotor.setPower(motorPower); // want this to be as fast as possible to intake well
+    public void motorRollerOnForward() {
+        rollerMotor.setPower(-1);
+    }
+
+    public void motorRollerOnBackwards() {
+        rollerMotor.setPower(1);
     }
 
     public void motorRollerOff() {
         rollerMotor.setPower(0);
     }
 
-    public void extendoExtend() {
+    public void extendoExtend(double triggerValue) {
         rightExtendo.setPosition(IntakeConstants.IntakeState.FULLY_EXTENDED.rLinkagePos()); // obviously tune
         leftExtendo.setPosition(IntakeConstants.IntakeState.FULLY_EXTENDED.lLinkagePos());
         extendoIn = false;
     }
 
-    public void extendoRetract() {
+    public void extendoRetract(double triggerValue) {
+        rightExtendo.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.rLinkagePos()); // obviously tune
+        leftExtendo.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.lLinkagePos());
+        extendoIn = true;
+    }
+
+    public void extendoFullExtend() {
+        rightExtendo.setPosition(IntakeConstants.IntakeState.FULLY_EXTENDED.rLinkagePos()); // obviously tune
+        leftExtendo.setPosition(IntakeConstants.IntakeState.FULLY_EXTENDED.lLinkagePos());
+        extendoIn = false;
+    }
+
+    public void extendoFullRetract() {
         rightExtendo.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.rLinkagePos()); // obviously tune
         leftExtendo.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.lLinkagePos());
         extendoIn = true;
@@ -116,9 +131,9 @@ public class Intake {
 
         flipUp();
 
-        backRollerServo.setPower(0);
+        backRollerServo.setPosition(0.5);
 
-        extendoRetract();
+        extendoFullRetract();
     }
 
     public void transferSample() {
@@ -135,10 +150,10 @@ public class Intake {
         switch(intakeState){
             case FULLY_RETRACTED:
                 // this may automatically start switching to extending?
-                if (controls.switchExtendo.value()) {
+                if (controls.extend.getTriggerValue() > controls.extend.getThreshold()) {
                     intakeState = IntakeConstants.IntakeState.EXTENDING;
                     // may need to add a button lock here? -> should already lock
-                } else if (!controls.switchExtendo.value()){
+                } else if (controls.retract.getTriggerValue() > controls.retract.getThreshold()){
                     intakeState = IntakeConstants.IntakeState.RETRACTING;
                 }
                 break;
@@ -159,8 +174,8 @@ public class Intake {
                 break;
             case INTAKING:
                 flipDown();
-                motorRollerOn();
-                if (!controls.switchExtendo.value()) {
+                motorRollerOnForward();
+                if (controls.retract.getTriggerValue() > controls.retract.getThreshold()) {
                     intakeState = IntakeConstants.IntakeState.RETRACTING;
                 }
                 if (controls.botToBaseState.value() && pivotUp) {
@@ -191,11 +206,6 @@ public class Intake {
                 break;
         }
         telemetry.addData("intakeState:", intakeState);
-    }
-
-    // TUNING METHODS
-    public void setMotorPower(double motorPower) {
-        this.motorPower = motorPower;
     }
 
     public void updateTelemetry() {
