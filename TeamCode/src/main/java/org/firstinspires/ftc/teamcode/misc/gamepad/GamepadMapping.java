@@ -61,6 +61,8 @@ public class GamepadMapping {
     public static Toggle toggleIntakePower;
     public static Toggle powerIntake;
 
+    public static Toggle switchExtendo;
+
     public GamepadMapping(Gamepad gamepad1, Gamepad gamepad2) {
         this.gamepad1 = gamepad1;
         this.gamepad2 = gamepad2;
@@ -80,6 +82,7 @@ public class GamepadMapping {
         toggleIntakePower = new Toggle(false);
         pivot = new Toggle(false);
         powerIntake = new Toggle(false);
+        switchExtendo = new Toggle(false);
     }
 
     public void update() {

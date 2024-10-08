@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
 public class Robot{
     // needs to be able to access all methods for all the mechanisms used in opmodes
     public DriveTrain drivetrain;
-    public ReLocalizer ultraSonics;
+    // public ReLocalizer ultraSonics;
     public IMU imu;
     public Outtake outtake;
     public Intake intake;
@@ -42,15 +42,15 @@ public class Robot{
         intake = new Intake(hardwareMap, telemetry, controls);
 
         outtake = new Outtake(hardwareMap, 0, 0, 0, 0, 0, telemetry, controls); // tune PID values
-        ultraSonics = new ReLocalizer(hardwareMap, imu);
+        //ultraSonics = new ReLocalizer(hardwareMap, imu);
     }
 
-    public Pose2d reLocalize(){
-        double currentAngle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) + 90;
-        double backDistance = ultraSonics.getBackDistance(currentAngle);
-        double sideDistance = ultraSonics.getSideDistance(currentAngle);
-        return new Pose2d(-72 + backDistance, -72 + sideDistance, Math.toRadians(currentAngle));
-    }
+//    public Pose2d reLocalize(){
+//        double currentAngle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) + 90;
+//        double backDistance = ultraSonics.getBackDistance(currentAngle);
+//        double sideDistance = ultraSonics.getSideDistance(currentAngle);
+//        return new Pose2d(-72 + backDistance, -72 + sideDistance, Math.toRadians(currentAngle));
+//    }
 
     public void update() {
         drivetrain.update();

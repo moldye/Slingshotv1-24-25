@@ -35,7 +35,8 @@ public class Intake {
     // -----------
     private boolean pivotUp; // true if pivot it is initial position (flipped up)
     private boolean extendoIn;
-    private double motorPower = -1;
+    private double linkageMax = -1;
+    private double linkageMin = .325;
 
 
 
@@ -64,6 +65,9 @@ public class Intake {
 
         pivotUp = true; // true initially
         extendoIn = true;
+
+        rightExtendo.setPosition(.325);
+        leftExtendo.setPosition(.325);
     }
 
     // This is for testing only :)
@@ -94,7 +98,7 @@ public class Intake {
     }
 
     public void motorRollerOnBackwards() {
-        rollerMotor.setPower(1);
+        rollerMotor.setPower(.2);
     }
 
     public void motorRollerOff() {
@@ -102,14 +106,30 @@ public class Intake {
     }
 
     public void extendoExtend(double triggerValue) {
-        rightExtendo.setPosition(IntakeConstants.IntakeState.FULLY_EXTENDED.rLinkagePos()); // obviously tune
-        leftExtendo.setPosition(IntakeConstants.IntakeState.FULLY_EXTENDED.lLinkagePos());
+        // max pos is -1
+        // at .325 -> .225
+        double newPos = rightExtendo.getPosition() - .1; // * (triggerValue * 10) / 5;
+        if (newPos >= linkageMax) {
+            rightExtendo.setPosition(newPos);
+            leftExtendo.setPosition(newPos);
+        } else {
+            rightExtendo.setPosition(linkageMax);
+            leftExtendo.setPosition(linkageMax);
+        }
+
         extendoIn = false;
     }
 
     public void extendoRetract(double triggerValue) {
-        rightExtendo.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.rLinkagePos()); // obviously tune
-        leftExtendo.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.lLinkagePos());
+        // min pos is .325
+        double newPos = rightExtendo.getPosition() + .1; //* (triggerValue * 10) / 5;
+        if (newPos <= linkageMin) {
+            rightExtendo.setPosition(newPos);
+            leftExtendo.setPosition(newPos);
+        } else {
+            rightExtendo.setPosition(linkageMin);
+            leftExtendo.setPosition(linkageMin);
+        }
         extendoIn = true;
     }
 
@@ -144,6 +164,10 @@ public class Intake {
         }
     }
 
+//    public void intakeTooClose(){
+//        if ()
+//    }
+
     // TODO Ask James about adding a method for detection of wrong alliance color
 
     public void update(){
@@ -166,7 +190,7 @@ public class Intake {
                 }
                 break;
             case EXTENDING:
-                extendoExtend();
+                extendoExtend(controls.extend.getTriggerValue());
                 intakeState = IntakeConstants.IntakeState.INTAKING;
                 if (controls.botToBaseState.value() && pivotUp) {
                     intakeState = IntakeConstants.IntakeState.BASE_STATE;
@@ -185,7 +209,7 @@ public class Intake {
             case RETRACTING:
                 flipUp();
                 motorRollerOff();
-                extendoRetract();
+                extendoRetract(controls.retract.getTriggerValue());
                 // we may need to add an if statement here so it only does this when a sample is actually in the intake, not anytime we retract slides
                 transferSample();
                 intakeState = IntakeConstants.IntakeState.FULLY_RETRACTED;
