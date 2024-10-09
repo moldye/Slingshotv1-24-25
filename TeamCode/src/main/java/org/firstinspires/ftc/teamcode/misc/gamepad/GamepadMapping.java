@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.gamepad;
+package org.firstinspires.ftc.teamcode.misc.gamepad;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
@@ -30,7 +30,8 @@ public class GamepadMapping {
 
     // INTAKE
     // --------------
-    public static Toggle switchExtendo; // extend & retract extendo
+    public static Trigger extend; // extend intake
+    public static Trigger retract; // retract intake
 
     // OUTTAKE
     // --------------
@@ -43,7 +44,6 @@ public class GamepadMapping {
     // --------------
     public static Toggle latchSpecimen;
     public static Toggle switchClaw;
-    public static Toggle toBaseState;
 
     public static boolean lock90 = false;
     public static boolean lock180 = false;
@@ -53,12 +53,22 @@ public class GamepadMapping {
     // OTHER
     // --------------
     public static Toggle botToBaseState;
+    public static Toggle pivot;
+
+    // TESTING BUTTONS
+    // NOT TO BE USED FOR COMP
+    // -------------------------------
+    public static Toggle toggleIntakePower;
+    public static Toggle powerIntake;
+
+    public static Toggle switchExtendo;
 
     public GamepadMapping(Gamepad gamepad1, Gamepad gamepad2) {
         this.gamepad1 = gamepad1;
         this.gamepad2 = gamepad2;
 
-        switchExtendo = new Toggle(false);
+        extend = new Trigger(0, 0.7);
+        retract = new Trigger(0, 0.7);
 
         resetSlides = new Toggle(false); // this might actually need to be true, idk
         bucketRelease = new Toggle(false);
@@ -67,17 +77,22 @@ public class GamepadMapping {
         switchClaw = new Toggle(false);
 
         botToBaseState = new Toggle(false);
+
+        // TESTING BUTTONS
+        toggleIntakePower = new Toggle(false);
+        pivot = new Toggle(false);
+        powerIntake = new Toggle(false);
+        switchExtendo = new Toggle(false);
     }
 
     public void update() {
-        drive = gamepad1.left_stick_y;
-        strafe = gamepad1.left_stick_x;
-        turn = gamepad1.right_stick_x;
+        joystickUpdate();
 
-        switchExtendo.update(gamepad1.left_bumper);
+        extend.update(gamepad1.left_trigger);
+        retract.update(gamepad1.right_trigger);
 
         outtakeSlidesButton = gamepad1.right_bumper; // this may not work bc of goofy loop time, idk
-        resetSlides.update(gamepad1.right_trigger > 0.8);
+        resetSlides.update(gamepad1.left_bumper);
         bucketRelease.update(gamepad1.a);
 
         latchSpecimen.update(gamepad2.a);
@@ -89,5 +104,11 @@ public class GamepadMapping {
         lock360 = gamepad1.dpad_right;
 
         botToBaseState.update(gamepad1.b);
+    }
+
+    public void joystickUpdate() {
+        drive = gamepad1.left_stick_y;
+        strafe = gamepad1.left_stick_x;
+        turn = gamepad1.right_stick_x;
     }
 }

@@ -21,8 +21,6 @@ import javax.imageio.ImageIO;
 import java.awt.Robot;
 
 public class Sample16BlueAuton {
-
-
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
 

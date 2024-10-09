@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.teleop.testers;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.Robot;
-import org.firstinspires.ftc.teamcode.gamepad.GamepadMapping;
+import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
 public class ReLocalizationTester extends OpMode {
     private Robot robot;

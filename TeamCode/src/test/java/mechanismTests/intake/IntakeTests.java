@@ -1,15 +1,12 @@
 package mechanismTests.intake;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.mechanisms.extendo.Intake;
-import org.jetbrains.annotations.TestOnly;
+import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,7 +43,7 @@ public class IntakeTests {
     @Test
     public void testMotorDoesRollForward() {
         // not running constantly, block held in place by the back roller
-        intake.motorRollerOn();
+        intake.motorRollerOnForward();
         verify(rollerMotor).setPower(anyDouble());
     }
 
@@ -92,15 +89,26 @@ public class IntakeTests {
     @Test
     public void testExtendoFullExpansion() {
         // TODO get this from hardware/CAD when done
-        intake.extendoExtend();
+        intake.extendoFullExtend();
         verify(leftExtendo).setPosition(anyDouble());
         verify(rightExtendo).setPosition(anyDouble());
     }
 
     @Test
     public void testExtendoFullyRetract() {
-        intake.extendoRetract();
+        intake.extendoFullRetract();
         verify(leftExtendo).setPosition(anyDouble());
         verify(rightExtendo).setPosition(anyDouble());
+    }
+
+    @Test
+    public void testGradualExtend() {
+        // TODO: implement this tmrw
+        // getPos should work bc axons :D
+        double triggerVal = 0.8;
+        when(rightExtendo.getPosition()).thenReturn(0.0);
+        double newPos = rightExtendo.getPosition() + .1 * (triggerVal * 10) / 5; // tune this val
+        intake.extendoExtend(triggerVal);
+        verify(rightExtendo).setPosition(newPos);
     }
 }

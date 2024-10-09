@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode.mechanisms.outtake;
 
 import com.arcrobotics.ftclib.controller.PIDController;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.gamepad.GamepadMapping;
+import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
 public class Outtake {
 
@@ -29,8 +30,8 @@ public class Outtake {
 
     public Outtake(HardwareMap hardwareMap, int direction, double inP, double inI, double inD, double inF, Telemetry telemetry,
     GamepadMapping controls){
-        outtakeSlideLeft = hardwareMap.get(DcMotorEx.class, "outtakeSlideLeft");
-        outtakeSlideRight = hardwareMap.get(DcMotorEx.class, "outtakeSlideRight");
+        outtakeSlideLeft = hardwareMap.get(DcMotorEx.class, "slideLeft");
+        outtakeSlideRight = hardwareMap.get(DcMotorEx.class, "slideRight");
         outtakeSlideLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         outtakeSlideRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
@@ -109,6 +110,12 @@ public class Outtake {
     public void resetHardware() {
         returnToRetracted();
         // other resetting bucket stuff here
+    }
+
+    public void resetEncoders() {
+        // reset slide motor encoders
+        outtakeSlideLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        outtakeSlideRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
     // TODO Slow down robot as slides go up (or make extendo go out a bit) so extendo doesn't tip
