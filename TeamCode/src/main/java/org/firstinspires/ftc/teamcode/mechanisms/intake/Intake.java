@@ -43,9 +43,9 @@ public class Intake {
 
 
     public Intake(HardwareMap hwMap, Telemetry telemetry, GamepadMapping controls) {
-        // pivot (max) -> 0 on control hub
-        // left linkage (max) -> 2 on control hub
-        // right linkage (max) -> 1 on control hub
+        // pivot (max) -> 1 on expansion hub
+        // left linkage (max) -> 1 on control hub
+        // right linkage (max) -> 0 on control hub
         // back roller (mini) -> 0 on expansion hub
 
         // roller motor -> 1 on expansion hub
@@ -68,8 +68,8 @@ public class Intake {
         pivotUp = true; // true initially
         extendoIn = true;
 
-        rightExtendo.setPosition(.325);
-        leftExtendo.setPosition(.325);
+//        rightExtendo.setPosition(.325);
+//        leftExtendo.setPosition(.325);
     }
 
     // This is for testing only :)
@@ -94,12 +94,18 @@ public class Intake {
     public void pushOutSample() {
         backRollerServo.setPosition(1);
     }
+    public void backRollerIdle() {
+        backRollerServo.setPosition(0.5);
+    }
+
 
     public void motorRollerOnForward() {
+        // TODO trigger held, full speed, mini no roll
         rollerMotor.setPower(-1);
     }
 
     public void motorRollerOnBackwards() {
+        // TODO trigger held, full speed backwards, mini should also roll
         rollerMotor.setPower(.2);
     }
 
@@ -108,6 +114,7 @@ public class Intake {
     }
 
     public void extendoExtend(double triggerValue) {
+        // TODO this is a button
         // max pos is -1
         // at .325 -> .225
         double newPos = rightExtendo.getPosition() - .1; // * (triggerValue * 10) / 5;
@@ -120,19 +127,6 @@ public class Intake {
         }
 
         extendoIn = false;
-    }
-
-    public void extendoRetract(double triggerValue) {
-        // min pos is .325
-        double newPos = rightExtendo.getPosition() + .1; //* (triggerValue * 10) / 5;
-        if (newPos <= linkageMin) {
-            rightExtendo.setPosition(newPos);
-            leftExtendo.setPosition(newPos);
-        } else {
-            rightExtendo.setPosition(linkageMin);
-            leftExtendo.setPosition(linkageMin);
-        }
-        extendoIn = true;
     }
 
     public void extendoFullExtend() {
@@ -165,7 +159,6 @@ public class Intake {
             rollerMotor.setPower(1);
         }
     }
-
     public boolean intakeTooClose(){
         // min = .325, max = -1
         // threshold is -.00625
@@ -216,7 +209,7 @@ public class Intake {
             case RETRACTING:
                 flipUp();
                 motorRollerOff();
-                extendoRetract(controls.retract.getTriggerValue());
+                extendoFullRetract();
                 // we may need to add an if statement here so it only does this when a sample is actually in the intake, not anytime we retract slides
                 transferSample();
                 intakeState = IntakeConstants.IntakeState.FULLY_RETRACTED;

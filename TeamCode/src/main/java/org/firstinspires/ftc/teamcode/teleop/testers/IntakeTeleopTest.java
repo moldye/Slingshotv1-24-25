@@ -29,82 +29,50 @@ public class IntakeTeleopTest extends OpMode {
 
     @Override
     public void loop() {
-        controls.pivot.update(gamepad1.a);
-        controls.extend.update(gamepad1.left_trigger);
-        controls.retract.update(gamepad1.right_trigger);
-        controls.powerIntake.update(gamepad1.x);
 
-//        controls.pivot.update(gamepad1.a);
-//        controls.switchExtendo.update(gamepad1.b);
-//        controls.powerIntake.update(gamepad1.x);
+        controls.pivot.update(gamepad1.a);
+        controls.switchExtendo.update(gamepad1.b);
+        controls.powerIntake.update(gamepad1.x);
+        controls.pushOutSample.update(gamepad1.y);
 
         controls.joystickUpdate();
         dt.update();
-//
-//        intake.updateTelemetry();
-//        controls.joystickUpdate();
-//        dt.update();
-//
-//         if(controls.extend.getTriggerValue() > controls.extend.getThreshold()) {
-//            // intake.extendoExtend(controls.extend.getTriggerValue());
-//            // add min and max pos for extension
-//            intake.motorRollerOnBackwards();
-//            if (controls.pivot.value()) {
-//                intake.flipDown();
-//                intake.motorRollerOnForward();
-//            } else {
-//                intake.flipUp();
-//                intake.motorRollerOff();
-//            }
-//            if (controls.powerIntake.value()) {
-//                intake.motorRollerOff();
-//            } else {
-//                intake.motorRollerOnForward();
-//            }
-//        } else {
-//            intake.extendoFullRetract();
-//        }
-//        if(controls.retract.getTriggerValue() > controls.retract.getThreshold()) {
-//            //if (intakeTooClose()){
-//                // this should only happen if pivot is too close to the bot (if linkages at a certain pos)
-//                // so we can retract w/o bringing pivot up
-//                intake.flipUp();
-//            //}
-//            intake.extendoRetract(controls.retract.getTriggerValue());
-//            intake.motorRollerOff();
-//        }
 
-//        if (controls.switchExtendo.value()) {
-//            // intake.intakeState.setExtendLinkagePositions(rExLinkagePos, lExLinkagePos);
-//            intake.extendoFullExtend();
-//            intake.motorRollerOnForward();
-//            if (controls.pivot.value()) {
-//                intake.flipDown();
-//            } else {
-//                intake.flipUp();
-//            }
-//            if (controls.powerIntake.value()) {
-//                intake.motorRollerOff();
-//            } else {
-//                intake.motorRollerOnForward();
-//            }
-//        } else {
-//            intake.flipUp();
-//            // intake.intakeState.setRetractLinkagePositions(rRLinkagePos, lRLinkagePos);
-//            intake.extendoFullRetract();
-//            intake.motorRollerOff();
-//        }
-//        intake.updateTelemetry();
-
-        // this is testing gradual extendo
-        if(controls.extend.getTriggerValue() > controls.extend.getThreshold()) {
-            intake.extendoExtend(controls.extend.getTriggerValue());
-        }
-        if(controls.retract.getTriggerValue() > controls.retract.getThreshold()) {
-            intake.extendoRetract(controls.retract.getTriggerValue());
-            if (intake.intakeTooClose()) {
+        if (controls.switchExtendo.value()) {
+            // intake.intakeState.setExtendLinkagePositions(rExLinkagePos, lExLinkagePos);
+            intake.extendoFullExtend();
+            if (controls.pivot.value()) {
+                intake.flipDown();
+            } else {
                 intake.flipUp();
             }
+            if (controls.powerIntake.value()) {
+                intake.motorRollerOff();
+            } else {
+                intake.motorRollerOnForward();
+            }
+        } else {
+            intake.flipUp();
+            intake.motorRollerOff();
+            // intake.intakeState.setRetractLinkagePositions(rRLinkagePos, lRLinkagePos);
+            intake.extendoFullRetract();
+            if (controls.pushOutSample.value()) {
+                intake.pushOutSample();
+            } else {
+                intake.backRollerIdle();
+            }
         }
+        intake.updateTelemetry();
+
+        // this is testing gradual extendo
+//        if(controls.extend.getTriggerValue() > controls.extend.getThreshold()) {
+//            intake.extendoExtend(controls.extend.getTriggerValue());
+//        }
+//        if(controls.retract.getTriggerValue() > controls.retract.getThreshold()) {
+//            intake.extendoRetract(controls.retract.getTriggerValue());
+//            if (intake.intakeTooClose()) {
+//                intake.flipUp();
+//            }
+//        }
     }
 }
