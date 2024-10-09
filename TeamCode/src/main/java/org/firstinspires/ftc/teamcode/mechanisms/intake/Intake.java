@@ -9,6 +9,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
 public class Intake {
+    // TODO: REMESH ALL AXONS, NEUTRAL IS 0.5
     // motor spins the intake rollers
     // servo that pivots intake
     // servo that pushes samples out back
@@ -37,12 +38,13 @@ public class Intake {
     private boolean extendoIn;
     private double linkageMax = -1;
     private double linkageMin = .325;
+    private double linkageThreshold = -.00625; // full extension is -1, just multiplied 1.325 * .25 and subtracted it from min
 
 
 
     public Intake(HardwareMap hwMap, Telemetry telemetry, GamepadMapping controls) {
         // pivot (max) -> 0 on control hub
-        // left linkage (max) -> 1 on expansion hub
+        // left linkage (max) -> 2 on control hub
         // right linkage (max) -> 1 on control hub
         // back roller (mini) -> 0 on expansion hub
 
@@ -73,7 +75,7 @@ public class Intake {
     // This is for testing only :)
     public Intake(DcMotorEx rollerMotor, Servo pivotAxon, Servo backRollerServo, Servo rightExtendo, Servo leftExtendo) {
         this.rollerMotor = rollerMotor;
-        this.pivotAxon = pivotAxon; // axon programmer: 0-255, 0-1
+        this.pivotAxon = pivotAxon; // axon programmer: 0-255, .15-1\
         this.backRollerServo = backRollerServo; // 1 power
         this.rightExtendo = rightExtendo; // -1-.325, min is .325, 0-255
         this.leftExtendo = leftExtendo; // same as above
@@ -164,9 +166,14 @@ public class Intake {
         }
     }
 
-//    public void intakeTooClose(){
-//        if ()
-//    }
+    public boolean intakeTooClose(){
+        // min = .325, max = -1
+        // threshold is -.00625
+        if (rightExtendo.getPosition() >= linkageThreshold || leftExtendo.getPosition() >= linkageThreshold) {
+            return true;
+        }
+        return false;
+    }
 
     // TODO Ask James about adding a method for detection of wrong alliance color
 

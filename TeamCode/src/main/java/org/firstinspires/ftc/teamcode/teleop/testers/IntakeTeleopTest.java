@@ -100,5 +100,11 @@ public class IntakeTeleopTest extends OpMode {
         if(controls.extend.getTriggerValue() > controls.extend.getThreshold()) {
             intake.extendoExtend(controls.extend.getTriggerValue());
         }
+        if(controls.retract.getTriggerValue() > controls.retract.getThreshold()) {
+            intake.extendoRetract(controls.retract.getTriggerValue());
+            if (intake.intakeTooClose()) {
+                intake.flipUp();
+            }
+        }
     }
 }
