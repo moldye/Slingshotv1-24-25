@@ -15,6 +15,12 @@ import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
 
 public class Robot{
     // needs to be able to access all methods for all the mechanisms used in opmodes
+
+    // odo:
+    // 0 & 3 -> control hub for odo
+    // 0 control hub -> back
+    // 3 control hub -> side/right
+
     public DriveTrain drivetrain;
     // public ReLocalizer ultraSonics;
     public IMU imu;

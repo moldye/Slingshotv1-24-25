@@ -42,10 +42,11 @@ public class DriveTrain {
 
     public DriveTrain(HardwareMap hardwareMap, IMU imu, Telemetry telemetry, GamepadMapping controls){
 
-        // rightBack = 0
-        // rightFront = 1
-        // leftBack = 3
-        // leftFront = 2
+        // rightBack = 0 control
+        // rightFront = 1 control
+        // leftBack = 3 control
+        // leftFront = 2 control
+
         // slideLeft = expansion 3
         // slideRight = expansion 2
 

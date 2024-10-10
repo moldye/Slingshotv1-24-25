@@ -31,11 +31,10 @@ public class TransferTest extends OpMode {
 
     @Override
     public void loop() {
-
         controls.pivot.update(gamepad1.a);
         controls.switchExtendo.update(gamepad1.b);
         controls.powerIntake.update(gamepad1.x);
-        controls.pushOutSample.update(gamepad1.y);
+        controls.clearIntake.update(gamepad1.y);
 
         controls.joystickUpdate();
         dt.update();
@@ -53,12 +52,17 @@ public class TransferTest extends OpMode {
             } else {
                 intake.motorRollerOnForward();
             }
+            if (controls.clearIntake.value()) {
+                intake.pushOutSample();
+            } else {
+                intake.backRollerIdle();
+            }
         } else {
             intake.flipUp();
             intake.motorRollerOff();
             // intake.intakeState.setRetractLinkagePositions(rRLinkagePos, lRLinkagePos);
             intake.extendoFullRetract();
-            if (controls.pushOutSample.value()) {
+            if (controls.clearIntake.value()) {
                 intake.pushOutSample();
             } else {
                 intake.backRollerIdle();

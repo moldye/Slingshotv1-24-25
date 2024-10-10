@@ -99,13 +99,13 @@ public class Intake {
 
 
     public void motorRollerOnForward() {
-        // TODO trigger held, full speed, mini no roll
         rollerMotor.setPower(-1);
     }
 
-    public void motorRollerOnBackwards() {
-        // TODO trigger held, full speed backwards, mini should also roll
-        rollerMotor.setPower(.2);
+    public void clearIntake() {
+        // should push everything out the front of the intake to clear it, both of these values are technically backwards
+        rollerMotor.setPower(1);
+        backRollerServo.setPosition(-1);
     }
 
     public void motorRollerOff() {
