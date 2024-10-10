@@ -32,7 +32,7 @@ public class DriveConstants {
      * If using the built-in motor velocity PID, update MOTOR_VELO_PID with the tuned coefficients
      * from DriveVelocityPIDTuner.
      */
-    public static final boolean RUN_USING_ENCODER = true;
+    public static final boolean RUN_USING_ENCODER = false;
     public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(12, 0, 0,
             13);
 
@@ -47,7 +47,7 @@ public class DriveConstants {
     public static double WHEEL_RADIUS = 1.88976; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
     //TODO: Remeasure Track Width
-    public static double TRACK_WIDTH = 16.9; // in
+    public static double TRACK_WIDTH = 12.75; // in
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -75,9 +75,9 @@ public class DriveConstants {
      * Adjust the orientations here to match your robot. See the FTC SDK documentation for details.
      */
     public static RevHubOrientationOnRobot.LogoFacingDirection LOGO_FACING_DIR =
-            RevHubOrientationOnRobot.LogoFacingDirection.LEFT;
+            RevHubOrientationOnRobot.LogoFacingDirection.UP;
     public static RevHubOrientationOnRobot.UsbFacingDirection USB_FACING_DIR =
-            RevHubOrientationOnRobot.UsbFacingDirection.UP;
+            RevHubOrientationOnRobot.UsbFacingDirection.LEFT;
 
 
     public static double encoderTicksToInches(double ticks) {
