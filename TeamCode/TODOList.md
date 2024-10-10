@@ -1,5 +1,7 @@
 # TODO List for Mechanisms & Code
-- Teleop Mechanisms, Extendo, Intake, Slides, Top Bucket thing, Specimen Claw
-- Gamepad Mapping w/ Viktor & Souren -> figure out robot centric & add locked strafing?
-- Control System (nicer FSM)
-- Auton Storage for pos? or just use localizers?
+- Specimen Claw
+- Intake pivots back and then forward -> change with axon?
+- Add auton actions
+- Re-Add back roller pos to Intake Constants
+- New Controls for Trigger
+- Testing Transfer Class for Outtake
