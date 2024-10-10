@@ -4,6 +4,7 @@ import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
@@ -20,13 +21,14 @@ public class Outtake {
     private int numOuttakeButtonPressed = 0;
 
     // BUCKET
-    // private Servo bucketFlipAxon;
-    // TODO: FINISH OUTTAKE FSM WITH BUCKET WHEN CAD'S DONE
+    private Servo bucketServo;
 
     // OTHER
     Telemetry telemetry;
     GamepadMapping controls;
     private boolean outtakeDTSlow = false;
+
+    OuttakeConstants outtakeState;
 
     public Outtake(HardwareMap hardwareMap, int direction, double inP, double inI, double inD, double inF, Telemetry telemetry,
     GamepadMapping controls){
@@ -34,6 +36,8 @@ public class Outtake {
         outtakeSlideRight = hardwareMap.get(DcMotorEx.class, "slideRight");
         outtakeSlideLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         outtakeSlideRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
+        bucketServo = hardwareMap.get(Servo.class, "bucketServo");
 
         if(direction == 0){
             outtakeSlideLeft.setDirection(DcMotorEx.Direction.FORWARD);
@@ -53,10 +57,11 @@ public class Outtake {
         this.controls = controls;
     }
 
-    // this is for testing only
-    public Outtake(DcMotorEx slidesMotorLeft, DcMotorEx slidesMotorRight) {
+    // this is for J-Unit testing only
+    public Outtake(DcMotorEx slidesMotorLeft, DcMotorEx slidesMotorRight, Servo bucketServo) {
         this.outtakeSlideLeft = slidesMotorLeft;
         this.outtakeSlideRight = slidesMotorRight;
+        this.bucketServo = bucketServo;
     }
 
     public void moveLeftTicks(int target){
@@ -118,7 +123,14 @@ public class Outtake {
         outtakeSlideRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    // TODO Slow down robot as slides go up (or make extendo go out a bit) so extendo doesn't tip
+    public void bucketToReadyForTransfer() {
+        bucketServo.setPosition(OuttakeConstants.BucketPositions.TRANSFER_READY.getBucketPos());
+    }
+
+    public void bucketDeposit() {
+        bucketServo.setPosition(OuttakeConstants.BucketPositions.DEPOSIT.getBucketPos());
+    }
+
 
     public void update() {
         switch(slideState) {

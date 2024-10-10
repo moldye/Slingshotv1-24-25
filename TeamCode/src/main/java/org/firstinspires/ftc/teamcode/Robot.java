@@ -54,7 +54,7 @@ public class Robot{
 
     public void update() {
         drivetrain.update();
-        //outtake.update();
+        outtake.update();
         intake.update();
     }
 

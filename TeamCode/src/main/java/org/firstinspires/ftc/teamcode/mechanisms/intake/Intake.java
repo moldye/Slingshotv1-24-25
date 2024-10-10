@@ -9,7 +9,6 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
 public class Intake {
-    // TODO: REMESH ALL AXONS, NEUTRAL IS 0.5
     // motor spins the intake rollers
     // servo that pivots intake
     // servo that pushes samples out back
@@ -114,7 +113,7 @@ public class Intake {
     }
 
     public void extendoExtend(double triggerValue) {
-        // TODO this is a button
+        // TODO this is a button (no need for a retract one)
         // max pos is -1
         // at .325 -> .225
         double newPos = rightExtendo.getPosition() - .1; // * (triggerValue * 10) / 5;

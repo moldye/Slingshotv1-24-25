@@ -1,7 +1,15 @@
 # TODO List for Mechanisms & Code
-- Specimen Claw
-- Intake pivots back and then forward -> change with axon?
-- Add auton actions
-- Re-Add back roller pos to Intake Constants
-- New Controls for Trigger
-- Testing Transfer Class for Outtake
+KEY: 
+- Q = Quick to Finish
+- IP = In Progress
+- B = Bread's got it
+- L = Long to Finish
+- R = Needs Refactoring
+- U = Uncertain -> Needs Clarification
+
+1) Testing Transfer Class for Outtake - B, IP
+2) New Controls for Trigger - B
+3) Intake pivots back and then forward -> change with axon? - U
+4) Add auton actions - Q
+5) Re-Add back roller pos to Intake Constants - Q, B
+6) Specimen Claw - U, B
