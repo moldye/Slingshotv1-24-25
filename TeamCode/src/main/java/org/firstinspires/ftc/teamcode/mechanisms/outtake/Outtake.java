@@ -11,6 +11,10 @@ import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
 public class Outtake {
 
+    // extendo out a bit 4-5 in
+    // lift up and tilt a bit to keep sample in
+    // one button for high bar one button for low bar
+
     // SLIDES
     private PIDController controller;
     private DcMotorEx outtakeSlideRight;
@@ -21,7 +25,7 @@ public class Outtake {
     private int numOuttakeButtonPressed = 0;
 
     // BUCKET
-    private Servo bucketServo;
+    // private Servo bucketServo;
 
     // OTHER
     Telemetry telemetry;
@@ -37,7 +41,7 @@ public class Outtake {
         outtakeSlideLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         outtakeSlideRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        bucketServo = hardwareMap.get(Servo.class, "bucketServo");
+        // bucketServo = hardwareMap.get(Servo.class, "bucketServo");
 
         if(direction == 0){
             outtakeSlideLeft.setDirection(DcMotorEx.Direction.FORWARD);
@@ -61,7 +65,7 @@ public class Outtake {
     public Outtake(DcMotorEx slidesMotorLeft, DcMotorEx slidesMotorRight, Servo bucketServo) {
         this.outtakeSlideLeft = slidesMotorLeft;
         this.outtakeSlideRight = slidesMotorRight;
-        this.bucketServo = bucketServo;
+        // this.bucketServo = bucketServo;
     }
 
     public void moveLeftTicks(int target){
@@ -123,13 +127,13 @@ public class Outtake {
         outtakeSlideRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    public void bucketToReadyForTransfer() {
-        bucketServo.setPosition(OuttakeConstants.BucketPositions.TRANSFER_READY.getBucketPos());
-    }
-
-    public void bucketDeposit() {
-        bucketServo.setPosition(OuttakeConstants.BucketPositions.DEPOSIT.getBucketPos());
-    }
+//    public void bucketToReadyForTransfer() {
+//        bucketServo.setPosition(OuttakeConstants.BucketPositions.TRANSFER_READY.getBucketPos());
+//    }
+//
+//    public void bucketDeposit() {
+//        bucketServo.setPosition(OuttakeConstants.BucketPositions.DEPOSIT.getBucketPos());
+//    }
 
 
     public void update() {

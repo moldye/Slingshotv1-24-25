@@ -33,7 +33,7 @@ public class IntakeTeleopTest extends OpMode {
         controls.pivot.update(gamepad1.a);
         controls.switchExtendo.update(gamepad1.b);
         controls.powerIntake.update(gamepad1.x);
-        controls.pushOutSample.update(gamepad1.y);
+        controls.transfer.update(gamepad1.y);
 
         controls.joystickUpdate();
         dt.update();
@@ -56,8 +56,8 @@ public class IntakeTeleopTest extends OpMode {
             intake.motorRollerOff();
             // intake.intakeState.setRetractLinkagePositions(rRLinkagePos, lRLinkagePos);
             intake.extendoFullRetract();
-            if (controls.pushOutSample.value()) {
-                intake.pushOutSample();
+            if (controls.transfer.value()) {
+                intake.transferSample();
             } else {
                 intake.backRollerIdle();
             }

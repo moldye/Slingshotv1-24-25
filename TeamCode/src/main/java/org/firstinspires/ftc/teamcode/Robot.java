@@ -21,6 +21,24 @@ public class Robot{
     // 0 control hub -> back
     // 3 control hub -> side/right
 
+    // intake:
+    // pivot (max) -> 1 on expansion hub
+    // left linkage (max) -> 1 on control hub
+    // right linkage (max) -> 0 on control hub
+    // back roller (mini) -> 0 on expansion hub
+    // roller motor -> 1 on expansion hub
+    // analog encoder -> 0 on expansion analog ports
+
+    // drivetrain:
+    // rightBack = 0 control
+    // rightFront = 1 control
+    // leftBack = 3 control
+    // leftFront = 2 control
+
+    // outtake:
+    // slideLeft = expansion 3
+    // slideRight = expansion 2
+
     public DriveTrain drivetrain;
     // public ReLocalizer ultraSonics;
     public IMU imu;

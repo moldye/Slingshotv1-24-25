@@ -41,16 +41,8 @@ public class DriveTrain {
     private double slowMultiplier = 1; // TODO change to .25 for slow mode when you do the outtake here
 
     public DriveTrain(HardwareMap hardwareMap, IMU imu, Telemetry telemetry, GamepadMapping controls){
-
-        // rightBack = 0 control
-        // rightFront = 1 control
-        // leftBack = 3 control
-        // leftFront = 2 control
-
-        // slideLeft = expansion 3
-        // slideRight = expansion 2
-
         // motors for slingshot bot
+
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
         leftFront.setDirection(DcMotorEx.Direction.FORWARD);
         leftFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);

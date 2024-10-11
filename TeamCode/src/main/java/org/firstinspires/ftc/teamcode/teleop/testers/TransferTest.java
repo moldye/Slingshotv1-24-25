@@ -27,6 +27,7 @@ public class TransferTest extends OpMode {
         intake = robot.intake;
         outtake = robot.outtake;
         dt = robot.drivetrain;
+        intake.extendoFullRetract();
     }
 
     @Override
@@ -34,25 +35,19 @@ public class TransferTest extends OpMode {
         controls.pivot.update(gamepad1.a);
         controls.switchExtendo.update(gamepad1.b);
         controls.powerIntake.update(gamepad1.x);
-        controls.clearIntake.update(gamepad1.y);
+        controls.transfer.update(gamepad1.y);
 
         controls.joystickUpdate();
         dt.update();
 
         if (controls.switchExtendo.value()) {
-            // intake.intakeState.setExtendLinkagePositions(rExLinkagePos, lExLinkagePos);
             intake.extendoFullExtend();
             if (controls.pivot.value()) {
                 intake.flipDown();
             } else {
                 intake.flipUp();
             }
-            if (controls.powerIntake.value()) {
-                intake.motorRollerOff();
-            } else {
-                intake.motorRollerOnForward();
-            }
-            if (controls.clearIntake.value()) {
+            if (controls.transfer.value()) {
                 intake.pushOutSample();
             } else {
                 intake.backRollerIdle();
@@ -62,23 +57,13 @@ public class TransferTest extends OpMode {
             intake.motorRollerOff();
             // intake.intakeState.setRetractLinkagePositions(rRLinkagePos, lRLinkagePos);
             intake.extendoFullRetract();
-            if (controls.clearIntake.value()) {
-                intake.pushOutSample();
+            if (controls.transfer.value()) {
+                intake.transferSample();
             } else {
                 intake.backRollerIdle();
+                intake.motorRollerOff();
             }
         }
         intake.updateTelemetry();
-
-        // this is testing gradual extendo
-//        if(controls.extend.getTriggerValue() > controls.extend.getThreshold()) {
-//            intake.extendoExtend(controls.extend.getTriggerValue());
-//        }
-//        if(controls.retract.getTriggerValue() > controls.retract.getThreshold()) {
-//            intake.extendoRetract(controls.retract.getTriggerValue());
-//            if (intake.intakeTooClose()) {
-//                intake.flipUp();
-//            }
-//        }
     }
 }
