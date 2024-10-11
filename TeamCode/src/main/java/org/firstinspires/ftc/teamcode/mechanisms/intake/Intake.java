@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.mechanisms.intake;
 
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -24,6 +24,7 @@ public class Intake {
     public Servo backRollerServo; // set pos to 0.5 to get it to stop
     public Servo leftExtendo; // axon
     public Servo rightExtendo; // axon
+    //private AnalogInput pivotAnalog;
 
     // OTHER
     // ----------
@@ -39,20 +40,13 @@ public class Intake {
     private double linkageMin = .325;
     private double linkageThreshold = -.00625; // full extension is -1, just multiplied 1.325 * .25 and subtracted it from min
 
-
-
     public Intake(HardwareMap hwMap, Telemetry telemetry, GamepadMapping controls) {
-        // pivot (max) -> 1 on expansion hub
-        // left linkage (max) -> 1 on control hub
-        // right linkage (max) -> 0 on control hub
-        // back roller (mini) -> 0 on expansion hub
-
-        // roller motor -> 1 on expansion hub
         rollerMotor = hwMap.get(DcMotorEx.class, "rollerMotor");
         pivotAxon = hwMap.get(Servo.class, "pivotAxon");
         backRollerServo = hwMap.get(Servo.class, "backRoller");
-        rightExtendo = hwMap.get(Servo.class, "rightLinkage"); // both these servos axons
-        leftExtendo = hwMap.get(Servo.class, "leftLinkage"); // reverse this one w/ servo programmer
+        rightExtendo = hwMap.get(Servo.class, "rightLinkage");
+        leftExtendo = hwMap.get(Servo.class, "leftLinkage");
+        //pivotAnalog = hwMap.get(AnalogInput.class, "pivotAnalog");
 
         rollerMotor.setDirection(DcMotorEx.Direction.FORWARD);
         rollerMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
@@ -66,9 +60,6 @@ public class Intake {
 
         pivotUp = true; // true initially
         extendoIn = true;
-
-//        rightExtendo.setPosition(.325);
-//        leftExtendo.setPosition(.325);
     }
 
     // This is for testing only :)
@@ -79,6 +70,15 @@ public class Intake {
         this.rightExtendo = rightExtendo; // -1-.325, min is .325, 0-255
         this.leftExtendo = leftExtendo; // same as above
     }
+
+//    public double calculateFlipWithAnalog() {
+//        // get the voltage of our analog line
+//        // divide by 3.3 (the max voltage) to get a value between 0 and 1
+//        // multiply by 360 to convert it to 0 to 360 degrees
+//        // TODO: test this with a class, likely relative encoder
+//        double position = pivotAnalog.getVoltage() / 3.3 * 360;
+//        return position;
+//    }
 
     public void flipDown() {
         pivotAxon.setPosition(IntakeConstants.IntakeState.INTAKING.pivotPos()); // this will need to be tuned
@@ -91,28 +91,29 @@ public class Intake {
     }
 
     public void pushOutSample() {
-        backRollerServo.setPosition(1);
+        // this happens when we're extended
+        backRollerServo.setPosition(IntakeConstants.IntakeState.WRONG_ALLIANCE_COLOR_SAMPLE.backRollerPos());
     }
     public void backRollerIdle() {
-        backRollerServo.setPosition(0.5);
-    }
-
+        backRollerServo.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.backRollerPos());}
 
     public void motorRollerOnForward() {
         rollerMotor.setPower(-1);
     }
 
-    public void clearIntake() {
-        // should push everything out the front of the intake to clear it, both of these values are technically backwards
-        rollerMotor.setPower(1);
-        backRollerServo.setPosition(-1);
+    public void transferSample() {
+        if (extendoIn && pivotUp) {
+            // should push everything out the front of the intake to clear it, both of these values are technically backwards
+            rollerMotor.setPower(-1);
+            backRollerServo.setPosition(IntakeConstants.IntakeState.TRANSFER.backRollerPos());
+        }
     }
 
     public void motorRollerOff() {
         rollerMotor.setPower(0);
     }
 
-    public void extendoExtend(double triggerValue) {
+    public void extendoExtend() {
         // TODO this is a button (no need for a retract one)
         // max pos is -1
         // at .325 -> .225
@@ -151,13 +152,6 @@ public class Intake {
         extendoFullRetract();
     }
 
-    public void transferSample() {
-        if (extendoIn && pivotUp) {
-            // run roller motor backwards (cause intake is flipped up) -> I think, ask about this, could also be back roller
-            rollerMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-            rollerMotor.setPower(1);
-        }
-    }
     public boolean intakeTooClose(){
         // min = .325, max = -1
         // threshold is -.00625
@@ -173,10 +167,10 @@ public class Intake {
         switch(intakeState){
             case FULLY_RETRACTED:
                 // this may automatically start switching to extending?
-                if (controls.extend.getTriggerValue() > controls.extend.getThreshold()) {
+                if (controls.extend.value()) {
                     intakeState = IntakeConstants.IntakeState.EXTENDING;
                     // may need to add a button lock here? -> should already lock
-                } else if (controls.retract.getTriggerValue() > controls.retract.getThreshold()){
+                } else if (controls.retract.value()){
                     intakeState = IntakeConstants.IntakeState.RETRACTING;
                 }
                 break;
@@ -189,7 +183,7 @@ public class Intake {
                 }
                 break;
             case EXTENDING:
-                extendoExtend(controls.extend.getTriggerValue());
+                // extendoExtend(controls.extend.getTriggerValue());
                 intakeState = IntakeConstants.IntakeState.INTAKING;
                 if (controls.botToBaseState.value() && pivotUp) {
                     intakeState = IntakeConstants.IntakeState.BASE_STATE;
@@ -198,7 +192,7 @@ public class Intake {
             case INTAKING:
                 flipDown();
                 motorRollerOnForward();
-                if (controls.retract.getTriggerValue() > controls.retract.getThreshold()) {
+                if (controls.retract.value()) {
                     intakeState = IntakeConstants.IntakeState.RETRACTING;
                 }
                 if (controls.botToBaseState.value() && pivotUp) {
@@ -234,7 +228,7 @@ public class Intake {
     public void updateTelemetry() {
         telemetry.addData("Right Linkage Pos", rightExtendo.getPosition());
         telemetry.addData("Left Linkage Pos", leftExtendo.getPosition());
-        telemetry.addData("Pivot Pos", pivotAxon.getPosition());
+        // telemetry.addData("Pivot pos (analog):", calculateFlipWithAnalog());
         telemetry.update();
     }
 

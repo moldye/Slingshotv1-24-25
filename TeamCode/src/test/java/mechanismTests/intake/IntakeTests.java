@@ -103,12 +103,9 @@ public class IntakeTests {
 
     @Test
     public void testGradualExtend() {
-        // TODO: implement this tmrw
-        // getPos should work bc axons :D
-        double triggerVal = 0.8;
         when(rightExtendo.getPosition()).thenReturn(0.0);
-        double newPos = rightExtendo.getPosition() + .1 * (triggerVal * 10) / 5; // tune this val
-        intake.extendoExtend(triggerVal);
+        double newPos = rightExtendo.getPosition() + .1; // tune this val
+        intake.extendoExtend();
         verify(rightExtendo).setPosition(newPos);
     }
 }
