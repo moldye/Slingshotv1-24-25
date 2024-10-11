@@ -4,7 +4,8 @@ public class IntakeConstants {
 
     // pivoted up, pivoted down
     // axon programmed for 0-255, 66 PMW
-    private static final double[] pivotPositions = {.2, .92};
+    //.4 is to move the intake out of the way of outtake moving up during scoring state
+    private static final double[] pivotPositions = {.2, .92, .4};
 
     // idle back roller, back roller push out
     // don't think we need this, CR Servo works fine
