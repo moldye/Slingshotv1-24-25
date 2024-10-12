@@ -125,7 +125,6 @@ public class Intake {
             rightExtendo.setPosition(linkageMax);
             leftExtendo.setPosition(linkageMax);
         }
-
         extendoIn = false;
     }
 
@@ -147,7 +146,7 @@ public class Intake {
 
         flipUp();
 
-        backRollerServo.setPosition(0.5);
+        backRollerServo.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.backRollerPos());
 
         extendoFullRetract();
     }
@@ -183,7 +182,7 @@ public class Intake {
                 }
                 break;
             case EXTENDING:
-                // extendoExtend(controls.extend.getTriggerValue());
+                extendoExtend();
                 intakeState = IntakeConstants.IntakeState.INTAKING;
                 if (controls.botToBaseState.value() && pivotUp) {
                     intakeState = IntakeConstants.IntakeState.BASE_STATE;
@@ -218,7 +217,7 @@ public class Intake {
                 intakeState = IntakeConstants.IntakeState.FULLY_RETRACTED;
                 break;
             case TRANSFER:
-                // automatically, if right colored sample, rolls it into the bucket
+                // automatically, already verified a right colored sample, rolls it into the bucket
                 transferSample();
                 break;
         }
