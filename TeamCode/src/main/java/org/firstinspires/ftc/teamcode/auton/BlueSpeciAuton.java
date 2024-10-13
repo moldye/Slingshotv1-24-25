@@ -1,17 +1,13 @@
 package org.firstinspires.ftc.teamcode.auton;
 
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.getMotorVelocityF;
-
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 
-public class blueSpeciAuton extends LinearOpMode {
+public class BlueSpeciAuton extends LinearOpMode {
     SampleMecanumDrive drive;
     boolean isBlue = true; //Todo
     boolean nextToBasket = false;//Todo
@@ -49,11 +45,6 @@ public class blueSpeciAuton extends LinearOpMode {
                 .back(5)
                 .waitSeconds(.5)
                 .forward(5)
-
-
-
-
-
 
                 //get sample
                 .splineToSplineHeading(new Pose2d(25,-50,Math.toRadians(-60)),Math.toRadians(0))

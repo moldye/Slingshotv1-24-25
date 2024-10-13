@@ -119,7 +119,6 @@ public class Intake {
     }
 
     public void extendoExtend() {
-        // TODO this is a button (no need for a retract one)
         // max pos is -1
         // at .325 -> .225
         double newPos = rightExtendo.getPosition() - .1; // * (triggerValue * 10) / 5;
@@ -173,7 +172,6 @@ public class Intake {
                 // this may automatically start switching to extending?
                 if (controls.extend.value()) {
                     intakeState = IntakeConstants.IntakeState.EXTENDING;
-                    // may need to add a button lock here? -> should already lock
                 } else if (controls.retract.value()){
                     intakeState = IntakeConstants.IntakeState.RETRACTING;
                 }
@@ -208,8 +206,7 @@ public class Intake {
                 motorRollerOff();
                 extendoFullRetract();
                 // we may need to add an if statement here so it only does this when a sample is actually in the intake, not anytime we retract slides
-                transferSample();
-                intakeState = IntakeConstants.IntakeState.FULLY_RETRACTED;
+                intakeState = IntakeConstants.IntakeState.TRANSFER;
                 break;
             case WRONG_ALLIANCE_COLOR_SAMPLE:
                 // probably need to do this for some amount of time, test later
@@ -224,6 +221,7 @@ public class Intake {
             case TRANSFER:
                 // automatically, already verified a right colored sample, rolls it into the bucket
                 transferSample();
+                intakeState = IntakeConstants.IntakeState.FULLY_RETRACTED;
                 break;
         }
         telemetry.addData("intakeState:", intakeState);

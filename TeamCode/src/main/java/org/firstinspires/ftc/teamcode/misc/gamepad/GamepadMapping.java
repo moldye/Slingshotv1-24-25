@@ -35,16 +35,14 @@ public class GamepadMapping {
 
     // OUTTAKE
     // --------------
-    public static Toggle resetSlides;
     public static Toggle bucketRelease;
-
-    public static boolean outtakeSlidesButton;
+    public static Toggle highBasket;
+    public static Toggle lowBasket;
 
     // SCORING
     // --------------
     public static Toggle latchSpecimen;
     public static Toggle switchClaw;
-
     public static boolean lock90 = false;
     public static boolean lock180 = false;
     public static boolean lock270 = false;
@@ -53,7 +51,6 @@ public class GamepadMapping {
     // OTHER
     // --------------
     public static Toggle botToBaseState;
-    public static Toggle pivot;
 
     // TESTING BUTTONS
     // NOT TO BE USED FOR COMP
@@ -64,6 +61,7 @@ public class GamepadMapping {
     public static Toggle transfer;
     public static Toggle deposit;
     public static Toggle flipBucket;
+    public static Toggle pivot;
 
     public GamepadMapping(Gamepad gamepad1, Gamepad gamepad2) {
         this.gamepad1 = gamepad1;
@@ -72,8 +70,9 @@ public class GamepadMapping {
         extend = new Toggle(false);
         retract = new Toggle(false);
 
-        resetSlides = new Toggle(false); // this might actually need to be true, idk
         bucketRelease = new Toggle(false);
+        highBasket = new Toggle(false);
+        lowBasket = new Toggle(false);
 
         latchSpecimen = new Toggle(false);
         switchClaw = new Toggle(false);
@@ -96,8 +95,8 @@ public class GamepadMapping {
         extend.update(gamepad1.x);
         retract.update(gamepad1.y);
 
-        outtakeSlidesButton = gamepad1.right_bumper; // this may not work bc of goofy loop time, idk
-        resetSlides.update(gamepad1.left_bumper);
+        lowBasket.update(gamepad1.right_bumper); // this may not work bc of goofy loop time, idk
+        highBasket.update(gamepad1.left_bumper);
         bucketRelease.update(gamepad1.a);
 
         latchSpecimen.update(gamepad2.a);

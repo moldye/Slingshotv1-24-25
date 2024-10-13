@@ -30,8 +30,7 @@ public class Outtake {
     // OTHER
     Telemetry telemetry;
     GamepadMapping controls;
-    private boolean outtakeDTSlow = false;
-
+    private static boolean outtakeDTSlow = false;
     OuttakeConstants outtakeState;
 
     public Outtake(HardwareMap hardwareMap, int direction, double inP, double inI, double inD, double inF, Telemetry telemetry,
@@ -144,22 +143,25 @@ public class Outtake {
 
 
     public void update() {
+        // going to need ElapsedTime likely
         switch(slideState) {
             case RETRACTED:
                 updateOuttakeSlides();
                 break;
             case LOW_BASKET:
                 extendToLowBasket();
+                bucketDeposit();
                 updateOuttakeSlides();
                 break;
             case HIGH_BASKET:
                 extendToHighBasket();
+                bucketDeposit();
                 updateOuttakeSlides();
                 break;
-            case SPECIMEN_HIGH_RACK:
-                extendToSpecimenHighRack();
-                updateOuttakeSlides();
-                break;
+//            case SPECIMEN_HIGH_RACK:
+//                extendToSpecimenHighRack();
+//                updateOuttakeSlides();
+//                break;
             case BASE_STATE:
                 resetHardware();
                 slideState = OuttakeConstants.SlidePositions.RETRACTED;
@@ -167,7 +169,7 @@ public class Outtake {
         }
     }
 
-    public boolean getOuttakeDTSlow() {
+    public static boolean getOuttakeDTSlow() {
         return outtakeDTSlow;
     }
 
@@ -175,21 +177,17 @@ public class Outtake {
         if (controls.botToBaseState.value()) {
             slideState = OuttakeConstants.SlidePositions.BASE_STATE;
         }
-        if (controls.resetSlides.value()) {
-            returnToRetracted();
+        if (controls.highBasket.value()) {
+            outtakeDTSlow = true;
+            slideState = OuttakeConstants.SlidePositions.HIGH_BASKET;
+        } else {
             slideState = OuttakeConstants.SlidePositions.RETRACTED;
         }
-        if (controls.outtakeSlidesButton) {
+        if (controls.lowBasket.value()) {
             outtakeDTSlow = true;
-            numOuttakeButtonPressed += 1;
-        }
-        if (numOuttakeButtonPressed == 1) {
             slideState = OuttakeConstants.SlidePositions.LOW_BASKET;
-        } else if (numOuttakeButtonPressed == 2) {
-            slideState = OuttakeConstants.SlidePositions.HIGH_BASKET;
-        } else if (numOuttakeButtonPressed == 3) {
-            slideState = OuttakeConstants.SlidePositions.SPECIMEN_HIGH_RACK;
-            numOuttakeButtonPressed = 0;
+        } else {
+            slideState = OuttakeConstants.SlidePositions.RETRACTED;
         }
     }
 }
