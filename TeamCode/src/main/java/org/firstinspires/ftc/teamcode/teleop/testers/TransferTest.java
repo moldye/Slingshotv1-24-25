@@ -36,6 +36,8 @@ public class TransferTest extends OpMode {
         controls.switchExtendo.update(gamepad1.b);
         controls.powerIntake.update(gamepad1.x);
         controls.transfer.update(gamepad1.y);
+        controls.deposit.update(gamepad1.left_bumper);
+        controls.flipBucket.update(gamepad1.right_bumper);
 
         controls.joystickUpdate();
         dt.update();
@@ -43,7 +45,7 @@ public class TransferTest extends OpMode {
         if (controls.switchExtendo.value()) {
             intake.extendoFullExtend();
             if (controls.pivot.value()) {
-                intake.flipDown();
+                intake.flipDownFull();
             } else {
                 intake.flipUp();
             }
@@ -63,6 +65,16 @@ public class TransferTest extends OpMode {
                 intake.backRollerIdle();
                 intake.motorRollerOff();
             }
+        }
+        if (controls.deposit.value()) {
+            outtake.extendToHighBasket();
+            if (controls.flipBucket.value()) {
+                outtake.bucketDeposit();
+            } else {
+                outtake.bucketToReadyForTransfer();
+            }
+        } else {
+            outtake.returnToRetracted();
         }
         intake.updateTelemetry();
     }

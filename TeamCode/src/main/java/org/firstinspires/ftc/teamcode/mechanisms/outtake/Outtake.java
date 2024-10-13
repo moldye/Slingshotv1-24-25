@@ -25,7 +25,7 @@ public class Outtake {
     private int numOuttakeButtonPressed = 0;
 
     // BUCKET
-    // private Servo bucketServo;
+    public Servo bucketServo;
 
     // OTHER
     Telemetry telemetry;
@@ -41,7 +41,7 @@ public class Outtake {
         outtakeSlideLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         outtakeSlideRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        // bucketServo = hardwareMap.get(Servo.class, "bucketServo");
+        bucketServo = hardwareMap.get(Servo.class, "bucketServo");
 
         if(direction == 0){
             outtakeSlideLeft.setDirection(DcMotorEx.Direction.FORWARD);
@@ -59,6 +59,7 @@ public class Outtake {
 
         this.telemetry = telemetry;
         this.controls = controls;
+
     }
 
     // this is for J-Unit testing only
@@ -83,6 +84,12 @@ public class Outtake {
         double power = pid + f;
         outtakeSlideRight.setPower(power);
     }
+
+    public void moveTicks(int target) {
+        moveRightTicks(target);
+        moveLeftTicks(target);
+    }
+
     public void changePIDF(double inP, double inI, double inD, double inF){
         p = inP; i = inI; d = inD; f = inF;
     }
@@ -127,13 +134,13 @@ public class Outtake {
         outtakeSlideRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-//    public void bucketToReadyForTransfer() {
-//        bucketServo.setPosition(OuttakeConstants.BucketPositions.TRANSFER_READY.getBucketPos());
-//    }
-//
-//    public void bucketDeposit() {
-//        bucketServo.setPosition(OuttakeConstants.BucketPositions.DEPOSIT.getBucketPos());
-//    }
+    public void bucketToReadyForTransfer() {
+        bucketServo.setPosition(OuttakeConstants.BucketPositions.TRANSFER_READY.getBucketPos());
+    }
+
+    public void bucketDeposit() {
+        bucketServo.setPosition(OuttakeConstants.BucketPositions.DEPOSIT.getBucketPos());
+    }
 
 
     public void update() {

@@ -22,8 +22,6 @@ public class DriveTrain {
 
     private Telemetry telemetry;
     private GamepadMapping controls;
-    private Robot robot;
-    //private Outtake outtake;
 
     private double newX = 0;
     private double newY = 0;
@@ -38,7 +36,7 @@ public class DriveTrain {
 
     private DriveMode driveMode;
     private boolean lockedHeadingMode = false;
-    private double slowMultiplier = 1; // TODO change to .25 for slow mode when you do the outtake here
+    private double slowMultiplier = 1;
 
     public DriveTrain(HardwareMap hardwareMap, IMU imu, Telemetry telemetry, GamepadMapping controls){
         // motors for slingshot bot
@@ -82,7 +80,7 @@ public class DriveTrain {
         this.controls = controls;
 
         driveMode = DriveMode.ROBO_CENTRIC;
-        //outtake = robot.outtake;
+        // outtake = robot.outtake;
     }
 
     // this is for testing, only used by testing methods
@@ -130,8 +128,8 @@ public class DriveTrain {
         // but only if at least one is out of the range [-1, 1]
         double denominator = Math.max(Math.abs(drive) + Math.abs(strafe) + Math.abs(turn), 1);
 
-//        if (!outtake.getOuttakeDTSlow()) {
-//            slowMultiplier = 1;
+//        if (outtake.getOuttakeDTSlow()) {
+//            slowMultiplier = 0.25;
 //        }
 
         leftFront.setPower(((drive + strafe + turn) / denominator) * slowMultiplier);

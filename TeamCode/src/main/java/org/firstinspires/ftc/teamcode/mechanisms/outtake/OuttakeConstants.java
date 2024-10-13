@@ -1,7 +1,12 @@
 package org.firstinspires.ftc.teamcode.mechanisms.outtake;
 
 public class OuttakeConstants {
-    private static double[] bucketPositions = {0, 1}; // tune (REMEMBER: 0.5 is NEUTRAL)
+    // deposit: 0
+    // tilt: .5477610423136522
+    // transfer ready: .7231126346979301
+
+    // transfer ready, tilt, deposit
+    private static double[] bucketPositions = {.7231126346979301, .5477610423136522, 0};
     public enum SlidePositions {
         RETRACTED,
         LOW_BASKET, // probably could work for hang
@@ -12,17 +17,13 @@ public class OuttakeConstants {
 
     public enum BucketPositions {
         TRANSFER_READY(bucketPositions[0]),
-        TRANSFERING(),
-        DEPOSIT(bucketPositions[1]);
+        TRANSFERING(bucketPositions[1]),
+        DEPOSIT(bucketPositions[2]);
 
         private final double bucketPos;
 
         BucketPositions(double bucketPos) {
             this.bucketPos = bucketPos;
-        }
-
-        BucketPositions() {
-            this.bucketPos = 0;
         }
 
         public double getBucketPos() {

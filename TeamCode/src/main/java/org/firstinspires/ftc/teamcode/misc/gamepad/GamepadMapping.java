@@ -62,6 +62,8 @@ public class GamepadMapping {
     public static Toggle powerIntake;
     public static Toggle switchExtendo;
     public static Toggle transfer;
+    public static Toggle deposit;
+    public static Toggle flipBucket;
 
     public GamepadMapping(Gamepad gamepad1, Gamepad gamepad2) {
         this.gamepad1 = gamepad1;
@@ -84,6 +86,8 @@ public class GamepadMapping {
         powerIntake = new Toggle(false);
         switchExtendo = new Toggle(false);
         transfer = new Toggle(false);
+        deposit = new Toggle(false);
+        flipBucket = new Toggle(false);
     }
 
     public void update() {

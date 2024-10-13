@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.mechanisms.intake;
 
 public class IntakeConstants {
 
-    // pivoted up, pivoted down, transfer pos
+    // pivoted up, pivoted down, transfer pos, pivot down initial
     // axon programmed for 0-255, 66 PMW
     private static final double[] pivotPositions = {0, .92, .2};
 

@@ -24,7 +24,7 @@ public class Intake {
     public Servo backRollerServo; // set pos to 0.5 to get it to stop
     public Servo leftExtendo; // axon
     public Servo rightExtendo; // axon
-    //private AnalogInput pivotAnalog;
+    private AnalogInput pivotAnalog;
 
     // OTHER
     // ----------
@@ -46,7 +46,7 @@ public class Intake {
         backRollerServo = hwMap.get(Servo.class, "backRoller");
         rightExtendo = hwMap.get(Servo.class, "rightLinkage");
         leftExtendo = hwMap.get(Servo.class, "leftLinkage");
-        //pivotAnalog = hwMap.get(AnalogInput.class, "pivotAnalog");
+        pivotAnalog = hwMap.get(AnalogInput.class, "pivotAnalog");
 
         rollerMotor.setDirection(DcMotorEx.Direction.FORWARD);
         rollerMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
@@ -71,18 +71,23 @@ public class Intake {
         this.leftExtendo = leftExtendo; // same as above
     }
 
-//    public double calculateFlipWithAnalog() {
-//        // get the voltage of our analog line
-//        // divide by 3.3 (the max voltage) to get a value between 0 and 1
-//        // multiply by 360 to convert it to 0 to 360 degrees
-//        // TODO: test this with a class, likely relative encoder
-//        double position = pivotAnalog.getVoltage() / 3.3 * 360;
-//        return position;
-//    }
+    public double calculateFlipWithAnalog() {
+        // get the voltage of our analog line
+        // divide by 3.3 (the max voltage) to get a value between 0 and 1
+        // multiply by 360 to convert it to 0 to 360 degrees
+        // TODO: test this with a class, likely relative encoder
+        double position = pivotAnalog.getVoltage() / 3.3; // * 360;
+        return position;
+    }
 
-    public void flipDown() {
-        pivotAxon.setPosition(IntakeConstants.IntakeState.INTAKING.pivotPos()); // this will need to be tuned
+    public void flipDownFull() {
+        pivotAxon.setPosition(IntakeConstants.IntakeState.FULLY_EXTENDED.pivotPos()); // this will need to be tuned
         pivotUp = false;
+    }
+
+    public void flipDownInitial() {
+        // this is so the intake can flip down first past the full pos, then go to full to be ready for intaking
+        pivotAxon.setPosition(IntakeConstants.IntakeState.INTAKING.pivotPos());
     }
 
     public void flipUp() {
@@ -189,7 +194,7 @@ public class Intake {
                 }
                 break;
             case INTAKING:
-                flipDown();
+                flipDownFull();
                 motorRollerOnForward();
                 if (controls.retract.value()) {
                     intakeState = IntakeConstants.IntakeState.RETRACTING;

@@ -42,7 +42,7 @@ public class IntakeTeleopTest extends OpMode {
             // intake.intakeState.setExtendLinkagePositions(rExLinkagePos, lExLinkagePos);
             intake.extendoFullExtend();
             if (controls.pivot.value()) {
-                intake.flipDown();
+                intake.flipDownFull();
             } else {
                 intake.flipUp();
             }

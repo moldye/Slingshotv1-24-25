@@ -64,7 +64,7 @@ public class IntakeTests {
 
     @Test
     public void testPivotServoGoesToFullPos() {
-        intake.flipDown();
+        intake.flipDownFull();
         verify(pivotAxon).setPosition(anyDouble()); // tune with value
     }
 
