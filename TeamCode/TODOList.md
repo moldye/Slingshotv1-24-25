@@ -21,5 +21,5 @@
 # Testing (Writing Test Class)
 1) New Extendo Controls - T
 2) Analog Pivot (see above) - T
-3) *Small Testing Classes for FSM*
-4) Test Slow Mode Works
+3) FSM - T
+4) Slow Mode - T
