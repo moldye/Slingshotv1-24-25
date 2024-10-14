@@ -10,13 +10,14 @@ public class IntakeConstants {
     // neutral pos, back roller push out sample (extendo), back roller transfer
     private static final double[] backRollerPositions = {0.5, 1, -1};
 
+    // TODO Add the Outtake Pos (tune .1)
     // right linkage in, right linkage extended
     // axon programmed for 0-255, 66 PMW
-    private static final double[] rightLinkagePositions = {.325, -1};
+    private static final double[] rightLinkagePositions = {.325, -1, .1};
 
     // left linkage in, left linkage extended
     // axon programmed for 0-255, 66 PMW
-    private static final double[] leftLinkagePositions = {.325, -1};
+    private static final double[] leftLinkagePositions = {.325, -1, .1};
 
     public enum IntakeState {
         FULLY_RETRACTED(pivotPositions[0], backRollerPositions[0], rightLinkagePositions[0], leftLinkagePositions[0]), // pivoted up, idle back roller, retracted
@@ -24,9 +25,10 @@ public class IntakeConstants {
         INTAKING(pivotPositions[1], backRollerPositions[0], rightLinkagePositions[1], leftLinkagePositions[1]), // pivoted down, idle back roller, extended
         RETRACTING(),
         WRONG_ALLIANCE_COLOR_SAMPLE(pivotPositions[1], backRollerPositions[1], rightLinkagePositions[1], leftLinkagePositions[1]), // pivoted down, pushing out sample, extended
-        FULLY_EXTENDED(pivotPositions[1], rightLinkagePositions[1], backRollerPositions[0], leftLinkagePositions[1]), // pivoted down, idle back roller, extended
-        TRANSFER(pivotPositions[0], rightLinkagePositions[0], backRollerPositions[2], leftLinkagePositions[0]), // pivoted up, back roller push, retracted
-        BASE_STATE(pivotPositions[0], rightLinkagePositions[0], backRollerPositions[0], leftLinkagePositions[0]); // we're trying this, hopefully the same state in each mechanism that resets that specific mechanism (keyed to same button across robot)
+        FULLY_EXTENDED(pivotPositions[1], backRollerPositions[0], rightLinkagePositions[1], leftLinkagePositions[1]), // pivoted down, idle back roller, extended
+        TRANSFER(pivotPositions[0], backRollerPositions[2], rightLinkagePositions[0], leftLinkagePositions[0]), // pivoted up, back roller push, retracted
+        OUTTAKING(pivotPositions[0], backRollerPositions[0], rightLinkagePositions[2], leftLinkagePositions[2]),
+        BASE_STATE(pivotPositions[0], backRollerPositions[0], rightLinkagePositions[0], leftLinkagePositions[0]); // we're trying this, hopefully the same state in each mechanism that resets that specific mechanism (keyed to same button across robot)
 
         private final double pivotPos;
         private final double rLinkagePos;
