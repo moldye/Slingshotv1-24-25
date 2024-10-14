@@ -133,15 +133,21 @@ public class Intake {
     }
 
     public void extendoFullExtend() {
-        rightExtendo.setPosition(IntakeConstants.IntakeState.FULLY_EXTENDED.rLinkagePos()); // obviously tune
+        rightExtendo.setPosition(IntakeConstants.IntakeState.FULLY_EXTENDED.rLinkagePos());
         leftExtendo.setPosition(IntakeConstants.IntakeState.FULLY_EXTENDED.lLinkagePos());
         extendoIn = false;
     }
 
     public void extendoFullRetract() {
-        rightExtendo.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.rLinkagePos()); // obviously tune
+        rightExtendo.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.rLinkagePos());
         leftExtendo.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.lLinkagePos());
         extendoIn = true;
+    }
+
+    public void extendForOuttake() {
+        rightExtendo.setPosition(IntakeConstants.IntakeState.OUTTAKING.rLinkagePos());
+        leftExtendo.setPosition(IntakeConstants.IntakeState.OUTTAKING.lLinkagePos());
+        extendoIn = false;
     }
 
     public void resetHardware() {

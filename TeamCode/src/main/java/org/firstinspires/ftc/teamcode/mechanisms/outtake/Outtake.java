@@ -141,7 +141,6 @@ public class Outtake {
         bucketServo.setPosition(OuttakeConstants.BucketPositions.DEPOSIT.getBucketPos());
     }
 
-
     public void update() {
         // going to need ElapsedTime likely
         switch(slideState) {

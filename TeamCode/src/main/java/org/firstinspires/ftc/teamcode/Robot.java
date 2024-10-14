@@ -9,6 +9,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.mechanisms.DriveTrain;
 import org.firstinspires.ftc.teamcode.mechanisms.ReLocalizer;
+import org.firstinspires.ftc.teamcode.mechanisms.outtake.OuttakeConstants;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
@@ -94,4 +95,9 @@ public class Robot{
         // reset specimen claw
     }
 
+    public void botReadyForDeposit() {
+        // extend intake and tilt bucket (assumes transfer has already occurred)
+        intake.extendForOuttake();
+        outtake.bucketServo.setPosition(OuttakeConstants.BucketPositions.TRANSFERING.getBucketPos());
+    }
 }
