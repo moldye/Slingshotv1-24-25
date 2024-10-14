@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.misc.AnalogServo;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
 public class Intake {
@@ -20,11 +21,11 @@ public class Intake {
     // HARDWARE
     // -----------
     private DcMotorEx rollerMotor;
-    public Servo pivotAxon;
+    public AnalogServo pivotAxon;
     public Servo backRollerServo; // set pos to 0.5 to get it to stop
     public Servo leftExtendo; // axon
     public Servo rightExtendo; // axon
-    private AnalogInput pivotAnalog;
+
 
     // OTHER
     // ----------
@@ -42,11 +43,12 @@ public class Intake {
 
     public Intake(HardwareMap hwMap, Telemetry telemetry, GamepadMapping controls) {
         rollerMotor = hwMap.get(DcMotorEx.class, "rollerMotor");
-        pivotAxon = hwMap.get(Servo.class, "pivotAxon");
+        pivotAxon = hwMap.get(AnalogServo.class, "pivotAxon");
         backRollerServo = hwMap.get(Servo.class, "backRoller");
         rightExtendo = hwMap.get(Servo.class, "rightLinkage");
         leftExtendo = hwMap.get(Servo.class, "leftLinkage");
-        pivotAnalog = hwMap.get(AnalogInput.class, "pivotAnalog");
+        //sets the analogServos PID and stuff
+        pivotAxon.init(hwMap.get(AnalogInput.class, "pivotAnalog"), 0, 0 ,0 ,0); //TODO: add tuned PIDF later
 
         rollerMotor.setDirection(DcMotorEx.Direction.FORWARD);
         rollerMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
@@ -63,7 +65,7 @@ public class Intake {
     }
 
     // This is for testing only :)
-    public Intake(DcMotorEx rollerMotor, Servo pivotAxon, Servo backRollerServo, Servo rightExtendo, Servo leftExtendo) {
+    public Intake(DcMotorEx rollerMotor, AnalogServo pivotAxon, Servo backRollerServo, Servo rightExtendo, Servo leftExtendo) {
         this.rollerMotor = rollerMotor;
         this.pivotAxon = pivotAxon; // axon programmer: 0-255, .15-1\
         this.backRollerServo = backRollerServo; // 1 power
@@ -71,27 +73,21 @@ public class Intake {
         this.leftExtendo = leftExtendo; // same as above
     }
 
-    public double calculateFlipWithAnalog() {
-        // get the voltage of our analog line
-        // divide by 3.3 (the max voltage) to get a value between 0 and 1
-        // multiply by 360 to convert it to 0 to 360 degrees
-        // TODO: test this with a class, likely relative encoder
-        double position = pivotAnalog.getVoltage() / 3.3; // * 360;
-        return position;
-    }
-
     public void flipDownFull() {
-        pivotAxon.setPosition(IntakeConstants.IntakeState.FULLY_EXTENDED.pivotPos()); // this will need to be tuned
+//        pivotAxon.setPosition(IntakeConstants.IntakeState.FULLY_EXTENDED.pivotPos()); // this will need to be tuned
+        pivotAxon.runToPos(IntakeConstants.IntakeState.FULLY_EXTENDED.pivotPos());
         pivotUp = false;
     }
 
     public void flipDownInitial() {
         // this is so the intake can flip down first past the full pos, then go to full to be ready for intaking
-        pivotAxon.setPosition(IntakeConstants.IntakeState.INTAKING.pivotPos());
+//        pivotAxon.setPosition(IntakeConstants.IntakeState.INTAKING.pivotPos());
+        pivotAxon.runToPos(IntakeConstants.IntakeState.INTAKING.pivotPos());
     }
 
     public void flipUp() {
-        pivotAxon.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.pivotPos()); // this will need to be tuned
+//        pivotAxon.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.pivotPos()); // this will need to be tuned
+        pivotAxon.runToPos(IntakeConstants.IntakeState.FULLY_RETRACTED.pivotPos());
         pivotUp = true;
     }
 

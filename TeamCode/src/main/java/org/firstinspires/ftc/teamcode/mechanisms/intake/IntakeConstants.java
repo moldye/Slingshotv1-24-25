@@ -4,6 +4,7 @@ public class IntakeConstants {
 
     // pivoted up, pivoted down, transfer pos, pivot down initial
     // axon programmed for 0-255, 66 PMW
+    //TODO: change these values to degrees for the analog encoder control scheme now
     private static final double[] pivotPositions = {0, .92, .2};
 
     // neutral pos, back roller push out sample (extendo), back roller transfer
