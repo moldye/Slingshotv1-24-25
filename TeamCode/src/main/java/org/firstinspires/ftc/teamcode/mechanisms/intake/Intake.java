@@ -75,8 +75,8 @@ public class Intake {
     }
 
     public void flipDownFull() {
-        pivotAxon.setPosition(IntakeConstants.IntakeState.FULLY_EXTENDED.pivotPos()); // this will need to be tuned
-//        pivotAnalog.runToPos(IntakeConstants.IntakeState.FULLY_EXTENDED.pivotPos());
+//        pivotAxon.setPosition(IntakeConstants.IntakeState.FULLY_EXTENDED.pivotPos());
+        pivotAnalog.runToPos(IntakeConstants.IntakeState.FULLY_EXTENDED.pivotPos());
         pivotUp = false;
     }
 
@@ -87,8 +87,8 @@ public class Intake {
     }
 
     public void flipUp() {
-        pivotAxon.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.pivotPos()); // this will need to be tuned
-//        pivotAnalog.runToPos(IntakeConstants.IntakeState.FULLY_RETRACTED.pivotPos());
+//        pivotAxon.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.pivotPos());
+        pivotAnalog.runToPos(IntakeConstants.IntakeState.FULLY_RETRACTED.pivotPos());
         pivotUp = true;
     }
 
