@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
+import org.firstinspires.ftc.teamcode.misc.AnalogServo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +20,7 @@ public class IntakeTests {
     @Mock
     DcMotorEx rollerMotor;
     @Mock
-    Servo pivotAxon;
+    AnalogServo pivotAxon;
     @Mock
     Servo backRollerServo; // CR Servo?
 
