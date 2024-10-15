@@ -23,7 +23,7 @@ public class Robot{
 
     // intake:
     // pivot (max) -> 1 on expansion hub
-    // left linkage (max) -> 1 on control hub
+    // left linkage (max) -> 2 on expansion hub
     // right linkage (max) -> 0 on control hub
     // back roller (mini) -> 0 on expansion hub
     // roller motor -> 1 on expansion hub
@@ -66,7 +66,7 @@ public class Robot{
         drivetrain = new DriveTrain(hardwareMap, imu, telemetry, controls);
         intake = new Intake(hardwareMap, telemetry, controls);
 
-        outtake = new Outtake(hardwareMap, 0, 0.04, 0, 0.00055, 0.04, telemetry, controls); // tune PID values
+        outtake = new Outtake(hardwareMap, 0, 0.03, 0, 0.00055, 0.0001, telemetry, controls); // tune PID values
         //ultraSonics = new ReLocalizer(hardwareMap, imu);
     }
 
@@ -98,6 +98,7 @@ public class Robot{
     public void botReadyForDeposit() {
         // extend intake and tilt bucket (assumes transfer has already occurred)
         intake.extendForOuttake();
-        outtake.bucketServo.setPosition(OuttakeConstants.BucketPositions.TRANSFERING.getBucketPos());
+        // TODO see if servos tweak again with this uncommented out
+        // outtake.bucketServo.setPosition(OuttakeConstants.BucketPositions.TRANSFERING.getBucketPos());
     }
 }

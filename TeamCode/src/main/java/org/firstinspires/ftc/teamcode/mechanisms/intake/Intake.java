@@ -20,16 +20,17 @@ public class Intake {
 
     // HARDWARE
     // -----------
-    private DcMotorEx rollerMotor;
-    public AnalogServo pivotAxon;
+    public DcMotorEx rollerMotor;
     public Servo backRollerServo; // set pos to 0.5 to get it to stop
     public Servo leftExtendo; // axon
     public Servo rightExtendo; // axon
+    public Servo pivotAxon;
+    public AnalogServo pivotAnalog;
 
 
     // OTHER
     // ----------
-    public IntakeConstants.IntakeState intakeState;
+    public static IntakeConstants.IntakeState intakeState;
     private GamepadMapping controls;
     private Telemetry telemetry;
 
@@ -43,12 +44,12 @@ public class Intake {
 
     public Intake(HardwareMap hwMap, Telemetry telemetry, GamepadMapping controls) {
         rollerMotor = hwMap.get(DcMotorEx.class, "rollerMotor");
-        pivotAxon = hwMap.get(AnalogServo.class, "pivotAxon");
+        pivotAxon = hwMap.get(Servo.class, "pivotAxon");
         backRollerServo = hwMap.get(Servo.class, "backRoller");
         rightExtendo = hwMap.get(Servo.class, "rightLinkage");
         leftExtendo = hwMap.get(Servo.class, "leftLinkage");
         //sets the analogServos PID and stuff
-        pivotAxon.init(hwMap.get(AnalogInput.class, "pivotAnalog"), 0, 0 ,0 ,0); //TODO: add tuned PIDF later
+        pivotAnalog = new AnalogServo(pivotAxon, hwMap.get(AnalogInput.class, "pivotAnalog"), 0, 0, 0, 0); //TODO: add tuned PIDF later
 
         rollerMotor.setDirection(DcMotorEx.Direction.FORWARD);
         rollerMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
@@ -65,7 +66,7 @@ public class Intake {
     }
 
     // This is for testing only :)
-    public Intake(DcMotorEx rollerMotor, AnalogServo pivotAxon, Servo backRollerServo, Servo rightExtendo, Servo leftExtendo) {
+    public Intake(DcMotorEx rollerMotor, Servo pivotAxon, Servo backRollerServo, Servo rightExtendo, Servo leftExtendo) {
         this.rollerMotor = rollerMotor;
         this.pivotAxon = pivotAxon; // axon programmer: 0-255, .15-1\
         this.backRollerServo = backRollerServo; // 1 power
@@ -74,20 +75,20 @@ public class Intake {
     }
 
     public void flipDownFull() {
-//        pivotAxon.setPosition(IntakeConstants.IntakeState.FULLY_EXTENDED.pivotPos()); // this will need to be tuned
-        pivotAxon.runToPos(IntakeConstants.IntakeState.FULLY_EXTENDED.pivotPos());
+        pivotAxon.setPosition(IntakeConstants.IntakeState.FULLY_EXTENDED.pivotPos()); // this will need to be tuned
+//        pivotAnalog.runToPos(IntakeConstants.IntakeState.FULLY_EXTENDED.pivotPos());
         pivotUp = false;
     }
 
     public void flipDownInitial() {
         // this is so the intake can flip down first past the full pos, then go to full to be ready for intaking
 //        pivotAxon.setPosition(IntakeConstants.IntakeState.INTAKING.pivotPos());
-        pivotAxon.runToPos(IntakeConstants.IntakeState.INTAKING.pivotPos());
+        pivotAnalog.runToPos(IntakeConstants.IntakeState.INTAKING.pivotPos());
     }
 
     public void flipUp() {
-//        pivotAxon.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.pivotPos()); // this will need to be tuned
-        pivotAxon.runToPos(IntakeConstants.IntakeState.FULLY_RETRACTED.pivotPos());
+        pivotAxon.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.pivotPos()); // this will need to be tuned
+//        pivotAnalog.runToPos(IntakeConstants.IntakeState.FULLY_RETRACTED.pivotPos());
         pivotUp = true;
     }
 
@@ -110,6 +111,11 @@ public class Intake {
         }
     }
 
+    public void clearIntake() {
+        rollerMotor.setPower(-0.5);
+        backRollerServo.setPosition(IntakeConstants.IntakeState.TRANSFER.backRollerPos());
+    }
+
     public void motorRollerOff() {
         rollerMotor.setPower(0);
     }
@@ -118,7 +124,7 @@ public class Intake {
         // max pos is -1
         // at .325 -> .225
         double newPos = rightExtendo.getPosition() - .1; // * (triggerValue * 10) / 5;
-        if (newPos >= linkageMax) {
+        if (newPos <= linkageMax) {
             rightExtendo.setPosition(newPos);
             leftExtendo.setPosition(newPos);
         } else {
@@ -151,7 +157,6 @@ public class Intake {
         rollerMotor.setDirection(DcMotorEx.Direction.FORWARD);
 
         flipUp();
-
         backRollerServo.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.backRollerPos());
 
         extendoFullRetract();
@@ -171,6 +176,8 @@ public class Intake {
     public void update(){
         switch(intakeState){
             case FULLY_RETRACTED:
+                clearIntakeFailSafe();
+                extendoFullRetract();
                 // this may automatically start switching to extending?
                 if (controls.extend.value()) {
                     intakeState = IntakeConstants.IntakeState.EXTENDING;
@@ -180,6 +187,7 @@ public class Intake {
                 break;
                 // see how fast this is, may need to combine intaking and extending states so the flip down is faster (while we're extending)
             case FULLY_EXTENDED:
+                clearIntakeFailSafe();
                 // should come back from pushing out wrong sample and go immediately back to intaking again
                 intakeState = IntakeConstants.IntakeState.INTAKING;
                 if (controls.botToBaseState.value() && pivotUp) {
@@ -187,6 +195,7 @@ public class Intake {
                 }
                 break;
             case EXTENDING:
+                clearIntakeFailSafe();
                 extendoExtend();
                 intakeState = IntakeConstants.IntakeState.INTAKING;
                 if (controls.botToBaseState.value() && pivotUp) {
@@ -194,6 +203,7 @@ public class Intake {
                 }
                 break;
             case INTAKING:
+                clearIntakeFailSafe();
                 flipDownFull();
                 motorRollerOnForward();
                 if (controls.retract.value()) {
@@ -204,6 +214,7 @@ public class Intake {
                 }
                 break;
             case RETRACTING:
+                clearIntakeFailSafe();
                 flipUp();
                 motorRollerOff();
                 extendoFullRetract();
@@ -211,22 +222,42 @@ public class Intake {
                 intakeState = IntakeConstants.IntakeState.TRANSFER;
                 break;
             case WRONG_ALLIANCE_COLOR_SAMPLE:
+                clearIntakeFailSafe();
                 // probably need to do this for some amount of time, test later
                 pushOutSample();
                 intakeState = IntakeConstants.IntakeState.FULLY_EXTENDED;
                 break;
             case BASE_STATE:
+                clearIntakeFailSafe();
                 // reset button pressed and pivot is flipped up
                 resetHardware();
                 intakeState = IntakeConstants.IntakeState.FULLY_RETRACTED;
                 break;
             case TRANSFER:
+                clearIntakeFailSafe();
                 // automatically, already verified a right colored sample, rolls it into the bucket
                 transferSample();
                 intakeState = IntakeConstants.IntakeState.FULLY_RETRACTED;
                 break;
+            case OUTTAKING:
+                clearIntakeFailSafe();
+                extendForOuttake();
+                break;
         }
         telemetry.addData("intakeState:", intakeState);
+    }
+
+    public void clearIntakeFailSafe() {
+        if (controls.clearIntake.value()) {
+            clearIntake();
+        } else {
+            motorRollerOff();
+            backRollerIdle();
+        }
+    }
+
+    public void updatePivotTrigger() {
+
     }
 
     public void updateTelemetry() {

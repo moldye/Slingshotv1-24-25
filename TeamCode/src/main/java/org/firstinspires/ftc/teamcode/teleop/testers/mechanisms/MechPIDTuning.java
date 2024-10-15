@@ -7,9 +7,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
-import org.firstinspires.ftc.teamcode.mechanisms.template.BasicArm;
-import org.firstinspires.ftc.teamcode.mechanisms.template.BasicSlides;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
 @TeleOp
@@ -19,6 +18,7 @@ public class MechPIDTuning extends OpMode {
     // private BasicSlides slide;
     // private BasicArm arm;
     private Outtake outtake;
+    private Intake intake;
     private GamepadMapping controls;
 
     //TODO edit every variables value under this line b4 tuning
@@ -29,7 +29,7 @@ public class MechPIDTuning extends OpMode {
     // private String configName = "";
     public static int target = 0;
     public static double p = 0, i = 0, d = 0, f = 0;
-    private int type = 0; // 0 is slides 1 is arm
+    private int type = 2; // 0 is slides 1 is arm 2 is analog
 
     private Telemetry dashboardTelemetry;
     @Override
@@ -37,7 +37,9 @@ public class MechPIDTuning extends OpMode {
         controls = new GamepadMapping(gamepad1, gamepad2);
         // slide = new BasicSlides(hardwareMap, configName, 0,p,i,d,f);
         // arm = new BasicArm(hardwareMap, configName, 0, p,i,d,f, ticksPerDegree);
-        outtake = new Outtake(hardwareMap, 0, 0, 0, 0, 0, this.telemetry, controls);
+        outtake = new Outtake(hardwareMap, 0, 0.03, 0, 0.00055, 0.0001, this.telemetry, controls);
+        // intake = new Intake(hardwareMap, telemetry, controls);
+        intake = new Intake(hardwareMap, telemetry, controls);
         dashboardTelemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
     }
 
@@ -48,6 +50,10 @@ public class MechPIDTuning extends OpMode {
             outtake.moveTicks(target);
             outtake.changePIDF(p,i,d,f);
             dashboardTelemetry.addData("position: ", outtake.getPos());
+        } else if (type == 2) {
+            intake.pivotAnalog.runToPos(target);
+            intake.pivotAnalog.changePIDF(p,i,d,f);
+            dashboardTelemetry.addData("position: ", intake.pivotAnalog.getPosition());
         }
 //        else{
 //            arm.moveTicks(target);

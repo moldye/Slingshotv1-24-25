@@ -4,20 +4,19 @@ public class IntakeConstants {
 
     // pivoted up, pivoted down, transfer pos, pivot down initial
     // axon programmed for 0-255, 66 PMW
-    //TODO: change these values to degrees for the analog encoder control scheme now
-    private static final double[] pivotPositions = {0, .92, .2};
+    private static final double[] pivotPositions = {72, 331.2, 345}; // .2 = 72 degrees; .92 = 331.2 degrees; last one is a guess
 
     // neutral pos, back roller push out sample (extendo), back roller transfer
     private static final double[] backRollerPositions = {0.5, 1, -1};
 
-    // TODO Add the Outtake Pos (tune .1)
-    // right linkage in, right linkage extended
+    // TODO Add the Outtake Pos (tune 0)
+    // right linkage in, right linkage extended, outtaking
     // axon programmed for 0-255, 66 PMW
-    private static final double[] rightLinkagePositions = {.325, -1, .1};
+    private static final double[] rightLinkagePositions = {.325, -1, 0};
 
     // left linkage in, left linkage extended
     // axon programmed for 0-255, 66 PMW
-    private static final double[] leftLinkagePositions = {.325, -1, .1};
+    private static final double[] leftLinkagePositions = {.325, -1, 0};
 
     public enum IntakeState {
         FULLY_RETRACTED(pivotPositions[0], backRollerPositions[0], rightLinkagePositions[0], leftLinkagePositions[0]), // pivoted up, idle back roller, retracted

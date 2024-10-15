@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
+import org.firstinspires.ftc.teamcode.mechanisms.intake.IntakeConstants;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
 public class Outtake {
@@ -31,8 +33,6 @@ public class Outtake {
     Telemetry telemetry;
     GamepadMapping controls;
     private static boolean outtakeDTSlow = false;
-    OuttakeConstants outtakeState;
-
     public Outtake(HardwareMap hardwareMap, int direction, double inP, double inI, double inD, double inF, Telemetry telemetry,
     GamepadMapping controls){
         outtakeSlideLeft = hardwareMap.get(DcMotorEx.class, "slideLeft");
@@ -68,7 +68,7 @@ public class Outtake {
         // this.bucketServo = bucketServo;
     }
 
-    public void moveLeftTicks(int target){
+    public void moveLeftTicks(double target){
         controller.setPID(p,i,d);
         int pos = outtakeSlideLeft.getCurrentPosition();
         double pid = controller.calculate(pos, target);
@@ -76,7 +76,7 @@ public class Outtake {
         outtakeSlideLeft.setPower(power);
     }
 
-    public void moveRightTicks(int target){
+    public void moveRightTicks(double target){
         controller.setPID(p,i,d);
         int pos = outtakeSlideLeft.getCurrentPosition();
         double pid = controller.calculate(pos, target);
@@ -84,7 +84,7 @@ public class Outtake {
         outtakeSlideRight.setPower(power);
     }
 
-    public void moveTicks(int target) {
+    public void moveTicks(double target) {
         moveRightTicks(target);
         moveLeftTicks(target);
     }
@@ -100,31 +100,33 @@ public class Outtake {
 
     public void extendToLowBasket() {
         // slideState = OuttakeConstants.SlidePositions.LOW_BASKET;
-        moveLeftTicks(30); // tune target obviously
-        moveRightTicks(30);
+        moveTicks(OuttakeConstants.SlidePositions.LOW_BASKET.getSlidePos()); // tune target obviously
     }
 
     public void extendToHighBasket() {
         // slideState = OuttakeConstants.SlidePositions.HIGH_BASKET;
-        moveLeftTicks(60); // tune target obviously
-        moveRightTicks(60);
+        moveTicks(OuttakeConstants.SlidePositions.HIGH_BASKET.getSlidePos()); // tune target obviously
     }
 
-    public void extendToSpecimenHighRack() {
-        // slideState = OuttakeConstants.SlidePositions.SPECIMEN_HIGH_RACK;
-        moveLeftTicks(40); // tune target obviously
-        moveRightTicks(40);
+//    public void extendToSpecimenHighRack() {
+//        moveTicks(OuttakeConstants.SlidePositions.SPECIMEN_HIGH_RACK;); // tune target obviously
+//    }
+
+    public void depositToHP() {
+        // this just flips bucket at slide pos 0
+        moveTicks(OuttakeConstants.SlidePositions.RETRACTED.getSlidePos());
+        bucketDeposit();
     }
 
     public void returnToRetracted() {
-        // slideState = OuttakeConstants.SlidePositions.RETRACTED; // this should actually just get desired pos ticks when we tune (enum stuff)
-        moveLeftTicks(0); // tune target obviously, this should lock the slides anyway bc of PID
-        moveRightTicks(0);
+        moveLeftTicks(OuttakeConstants.SlidePositions.RETRACTED.getSlidePos());
+        moveRightTicks(OuttakeConstants.SlidePositions.RETRACTED.getSlidePos());
     }
 
     public void resetHardware() {
         returnToRetracted();
         // other resetting bucket stuff here
+        bucketToReadyForTransfer();
     }
 
     public void resetEncoders() {
@@ -141,18 +143,26 @@ public class Outtake {
         bucketServo.setPosition(OuttakeConstants.BucketPositions.DEPOSIT.getBucketPos());
     }
 
+    public void hang() {
+        moveTicks(OuttakeConstants.SlidePositions.HANG.getSlidePos());
+        bucketDeposit();
+    }
+
     public void update() {
         // going to need ElapsedTime likely
         switch(slideState) {
             case RETRACTED:
+                updateHang();
                 updateOuttakeSlides();
                 break;
             case LOW_BASKET:
+                updateHang();
                 extendToLowBasket();
                 bucketDeposit();
                 updateOuttakeSlides();
                 break;
             case HIGH_BASKET:
+                updateHang();
                 extendToHighBasket();
                 bucketDeposit();
                 updateOuttakeSlides();
@@ -162,9 +172,12 @@ public class Outtake {
 //                updateOuttakeSlides();
 //                break;
             case BASE_STATE:
+                updateHang();
                 resetHardware();
                 slideState = OuttakeConstants.SlidePositions.RETRACTED;
                 break;
+            case HANG:
+
         }
     }
 
@@ -179,14 +192,27 @@ public class Outtake {
         if (controls.highBasket.value()) {
             outtakeDTSlow = true;
             slideState = OuttakeConstants.SlidePositions.HIGH_BASKET;
+            Intake.intakeState = IntakeConstants.IntakeState.OUTTAKING;
         } else {
             slideState = OuttakeConstants.SlidePositions.RETRACTED;
+            Intake.intakeState = IntakeConstants.IntakeState.FULLY_RETRACTED; // this should move the intake back in
         }
         if (controls.lowBasket.value()) {
             outtakeDTSlow = true;
             slideState = OuttakeConstants.SlidePositions.LOW_BASKET;
+            Intake.intakeState = IntakeConstants.IntakeState.OUTTAKING;
         } else {
             slideState = OuttakeConstants.SlidePositions.RETRACTED;
+            Intake.intakeState = IntakeConstants.IntakeState.FULLY_RETRACTED;
+        }
+    }
+
+    public void updateHang() {
+        if (controls.L1hang.value()) {
+            hang();
+        } else {
+            bucketToReadyForTransfer();
+            returnToRetracted();
         }
     }
 }

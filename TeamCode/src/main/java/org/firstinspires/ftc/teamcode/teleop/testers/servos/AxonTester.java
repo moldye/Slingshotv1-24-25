@@ -27,12 +27,12 @@ public class AxonTester extends OpMode {
         controls = new GamepadMapping(gamepad1, gamepad2);
         robot = new Robot(hardwareMap, telemetry, controls);
         intake = robot.intake;
-        intake.pivotAxon.setPosition(0);
+        // intake.pivotAnalogServo.setPosition(0);
     }
 
     @Override
     public void loop() {
-        intake.pivotAxon.setPosition(servoPos);
+        // intake.pivotAnalogServo.setPosition(servoPos);
         //intake.motorRollerOn();
     }
 

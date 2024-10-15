@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.mechanisms.DriveTrain;
 import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
+import org.firstinspires.ftc.teamcode.mechanisms.outtake.OuttakeConstants;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
 @Config
@@ -28,22 +29,25 @@ public class TransferTest extends OpMode {
         outtake = robot.outtake;
         dt = robot.drivetrain;
         intake.extendoFullRetract();
+        intake.flipUp();
     }
 
     @Override
     public void loop() {
-        controls.pivot.update(gamepad1.a);
-        controls.switchExtendo.update(gamepad1.b);
-        controls.powerIntake.update(gamepad1.x);
+        controls.pivot.update(gamepad1.b);
+        controls.extend.update(gamepad1.right_bumper);
+//        controls.powerIntake.update(gamepad1.x);
         controls.transfer.update(gamepad1.y);
-        controls.deposit.update(gamepad1.left_bumper);
-        controls.flipBucket.update(gamepad1.right_bumper);
+        controls.highBasket.update(gamepad1.x);
+        controls.retract.update(gamepad1.left_bumper);
+        controls.flipBucket.update(gamepad1.a);
+        controls.readyForDeposit.update(gamepad1.dpad_right);
 
         controls.joystickUpdate();
         dt.update();
 
-        if (controls.switchExtendo.value()) {
-            intake.extendoFullExtend();
+        if (controls.extend.value()) {
+            intake.extendoFullExtend(); // TODO test extendoExtend now
             if (controls.pivot.value()) {
                 intake.flipDownFull();
             } else {
@@ -57,7 +61,6 @@ public class TransferTest extends OpMode {
         } else {
             intake.flipUp();
             intake.motorRollerOff();
-            // intake.intakeState.setRetractLinkagePositions(rRLinkagePos, lRLinkagePos);
             intake.extendoFullRetract();
             if (controls.transfer.value()) {
                 intake.transferSample();
@@ -65,6 +68,11 @@ public class TransferTest extends OpMode {
                 intake.backRollerIdle();
                 intake.motorRollerOff();
             }
+        }
+        if (controls.readyForDeposit.value()) {
+            robot.botReadyForDeposit();
+        } else {
+            intake.extendoFullRetract();
         }
         if (controls.deposit.value()) {
             outtake.extendToHighBasket();

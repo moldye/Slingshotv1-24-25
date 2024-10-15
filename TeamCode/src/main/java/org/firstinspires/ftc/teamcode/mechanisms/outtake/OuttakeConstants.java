@@ -7,12 +7,24 @@ public class OuttakeConstants {
 
     // transfer ready, tilt, deposit
     private static double[] bucketPositions = {.7231126346979301, .5477610423136522, 0};
+
+    // Retracted, low basket, high basket, specimen high rack, hang
+    private static double[] slidePositions = {-50, 1200, 2600, 1200, 500}; // tune specimen high rack
     public enum SlidePositions {
-        RETRACTED,
-        LOW_BASKET, // probably could work for hang
-        HIGH_BASKET,
-        SPECIMEN_HIGH_RACK,
-        BASE_STATE
+        RETRACTED(slidePositions[0]),
+        LOW_BASKET(slidePositions[1]), // probably could work for hang
+        HIGH_BASKET(slidePositions[2]),
+        SPECIMEN_HIGH_RACK(slidePositions[3]),
+        HUMAN_PLAYER(slidePositions[0]),
+        BASE_STATE(slidePositions[0]),
+        HANG(slidePositions[4]);
+
+        private final double slidePos;
+
+        SlidePositions(double slidePos) {
+            this.slidePos = slidePos;
+        }
+        public double getSlidePos() { return slidePos; }
     }
 
     public enum BucketPositions {

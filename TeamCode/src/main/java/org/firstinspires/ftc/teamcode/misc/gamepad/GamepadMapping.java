@@ -78,6 +78,7 @@ public class GamepadMapping {
 
         extend = new Toggle(false);
         retract = new Toggle(false);
+        readyForDeposit = new Toggle(false);
 
 
         bucketDeposit = new Toggle(false);
@@ -93,7 +94,6 @@ public class GamepadMapping {
         toggleIntakePower = new Toggle(false);
         pivot = new Toggle(false);
         powerIntake = new Toggle(false);
-        switchExtendo = new Toggle(false);
         transfer = new Toggle(false);
         deposit = new Toggle(false);
         flipBucket = new Toggle(false);
@@ -124,6 +124,9 @@ public class GamepadMapping {
         // Reset/Fail Safes (Both controllers should have these)
         botToBaseState.update(gamepad1.b);
         botToBaseState.update(gamepad2.b);
+
+        clearIntake.update(gamepad1.left_trigger > 0.6);
+        clearIntake.update(gamepad2.left_trigger > 0.6);
     }
 
     public void joystickUpdate() {
