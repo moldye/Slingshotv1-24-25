@@ -103,7 +103,7 @@ public class GamepadMapping {
         joystickUpdate();
 
         // Intake
-        extend.update(gamepad1.right_bumper);
+        //extend.update(gamepad1.right_bumper);
         retract.update(gamepad1.left_bumper);
 
         // Outtake (All Gamepad2)

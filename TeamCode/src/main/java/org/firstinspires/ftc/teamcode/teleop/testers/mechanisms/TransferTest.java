@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.mechanisms.DriveTrain;
 import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
+import org.firstinspires.ftc.teamcode.mechanisms.intake.IntakeConstants;
 import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
 import org.firstinspires.ftc.teamcode.mechanisms.outtake.OuttakeConstants;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
@@ -30,6 +31,7 @@ public class TransferTest extends OpMode {
         dt = robot.drivetrain;
         intake.extendoFullRetract();
         intake.flipUp();
+        outtake.returnToRetracted();
     }
 
     @Override
@@ -47,11 +49,13 @@ public class TransferTest extends OpMode {
         dt.update();
 
         if (controls.extend.value()) {
-            intake.extendoFullExtend(); // TODO test extendoExtend now
+            intake.extendoFullExtend();
             if (controls.pivot.value()) {
                 intake.flipDownFull();
+                intake.motorRollerOnForward();
             } else {
                 intake.flipUp();
+                intake.motorRollerOff();
             }
             if (controls.transfer.value()) {
                 intake.pushOutSample();
@@ -69,12 +73,12 @@ public class TransferTest extends OpMode {
                 intake.motorRollerOff();
             }
         }
-        if (controls.readyForDeposit.value()) {
-            robot.botReadyForDeposit();
-        } else {
-            intake.extendoFullRetract();
-        }
-        if (controls.deposit.value()) {
+        if (controls.highBasket.value()) {
+//            if (controls.readyForDeposit.value()) {
+//                robot.botReadyForDeposit();
+//            } else {
+//                intake.extendoFullRetract();
+//            }
             outtake.extendToHighBasket();
             if (controls.flipBucket.value()) {
                 outtake.bucketDeposit();

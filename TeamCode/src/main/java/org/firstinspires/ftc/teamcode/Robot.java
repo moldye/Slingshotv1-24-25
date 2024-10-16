@@ -23,7 +23,7 @@ public class Robot{
 
     // intake:
     // pivot (max) -> 1 on expansion hub
-    // left linkage (max) -> 2 on expansion hub
+    // left linkage (max) -> 1 on control hub // TODO reconfig
     // right linkage (max) -> 0 on control hub
     // back roller (mini) -> 0 on expansion hub
     // roller motor -> 1 on expansion hub

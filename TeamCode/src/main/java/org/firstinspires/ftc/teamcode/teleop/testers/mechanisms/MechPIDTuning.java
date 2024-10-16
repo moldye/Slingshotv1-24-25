@@ -28,8 +28,8 @@ public class MechPIDTuning extends OpMode {
     //for both
     // private String configName = "";
     public static int target = 0;
-    public static double p = 0, i = 0, d = 0, f = 0;
-    private int type = 2; // 0 is slides 1 is arm 2 is analog
+    public static double p = 0.03, i = 0, d = 0.00055, f = 0.0001;
+    private int type = 0; // 0 is slides 1 is arm 2 is analog
 
     private Telemetry dashboardTelemetry;
     @Override

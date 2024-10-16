@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.misc;
 
 import com.arcrobotics.ftclib.controller.PIDController;
+import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -16,6 +17,7 @@ public class AnalogServo {
     public AnalogServo(Servo analogServo, AnalogInput analogInput, double p, double i, double d, double f) {
         this.analogServo = analogServo;
         this.analogInput = analogInput;
+        this.controller = new PIDController(p, i, d);
         this.p = p;
         this.i = i;
         this.d = d;

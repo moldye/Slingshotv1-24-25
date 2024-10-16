@@ -75,20 +75,20 @@ public class Intake {
     }
 
     public void flipDownFull() {
-//        pivotAxon.setPosition(IntakeConstants.IntakeState.FULLY_EXTENDED.pivotPos());
-        pivotAnalog.runToPos(IntakeConstants.IntakeState.FULLY_EXTENDED.pivotPos());
+        pivotAxon.setPosition(IntakeConstants.IntakeState.FULLY_EXTENDED.pivotPos());
+        // pivotAnalog.runToPos(IntakeConstants.IntakeState.FULLY_EXTENDED.pivotPos());
         pivotUp = false;
     }
 
     public void flipDownInitial() {
         // this is so the intake can flip down first past the full pos, then go to full to be ready for intaking
-//        pivotAxon.setPosition(IntakeConstants.IntakeState.INTAKING.pivotPos());
-        pivotAnalog.runToPos(IntakeConstants.IntakeState.INTAKING.pivotPos());
+        pivotAxon.setPosition(IntakeConstants.IntakeState.INTAKING.pivotPos());
+        // pivotAnalog.runToPos(IntakeConstants.IntakeState.INTAKING.pivotPos());
     }
 
     public void flipUp() {
-//        pivotAxon.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.pivotPos());
-        pivotAnalog.runToPos(IntakeConstants.IntakeState.FULLY_RETRACTED.pivotPos());
+        pivotAxon.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.pivotPos());
+        // pivotAnalog.runToPos(IntakeConstants.IntakeState.FULLY_RETRACTED.pivotPos());
         pivotUp = true;
     }
 
@@ -104,11 +104,11 @@ public class Intake {
     }
 
     public void transferSample() {
-        if (extendoIn && pivotUp) {
+        //if (extendoIn && pivotUp) {
             // should push everything out the front of the intake to clear it, both of these values are technically backwards
-            rollerMotor.setPower(-1);
+            rollerMotor.setPower(1);
             backRollerServo.setPosition(IntakeConstants.IntakeState.TRANSFER.backRollerPos());
-        }
+        //}
     }
 
     public void clearIntake() {
@@ -120,19 +120,19 @@ public class Intake {
         rollerMotor.setPower(0);
     }
 
-    public void extendoExtend() {
-        // max pos is -1
-        // at .325 -> .225
-        double newPos = rightExtendo.getPosition() - .1; // * (triggerValue * 10) / 5;
-        if (newPos <= linkageMax) {
-            rightExtendo.setPosition(newPos);
-            leftExtendo.setPosition(newPos);
-        } else {
-            rightExtendo.setPosition(linkageMax);
-            leftExtendo.setPosition(linkageMax);
-        }
-        extendoIn = false;
-    }
+//    public void extendoExtend() {
+//        // max pos is -1
+//        // at .325 -> .225
+//        double newPos = rightExtendo.getPosition() - .1; // * (triggerValue * 10) / 5;
+//        if (newPos <= linkageMax) {
+//            rightExtendo.setPosition(newPos);
+//            leftExtendo.setPosition(newPos);
+//        } else {
+//            rightExtendo.setPosition(linkageMax);
+//            leftExtendo.setPosition(linkageMax);
+//        }
+//        extendoIn = false;
+//    }
 
     public void extendoFullExtend() {
         rightExtendo.setPosition(IntakeConstants.IntakeState.FULLY_EXTENDED.rLinkagePos());
@@ -196,7 +196,7 @@ public class Intake {
                 break;
             case EXTENDING:
                 clearIntakeFailSafe();
-                extendoExtend();
+                extendoFullExtend();
                 intakeState = IntakeConstants.IntakeState.INTAKING;
                 if (controls.botToBaseState.value() && pivotUp) {
                     intakeState = IntakeConstants.IntakeState.BASE_STATE;
@@ -234,6 +234,8 @@ public class Intake {
                 intakeState = IntakeConstants.IntakeState.FULLY_RETRACTED;
                 break;
             case TRANSFER:
+                // pivotAxon.setPosition(IntakeConstants.IntakeState.TRANSFER.pivotPos());
+                pivotAnalog.runToPos(IntakeConstants.IntakeState.TRANSFER.pivotPos());
                 clearIntakeFailSafe();
                 // automatically, already verified a right colored sample, rolls it into the bucket
                 transferSample();
