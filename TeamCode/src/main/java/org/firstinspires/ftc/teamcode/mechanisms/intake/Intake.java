@@ -97,27 +97,31 @@ public class Intake {
         backRollerServo.setPosition(IntakeConstants.IntakeState.WRONG_ALLIANCE_COLOR_SAMPLE.backRollerPos());
     }
     public void backRollerIdle() {
-        backRollerServo.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.backRollerPos());}
-
-    public void motorRollerOnForward() {
-        rollerMotor.setPower(-1);
+        backRollerServo.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.backRollerPos());
     }
 
+    public void motorRollerOnToIntake() {
+        rollerMotor.setPower(-1);
+    }
+    public void motorRollerOff() {
+        rollerMotor.setPower(0);
+    }
+    public void motorRollerOnToClear() { rollerMotor.setPower(1); }
+
     public void transferSample() {
-        //if (extendoIn && pivotUp) {
-            // should push everything out the front of the intake to clear it, both of these values are technically backwards
+        // this should run transfer for half a second
+        long startTime = System.currentTimeMillis();
+        while (System.currentTimeMillis() - startTime >= 0 && System.currentTimeMillis() - startTime <= 500) {
             rollerMotor.setPower(1);
             backRollerServo.setPosition(IntakeConstants.IntakeState.TRANSFER.backRollerPos());
-        //}
+        }
+        rollerMotor.setPower(0);
+        backRollerServo.setPosition(IntakeConstants.IntakeState.BASE_STATE.backRollerPos());
     }
 
     public void clearIntake() {
         rollerMotor.setPower(-0.5);
         backRollerServo.setPosition(IntakeConstants.IntakeState.TRANSFER.backRollerPos());
-    }
-
-    public void motorRollerOff() {
-        rollerMotor.setPower(0);
     }
 
 //    public void extendoExtend() {
@@ -153,23 +157,23 @@ public class Intake {
     }
 
     public void resetHardware() {
-        rollerMotor.setPower(0);
+        motorRollerOff();
         rollerMotor.setDirection(DcMotorEx.Direction.FORWARD);
 
         flipUp();
-        backRollerServo.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.backRollerPos());
+        backRollerIdle();
 
         extendoFullRetract();
     }
 
-    public boolean intakeTooClose(){
-        // min = .325, max = -1
-        // threshold is -.00625
-        if (rightExtendo.getPosition() >= linkageThreshold || leftExtendo.getPosition() >= linkageThreshold) {
-            return true;
-        }
-        return false;
-    }
+//    public boolean intakeTooClose(){
+//        // min = .325, max = -1
+//        // threshold is -.00625
+//        if (rightExtendo.getPosition() >= linkageThreshold || leftExtendo.getPosition() >= linkageThreshold) {
+//            return true;
+//        }
+//        return false;
+//    }
 
     // TODO Ask James about adding a method for detection of wrong alliance color
 
@@ -205,7 +209,17 @@ public class Intake {
             case INTAKING:
                 clearIntakeFailSafe();
                 flipDownFull();
-                motorRollerOnForward();
+                if (controls.intakeOnToIntake.value()) {
+                    motorRollerOnToIntake();
+                } else {
+                    motorRollerOff();
+                }
+                if (controls.intakeOnToClear.value()) {
+                    clearIntake();
+                } else {
+                    motorRollerOff();
+                    backRollerIdle();
+                }
                 if (controls.retract.value()) {
                     intakeState = IntakeConstants.IntakeState.RETRACTING;
                 }
@@ -242,7 +256,7 @@ public class Intake {
                 intakeState = IntakeConstants.IntakeState.FULLY_RETRACTED;
                 break;
             case OUTTAKING:
-                clearIntakeFailSafe();
+                // clearIntakeFailSafe();
                 extendForOuttake();
                 break;
         }

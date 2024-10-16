@@ -49,7 +49,7 @@ public class IntakeTeleopTest extends OpMode {
             if (controls.powerIntake.value()) {
                 intake.motorRollerOff();
             } else {
-                intake.motorRollerOnForward();
+                intake.motorRollerOnToIntake();
             }
         } else {
             intake.flipUp();

@@ -4,8 +4,8 @@ public class IntakeConstants {
 
     // pivoted up, pivoted down, transfer pos, pivot down initial
     // axon programmed for 0-255, 66 PMW
-    // private static final double[] pivotPositions = {72, 331.2, 345}; // .2 = 72 degrees; .92 = 331.2 degrees; last one is a guess
-    private static final double[] pivotPositions = {.08, .85, .08}; // .2 = 72 degrees; .92 = 331.2 degrees; last one is a guess
+    // private static final double[] pivotPositions = {28.8, 331.2, 345}; // .08 = 28.8 degrees; .92 = 331.2 degrees; last one is a guess
+    private static final double[] pivotPositions = {.08, .85, 1}; // .08 = 28.8 degrees; .92 = 331.2 degrees; last one is a guess
 
     // neutral pos, back roller push out sample (extendo), back roller transfer
     private static final double[] backRollerPositions = {0.5, 1, -1};

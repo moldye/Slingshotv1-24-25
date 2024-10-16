@@ -43,8 +43,8 @@ public class Robot{
     public DriveTrain drivetrain;
     // public ReLocalizer ultraSonics;
     public IMU imu;
-    public Outtake outtake;
-    public Intake intake;
+    public static Outtake outtake;
+    public static Intake intake;
     public GamepadMapping controls;
 
     public Robot(HardwareMap hardwareMap, Telemetry telemetry, GamepadMapping controls) {
@@ -85,20 +85,18 @@ public class Robot{
 
     // This is for EVERYTHING, to be called before auton and only before auton (or in the resetHardware auton class if we don't run auton)
     public void resetHardware() {
+        // reset outtake
+        outtake.resetHardware();
+        outtake.resetEncoders();
         // reset intake
         intake.resetHardware();
         // reset dt & ultrasonics
         imu.resetYaw();
-        // reset outtake
-        outtake.resetHardware();
-        outtake.resetEncoders();
         // reset specimen claw
     }
 
-    public void botReadyForDeposit() {
-        // extend intake and tilt bucket (assumes transfer has already occurred)
+    public static void botReadyForDeposit() {
         intake.extendForOuttake();
-        // TODO see if servos tweak again with this uncommented out
-        // outtake.bucketServo.setPosition(OuttakeConstants.BucketPositions.TRANSFERING.getBucketPos());
+        outtake.bucketTilt();
     }
 }

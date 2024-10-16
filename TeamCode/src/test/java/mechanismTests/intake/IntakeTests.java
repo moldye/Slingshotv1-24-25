@@ -44,7 +44,7 @@ public class IntakeTests {
     @Test
     public void testMotorDoesRollForward() {
         // not running constantly, block held in place by the back roller
-        intake.motorRollerOnForward();
+        intake.motorRollerOnToIntake();
         verify(rollerMotor).setPower(anyDouble());
     }
 

@@ -12,11 +12,6 @@ import org.firstinspires.ftc.teamcode.mechanisms.intake.IntakeConstants;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
 public class Outtake {
-
-    // extendo out a bit 4-5 in
-    // lift up and tilt a bit to keep sample in
-    // one button for high bar one button for low bar
-
     // SLIDES
     private PIDController controller;
     private DcMotorEx outtakeSlideRight;
@@ -24,7 +19,6 @@ public class Outtake {
     private static double p, i, d; //has to be tuned
     private static double f; // usually mass moved * constant G
     private OuttakeConstants.SlidePositions slideState;
-    private int numOuttakeButtonPressed = 0;
 
     // BUCKET
     public Servo bucketServo;
@@ -33,6 +27,7 @@ public class Outtake {
     Telemetry telemetry;
     GamepadMapping controls;
     private static boolean outtakeDTSlow = false;
+
     public Outtake(HardwareMap hardwareMap, int direction, double inP, double inI, double inD, double inF, Telemetry telemetry,
     GamepadMapping controls){
         outtakeSlideLeft = hardwareMap.get(DcMotorEx.class, "slideLeft");
@@ -65,7 +60,7 @@ public class Outtake {
     public Outtake(DcMotorEx slidesMotorLeft, DcMotorEx slidesMotorRight, Servo bucketServo) {
         this.outtakeSlideLeft = slidesMotorLeft;
         this.outtakeSlideRight = slidesMotorRight;
-        // this.bucketServo = bucketServo;
+        this.bucketServo = bucketServo;
     }
 
     public void moveLeftTicks(double target){
@@ -99,12 +94,12 @@ public class Outtake {
     }
 
     public void extendToLowBasket() {
-        // slideState = OuttakeConstants.SlidePositions.LOW_BASKET;
+        outtakeDTSlow = true;
         moveTicks(OuttakeConstants.SlidePositions.LOW_BASKET.getSlidePos()); // tune target obviously
     }
 
     public void extendToHighBasket() {
-        // slideState = OuttakeConstants.SlidePositions.HIGH_BASKET;
+        outtakeDTSlow = true;
         moveTicks(OuttakeConstants.SlidePositions.HIGH_BASKET.getSlidePos()); // tune target obviously
     }
 
@@ -143,6 +138,10 @@ public class Outtake {
         bucketServo.setPosition(OuttakeConstants.BucketPositions.DEPOSIT.getBucketPos());
     }
 
+    public void bucketTilt() {
+        bucketServo.setPosition(OuttakeConstants.BucketPositions.TRANSFERING.getBucketPos());
+    }
+
     public void hang() {
         moveTicks(OuttakeConstants.SlidePositions.HANG.getSlidePos());
         bucketDeposit();
@@ -158,13 +157,21 @@ public class Outtake {
             case LOW_BASKET:
                 updateHang();
                 extendToLowBasket();
-                bucketDeposit();
+                if (controls.flipBucket.value()) {
+                    bucketDeposit();
+                } else {
+                    bucketToReadyForTransfer();
+                }
                 updateOuttakeSlides();
                 break;
             case HIGH_BASKET:
                 updateHang();
                 extendToHighBasket();
-                bucketDeposit();
+                if (controls.flipBucket.value()) {
+                    bucketDeposit();
+                } else {
+                    bucketToReadyForTransfer();
+                }
                 updateOuttakeSlides();
                 break;
 //            case SPECIMEN_HIGH_RACK:
@@ -176,8 +183,6 @@ public class Outtake {
                 resetHardware();
                 slideState = OuttakeConstants.SlidePositions.RETRACTED;
                 break;
-            case HANG:
-
         }
     }
 
@@ -190,7 +195,6 @@ public class Outtake {
             slideState = OuttakeConstants.SlidePositions.BASE_STATE;
         }
         if (controls.highBasket.value()) {
-            outtakeDTSlow = true;
             slideState = OuttakeConstants.SlidePositions.HIGH_BASKET;
             Intake.intakeState = IntakeConstants.IntakeState.OUTTAKING;
         } else {
@@ -198,7 +202,6 @@ public class Outtake {
             Intake.intakeState = IntakeConstants.IntakeState.FULLY_RETRACTED; // this should move the intake back in
         }
         if (controls.lowBasket.value()) {
-            outtakeDTSlow = true;
             slideState = OuttakeConstants.SlidePositions.LOW_BASKET;
             Intake.intakeState = IntakeConstants.IntakeState.OUTTAKING;
         } else {

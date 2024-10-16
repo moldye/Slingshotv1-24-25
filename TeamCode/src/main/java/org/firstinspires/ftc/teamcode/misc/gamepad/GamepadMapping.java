@@ -35,6 +35,8 @@ public class GamepadMapping {
     public static Toggle clearIntake;
     public static boolean pivotState; // may need to change this
     public static Toggle transfer;
+    public static Toggle intakeOnToIntake;
+    public static Toggle intakeOnToClear;
 
     // OUTTAKE
     // --------------
@@ -79,7 +81,8 @@ public class GamepadMapping {
         extend = new Toggle(false);
         retract = new Toggle(false);
         readyForDeposit = new Toggle(false);
-
+        intakeOnToIntake = new Toggle(false);
+        intakeOnToClear = new Toggle(false);
 
         bucketDeposit = new Toggle(false);
         highBasket = new Toggle(false);
@@ -103,8 +106,10 @@ public class GamepadMapping {
         joystickUpdate();
 
         // Intake
-        //extend.update(gamepad1.right_bumper);
+        extend.update(gamepad1.right_bumper);
         retract.update(gamepad1.left_bumper);
+        intakeOnToIntake.update(gamepad1.right_trigger > 0.5);
+        intakeOnToClear.update(gamepad1.left_trigger > 0.5);
 
         // Outtake (All Gamepad2)
         lowBasket.update(gamepad2.right_bumper);
@@ -114,6 +119,7 @@ public class GamepadMapping {
         // Specimen
 //        latchSpecimen.update(gamepad2.a);
 //        switchClaw.update(gamepad1.x);
+        L1hang.update(gamepad2.dpad_up); // TODO Ask Drivers
 
         // Locked Heading
         lock90 = gamepad1.dpad_up;
