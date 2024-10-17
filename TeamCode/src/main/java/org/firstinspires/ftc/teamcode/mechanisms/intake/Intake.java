@@ -10,14 +10,6 @@ import org.firstinspires.ftc.teamcode.misc.AnalogServo;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
 public class Intake {
-    // motor spins the intake rollers
-    // servo that pivots intake
-    // servo that pushes samples out back
-
-    // flip down & up intake
-    // spin the rollers to intake samples
-    // push out samples from back
-
     // HARDWARE
     // -----------
     public DcMotorEx rollerMotor;
