@@ -66,7 +66,7 @@ public class Robot{
         drivetrain = new DriveTrain(hardwareMap, imu, telemetry, controls);
         intake = new Intake(hardwareMap, telemetry, controls);
 
-        outtake = new Outtake(hardwareMap, 0, 0.03, 0, 0.00055, 0.0001, telemetry, controls); // tune PID values
+        outtake = new Outtake(hardwareMap, 0, 0.01, 0, 0.00001, 0.0001, telemetry, controls); // tune PID values
         //ultraSonics = new ReLocalizer(hardwareMap, imu);
     }
 

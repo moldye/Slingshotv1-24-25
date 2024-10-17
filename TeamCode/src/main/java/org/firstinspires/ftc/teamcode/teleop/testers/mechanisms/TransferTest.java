@@ -30,6 +30,7 @@ public class TransferTest extends OpMode {
         intake.extendoFullRetract();
         intake.flipUp();
         outtake.returnToRetracted();
+        outtake.resetEncoders();
     }
 
     @Override
@@ -67,12 +68,12 @@ public class TransferTest extends OpMode {
             }
         }
         if (controls.highBasket.value()) {
-            Robot.botReadyForDeposit(); // see if the static method works
+            // Robot.botReadyForDeposit(); // see if the static method works
             outtake.extendToHighBasket();
             if (controls.flipBucket.value()) {
                 outtake.bucketDeposit();
             } else {
-                outtake.bucketToReadyForTransfer();
+                outtake.bucketTilt();
             }
         } else {
             outtake.returnToRetracted();

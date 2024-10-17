@@ -87,11 +87,13 @@ public class GamepadMapping {
         bucketDeposit = new Toggle(false);
         highBasket = new Toggle(false);
         lowBasket = new Toggle(false);
+        L1hang = new Toggle(false);
 
 //        latchSpecimen = new Toggle(false);
 //        switchClaw = new Toggle(false);
 
         botToBaseState = new Toggle(false);
+        clearIntake = new Toggle(false);
 
         // TESTING BUTTONS
         toggleIntakePower = new Toggle(false);
@@ -128,8 +130,8 @@ public class GamepadMapping {
         lock360 = gamepad1.dpad_right;
 
         // Reset/Fail Safes (Both controllers should have these)
-        botToBaseState.update(gamepad1.b);
-        botToBaseState.update(gamepad2.b);
+        botToBaseState.update(gamepad1.options);
+        botToBaseState.update(gamepad2.options);
 
         clearIntake.update(gamepad1.left_trigger > 0.6);
         clearIntake.update(gamepad2.left_trigger > 0.6);

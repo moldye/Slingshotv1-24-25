@@ -128,6 +128,9 @@ public class Outtake {
         // reset slide motor encoders
         outtakeSlideLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         outtakeSlideRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        outtakeSlideLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        outtakeSlideRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public void bucketToReadyForTransfer() {
@@ -157,7 +160,9 @@ public class Outtake {
             case LOW_BASKET:
                 updateHang();
                 extendToLowBasket();
-                if (controls.flipBucket.value()) {
+                // prob need to tune 10 as threshold
+                if (controls.flipBucket.value() &&
+                        outtakeSlideLeft.getCurrentPosition() <= OuttakeConstants.SlidePositions.LOW_BASKET.getSlidePos() + 10) {
                     bucketDeposit();
                 } else {
                     bucketToReadyForTransfer();
@@ -167,7 +172,8 @@ public class Outtake {
             case HIGH_BASKET:
                 updateHang();
                 extendToHighBasket();
-                if (controls.flipBucket.value()) {
+                if (controls.flipBucket.value() &&
+                        outtakeSlideLeft.getCurrentPosition() <= OuttakeConstants.SlidePositions.HIGH_BASKET.getSlidePos() + 10) {
                     bucketDeposit();
                 } else {
                     bucketToReadyForTransfer();
@@ -179,11 +185,16 @@ public class Outtake {
 //                updateOuttakeSlides();
 //                break;
             case BASE_STATE:
-                updateHang();
-                resetHardware();
                 slideState = OuttakeConstants.SlidePositions.RETRACTED;
+                resetHardware();
                 break;
+            default:
+                // should never be reached since the state shouldn't ever be null
+                slideState = OuttakeConstants.SlidePositions.BASE_STATE;
         }
+
+        // TODO add the failsafe code here instead of writing it in each box
+        // prob stick updateHang here too (with a condition that excludes base state)
     }
 
     public static boolean getOuttakeDTSlow() {
@@ -191,22 +202,22 @@ public class Outtake {
     }
 
     public void updateOuttakeSlides() {
-        if (controls.botToBaseState.value()) {
-            slideState = OuttakeConstants.SlidePositions.BASE_STATE;
-        }
+//        if (controls.botToBaseState.value()) {
+//            slideState = OuttakeConstants.SlidePositions.BASE_STATE;
+//        }
         if (controls.highBasket.value()) {
             slideState = OuttakeConstants.SlidePositions.HIGH_BASKET;
-            Intake.intakeState = IntakeConstants.IntakeState.OUTTAKING;
+            Intake.setIntakeState(IntakeConstants.IntakeState.OUTTAKING);
         } else {
             slideState = OuttakeConstants.SlidePositions.RETRACTED;
-            Intake.intakeState = IntakeConstants.IntakeState.FULLY_RETRACTED; // this should move the intake back in
+            Intake.setIntakeState(IntakeConstants.IntakeState.FULLY_RETRACTED); // this should move the intake back in
         }
         if (controls.lowBasket.value()) {
             slideState = OuttakeConstants.SlidePositions.LOW_BASKET;
-            Intake.intakeState = IntakeConstants.IntakeState.OUTTAKING;
+            Intake.setIntakeState(IntakeConstants.IntakeState.OUTTAKING);
         } else {
             slideState = OuttakeConstants.SlidePositions.RETRACTED;
-            Intake.intakeState = IntakeConstants.IntakeState.FULLY_RETRACTED;
+            Intake.setIntakeState(IntakeConstants.IntakeState.FULLY_RETRACTED);
         }
     }
 

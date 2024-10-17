@@ -7,6 +7,7 @@ public class Toggle {
     private boolean buttonLock = false;
 
     // If toggle changed last update
+    // this will just make it so one press = true, and pressing it again isn't considered false (like a toggle)
     private boolean changed = false;
 
     // If turned true on last toggle

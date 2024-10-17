@@ -36,11 +36,11 @@ public class Intake {
 
     // CONTROLS
     // -----------
-    private boolean pivotUp; // true if pivot it is initial position (flipped up)
-    private boolean extendoIn;
-    private double linkageMax = -1;
-    private double linkageMin = .325;
-    private double linkageThreshold = -.00625; // full extension is -1, just multiplied 1.325 * .25 and subtracted it from min
+//    private boolean pivotUp; // true if pivot it is initial position (flipped up)
+//    private boolean extendoIn;
+//    private double linkageMax = -1;
+//    private double linkageMin = .325;
+//    private double linkageThreshold = -.00625; // full extension is -1, just multiplied 1.325 * .25 and subtracted it from min
 
     public Intake(HardwareMap hwMap, Telemetry telemetry, GamepadMapping controls) {
         rollerMotor = hwMap.get(DcMotorEx.class, "rollerMotor");
@@ -61,8 +61,8 @@ public class Intake {
         this.telemetry = telemetry;
         this.controls = controls;
 
-        pivotUp = true; // true initially
-        extendoIn = true;
+//        pivotUp = true; // true initially
+//        extendoIn = true;
     }
 
     // This is for testing only :)
@@ -77,7 +77,7 @@ public class Intake {
     public void flipDownFull() {
         pivotAxon.setPosition(IntakeConstants.IntakeState.FULLY_EXTENDED.pivotPos());
         // pivotAnalog.runToPos(IntakeConstants.IntakeState.FULLY_EXTENDED.pivotPos());
-        pivotUp = false;
+        // pivotUp = false;
     }
 
     public void flipDownInitial() {
@@ -89,7 +89,7 @@ public class Intake {
     public void flipUp() {
         pivotAxon.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.pivotPos());
         // pivotAnalog.runToPos(IntakeConstants.IntakeState.FULLY_RETRACTED.pivotPos());
-        pivotUp = true;
+        // pivotUp = true;
     }
 
     public void pushOutSample() {
@@ -141,19 +141,19 @@ public class Intake {
     public void extendoFullExtend() {
         rightExtendo.setPosition(IntakeConstants.IntakeState.FULLY_EXTENDED.rLinkagePos());
         leftExtendo.setPosition(IntakeConstants.IntakeState.FULLY_EXTENDED.lLinkagePos());
-        extendoIn = false;
+        // extendoIn = false;
     }
 
     public void extendoFullRetract() {
         rightExtendo.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.rLinkagePos());
         leftExtendo.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.lLinkagePos());
-        extendoIn = true;
+        // extendoIn = true;
     }
 
     public void extendForOuttake() {
         rightExtendo.setPosition(IntakeConstants.IntakeState.OUTTAKING.rLinkagePos());
         leftExtendo.setPosition(IntakeConstants.IntakeState.OUTTAKING.lLinkagePos());
-        extendoIn = false;
+        // extendoIn = false;
     }
 
     public void resetHardware() {
@@ -174,41 +174,55 @@ public class Intake {
 //        }
 //        return false;
 //    }
+    public static void setIntakeState(IntakeConstants.IntakeState newState) {
+        intakeState = newState;
+    }
 
     // TODO Ask James about adding a method for detection of wrong alliance color
 
     public void update(){
         switch(intakeState){
             case FULLY_RETRACTED:
-                clearIntakeFailSafe();
                 extendoFullRetract();
-                // this may automatically start switching to extending?
                 if (controls.extend.value()) {
                     intakeState = IntakeConstants.IntakeState.EXTENDING;
-                } else if (controls.retract.value()){
+                }
+                if (controls.retract.value()){
                     intakeState = IntakeConstants.IntakeState.RETRACTING;
                 }
                 break;
-                // see how fast this is, may need to combine intaking and extending states so the flip down is faster (while we're extending)
             case FULLY_EXTENDED:
-                clearIntakeFailSafe();
-                // should come back from pushing out wrong sample and go immediately back to intaking again
                 intakeState = IntakeConstants.IntakeState.INTAKING;
-                if (controls.botToBaseState.value() && pivotUp) {
-                    intakeState = IntakeConstants.IntakeState.BASE_STATE;
+                if (controls.clearIntake.value()) {
+                    clearIntake();
+                } else {
+                    motorRollerOff();
+                    backRollerIdle();
                 }
+                // should come back from pushing out wrong sample and go immediately back to intaking again
+//                if (controls.botToBaseState.value()) {
+//                    intakeState = IntakeConstants.IntakeState.BASE_STATE;
+//                }
                 break;
             case EXTENDING:
-                clearIntakeFailSafe();
-                extendoFullExtend();
-                intakeState = IntakeConstants.IntakeState.INTAKING;
-                if (controls.botToBaseState.value() && pivotUp) {
-                    intakeState = IntakeConstants.IntakeState.BASE_STATE;
+                intakeState = IntakeConstants.IntakeState.FULLY_EXTENDED;
+                if (controls.clearIntake.value()) {
+                    clearIntake();
+                } else {
+                    motorRollerOff();
+                    backRollerIdle();
                 }
+                extendoFullExtend();
+//                if (controls.botToBaseState.value()) {
+//                    intakeState = IntakeConstants.IntakeState.BASE_STATE;
+//                }
                 break;
             case INTAKING:
-                clearIntakeFailSafe();
-                flipDownFull();
+                if (controls.pivot.value()) {
+                    flipDownFull();
+                } else {
+                    flipUp();
+                }
                 if (controls.intakeOnToIntake.value()) {
                     motorRollerOnToIntake();
                 } else {
@@ -223,63 +237,46 @@ public class Intake {
                 if (controls.retract.value()) {
                     intakeState = IntakeConstants.IntakeState.RETRACTING;
                 }
-                if (controls.botToBaseState.value() && pivotUp) {
-                    intakeState = IntakeConstants.IntakeState.BASE_STATE;
-                }
+//                if (controls.botToBaseState.value()) {
+//                    intakeState = IntakeConstants.IntakeState.BASE_STATE;
+//                }
                 break;
             case RETRACTING:
-                clearIntakeFailSafe();
+                intakeState = IntakeConstants.IntakeState.TRANSFER;
                 flipUp();
                 motorRollerOff();
                 extendoFullRetract();
                 // we may need to add an if statement here so it only does this when a sample is actually in the intake, not anytime we retract slides
-                intakeState = IntakeConstants.IntakeState.TRANSFER;
                 break;
             case WRONG_ALLIANCE_COLOR_SAMPLE:
-                clearIntakeFailSafe();
+                intakeState = IntakeConstants.IntakeState.FULLY_EXTENDED;
                 // probably need to do this for some amount of time, test later
                 pushOutSample();
-                intakeState = IntakeConstants.IntakeState.FULLY_EXTENDED;
                 break;
             case BASE_STATE:
-                clearIntakeFailSafe();
-                // reset button pressed and pivot is flipped up
-                resetHardware();
                 intakeState = IntakeConstants.IntakeState.FULLY_RETRACTED;
+                resetHardware();
                 break;
             case TRANSFER:
-                // pivotAxon.setPosition(IntakeConstants.IntakeState.TRANSFER.pivotPos());
-                pivotAnalog.runToPos(IntakeConstants.IntakeState.TRANSFER.pivotPos());
-                clearIntakeFailSafe();
+                intakeState = IntakeConstants.IntakeState.FULLY_RETRACTED;
+                pivotAxon.setPosition(IntakeConstants.IntakeState.TRANSFER.pivotPos());
+                // pivotAnalog.runToPos(IntakeConstants.IntakeState.TRANSFER.pivotPos());
                 // automatically, already verified a right colored sample, rolls it into the bucket
                 transferSample();
-                intakeState = IntakeConstants.IntakeState.FULLY_RETRACTED;
                 break;
             case OUTTAKING:
-                // clearIntakeFailSafe();
                 extendForOuttake();
                 break;
         }
-        telemetry.addData("intakeState:", intakeState);
-    }
-
-    public void clearIntakeFailSafe() {
-        if (controls.clearIntake.value()) {
-            clearIntake();
-        } else {
-            motorRollerOff();
-            backRollerIdle();
-        }
-    }
-
-    public void updatePivotTrigger() {
-
+        updateTelemetry();
     }
 
     public void updateTelemetry() {
         telemetry.addData("Right Linkage Pos", rightExtendo.getPosition());
         telemetry.addData("Left Linkage Pos", leftExtendo.getPosition());
         // telemetry.addData("Pivot pos (analog):", calculateFlipWithAnalog());
+        telemetry.addData("Pivot pos", pivotAxon.getPosition());
+        telemetry.addData("intakeState:", intakeState);
         telemetry.update();
     }
 
