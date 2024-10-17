@@ -36,15 +36,15 @@ public class SensorColorCalibration extends OpMode {
             currentMean = new double[3];
             iterationCount = 0;
         }
-        telemetry.addData("mean:", trimDoubleArray(currentMean));
+        telemetry.addData("mean:", parseDoubleArray(currentMean));
     }
-    public int[] trimDoubleArray(double[] array){
+    public String parseDoubleArray(double[] array){
         //I chose to do this to sacrifice a little bit of memory for a little bit of speed :)
         int len = array.length;
-        int[] a = new int[len];
+        String s = "";
         for(int i = 0;i<len;i++){
-            a[i] = (int) array[i];
+            s += (int) array[i];
         }
-        return a;
+        return s;
     }
 }

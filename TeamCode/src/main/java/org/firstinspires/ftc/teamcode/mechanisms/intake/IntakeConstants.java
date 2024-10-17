@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.mechanisms.intake;
 
+import org.opencv.core.Scalar;
+
 public class IntakeConstants {
 
     // pivoted up, pivoted down
@@ -59,5 +61,15 @@ public class IntakeConstants {
         }
 
 
+    }
+    public enum SampleTypes{
+        NONE(new double[]{0,0,0}),
+        YELLOW(new double[]{0,0,0}),
+        BLUE(new double[]{0,0,0}),
+        RED(new double[]{0,0,0});
+        double[] color;
+        SampleTypes(double[] color){
+            this.color = color;
+        }
     }
 }
