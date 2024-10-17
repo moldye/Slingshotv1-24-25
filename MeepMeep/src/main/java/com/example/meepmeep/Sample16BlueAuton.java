@@ -6,19 +6,12 @@ import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
-import java.awt.Robot;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 
-
-
-import java.util.List;
-
-
 import javax.imageio.ImageIO;
-import java.awt.Robot;
 
 public class Sample16BlueAuton {
     public static void main(String[] args) {
