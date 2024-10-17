@@ -20,7 +20,7 @@ public class IntakeTests {
     @Mock
     DcMotorEx rollerMotor;
     @Mock
-    AnalogServo pivotAxon;
+    Servo pivotAxon;
     @Mock
     Servo backRollerServo; // CR Servo?
 
@@ -106,7 +106,7 @@ public class IntakeTests {
     public void testGradualExtend() {
         when(rightExtendo.getPosition()).thenReturn(0.0);
         double newPos = rightExtendo.getPosition() + .1; // tune this val
-        intake.extendoExtend();
+//        intake.extendoExtend();
         verify(rightExtendo).setPosition(newPos);
     }
 }
