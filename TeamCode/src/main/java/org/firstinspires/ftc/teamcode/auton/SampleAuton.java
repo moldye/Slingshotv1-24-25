@@ -5,12 +5,8 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-import java.io.File;
-import java.io.IOException;
-
-public class Sample16BlueAuton {
+public class SampleAuton {
     private HardwareMap hardwareMap;
     private SampleMecanumDrive drive;
     private boolean isBlue;
@@ -189,7 +185,7 @@ public class Sample16BlueAuton {
     }
 
 
-    public Sample16BlueAuton(HardwareMap map, boolean isBlue, boolean nearBasket){
+    public SampleAuton(HardwareMap map, boolean isBlue, boolean nearBasket){
         hardwareMap = map;
         drive = new SampleMecanumDrive(hardwareMap);
         this.isBlue = isBlue;
