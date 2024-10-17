@@ -26,10 +26,10 @@ public class SensorColorCalibration extends OpMode {
         telemetry.clearAll();
         //uh, I feel like i had to add brackets, this is pretty much unnessesary...
         if(sensor != null){
-            currentMean[0] = sensor.red();
-            currentMean[1] = sensor.green();
-            currentMean[2] = sensor.blue();
-
+            currentMean[0] = (sensor.red()+currentMean[0]*iterationCount)/(iterationCount+1);
+            currentMean[1] = (sensor.green()+currentMean[0]*iterationCount)/(iterationCount+1);;
+            currentMean[2] = (sensor.blue()+currentMean[0]*iterationCount)/(iterationCount+1);;
+            iterationCount++;
         }
         //You can reset the current set using the options key!
         if(gamepad1.options){
