@@ -1,23 +1,18 @@
 package org.firstinspires.ftc.teamcode.auton;
 
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.getMotorVelocityF;
-
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 
-public class blueSpeciAuton extends LinearOpMode {
+public class SpeciAuton {
     SampleMecanumDrive drive;
-    boolean isBlue = true; //Todo
-    boolean nextToBasket = false;//Todo
+    boolean isBlue; //Todo
+    boolean nextToBasket;//Todo
 
-    @Override
-    public void runOpMode() throws InterruptedException {
+    public void run()  {
         drive.trajectorySequenceBuilder(AutonUtils.calcStartPos(isBlue, nextToBasket)).back(30)
                 .waitSeconds(.5)
                 .forward(5)

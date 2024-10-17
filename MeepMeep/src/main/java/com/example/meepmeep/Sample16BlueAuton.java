@@ -21,6 +21,7 @@ import javax.imageio.ImageIO;
 import java.awt.Robot;
 
 public class Sample16BlueAuton {
+    static boolean isBasket = true;
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
 
@@ -28,7 +29,8 @@ public class Sample16BlueAuton {
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setConstraints(70, 55, 2.5, 2, 14)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(-12, -60, Math.toRadians(270)))
+                        drive.trajectorySequenceBuilder(new Pose2d(12*(isBasket?-1:1), -60, Math.toRadians(270)))
+//                                .lineTo(new Vector2d(-12, -60))
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                                      //raise slides
                                 })
