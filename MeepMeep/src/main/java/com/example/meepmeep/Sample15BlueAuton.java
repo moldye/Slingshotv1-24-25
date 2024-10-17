@@ -35,14 +35,11 @@ public class Sample15BlueAuton {
 
                                 .splineToLinearHeading(new Pose2d(-50,-50,Math.toRadians(45)),Math.toRadians(180))
                                 //SCORE PRELOAD UNDER
-                                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
-                                    //raise slides
-                                })
-                                .waitSeconds(0.5)
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                                     //flip outtake
                                     //lower slides
                                 })
+                                .waitSeconds(.5)
 
                                 .turn(Math.toRadians(45))
                                 //SAMPLE INTAKE STARTS HERE
@@ -124,24 +121,24 @@ public class Sample15BlueAuton {
                                 .setReversed(false)
                                 //beyond this point is the other 3 samples
                                 .splineTo(new Vector2d(-12,-36),Math.toRadians(0))
-
-                                .lineToSplineHeading(new Pose2d(30,-36,Math.toRadians(30)))
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                                     //extendo out
                                     //run intkw
                                 })
+                                .lineToSplineHeading(new Pose2d(30,-36,Math.toRadians(30)))
+
                                 .waitSeconds(0.5)
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                                     //deeextend
                                 })
                                 .setReversed(true)
                                 .lineToSplineHeading(new Pose2d(-12,-36, Math.toRadians(0)))
-                                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                                     //transfer sample
                                 })
                                 .splineTo(new Vector2d(-50,-50),Math.toRadians(225))
 
-                                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                                     //raise slides
                                 })
                                 .waitSeconds(0.5)
@@ -155,23 +152,24 @@ public class Sample15BlueAuton {
 
 
                                 .splineTo(new Vector2d(-12,-36),Math.toRadians(0))
-                                .lineToSplineHeading(new Pose2d(36,-36,Math.toRadians(30)))
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                                     //extendo out
                                     //run intkw
                                 })
+                                .lineToSplineHeading(new Pose2d(36,-36,Math.toRadians(30)))
+
                                 .waitSeconds(0.5)
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                                     //deeextend
                                 })
                                 .setReversed(true)
                                 .lineToSplineHeading(new Pose2d(-12,-36, Math.toRadians(0)))
-                                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                                     //transfer sample
                                 })
                                 .splineTo(new Vector2d(-50,-50),Math.toRadians(225))
 
-                                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                                     //raise slides
                                 })
                                 .waitSeconds(0.5)
