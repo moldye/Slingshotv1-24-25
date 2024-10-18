@@ -27,8 +27,8 @@ public class AxonTester extends OpMode {
         controls = new GamepadMapping(gamepad1, gamepad2);
         robot = new Robot(hardwareMap, telemetry, controls);
         intake = robot.intake;
-        intake.rightExtendo.setPosition(.325);
-        intake.leftExtendo.setPosition(.325);
+        // intake.rightExtendo.setPosition(.325);
+        // intake.leftExtendo.setPosition(.325);
         intake.pivotAxon.setPosition(.2);
     }
 

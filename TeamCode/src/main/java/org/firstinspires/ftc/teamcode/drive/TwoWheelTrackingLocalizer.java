@@ -46,7 +46,7 @@ public class TwoWheelTrackingLocalizer extends TwoTrackingWheelLocalizer {
 
     //TODO: Tune the multipliers using Measured Distance / Telemetry Distance Traveled
     public static double X_MULTIPLIER = 1; // Multiplier in the X direction (back forth)
-    public static double Y_MULTIPLIER = 1; // Multiplier in the Y direction (strafe)
+    public static double Y_MULTIPLIER = 35.99/36; // Multiplier in the Y direction (strafe)
 
     // Parallel/Perpendicular to the forward axis
     // Parallel wheel is parallel to the forward axis

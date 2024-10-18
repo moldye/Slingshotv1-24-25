@@ -9,7 +9,7 @@ public class OuttakeConstants {
     private static double[] bucketPositions = {.7231126346979301, .5477610423136522, 0};
 
     // Retracted, low basket, high basket, specimen high rack, hang
-    private static double[] slidePositions = {50, 1200, 2400, 1200, 500}; // tune specimen high rack
+    private static double[] slidePositions = {0, 1200, 2400, 1200, 500}; // tune specimen high rack
     public enum SlidePositions {
         RETRACTED(slidePositions[0]),
         LOW_BASKET(slidePositions[1]), // probably could work for hang

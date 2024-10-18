@@ -29,8 +29,8 @@ public class TransferTest extends OpMode {
         dt = robot.drivetrain;
         intake.extendoFullRetract();
         intake.flipUp();
-        outtake.returnToRetracted();
         outtake.resetEncoders();
+        outtake.returnToRetracted();
     }
 
     @Override

@@ -37,12 +37,12 @@ public class MechPIDTuning extends OpMode {
         controls = new GamepadMapping(gamepad1, gamepad2);
         // slide = new BasicSlides(hardwareMap, configName, 0,p,i,d,f);
         // arm = new BasicArm(hardwareMap, configName, 0, p,i,d,f, ticksPerDegree);
-        outtake = new Outtake(hardwareMap, 0, .01, 0, 0.00001, 0.0001, this.telemetry, controls);
+        outtake = new Outtake(hardwareMap, 0, .0008, 0, 0, 0.01, this.telemetry, controls);
         // intake = new Intake(hardwareMap, telemetry, controls);
         intake = new Intake(hardwareMap, telemetry, controls);
         dashboardTelemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
-        outtake.returnToRetracted();
         outtake.resetEncoders();
+        outtake.returnToRetracted();
     }
 
     @Override

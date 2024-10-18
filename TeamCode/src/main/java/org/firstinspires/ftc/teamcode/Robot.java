@@ -43,8 +43,8 @@ public class Robot{
     public DriveTrain drivetrain;
     // public ReLocalizer ultraSonics;
     public IMU imu;
-    public static Outtake outtake;
-    public static Intake intake;
+    public Outtake outtake;
+    public Intake intake;
     public GamepadMapping controls;
 
     public Robot(HardwareMap hardwareMap, Telemetry telemetry, GamepadMapping controls) {
@@ -66,7 +66,7 @@ public class Robot{
         drivetrain = new DriveTrain(hardwareMap, imu, telemetry, controls);
         intake = new Intake(hardwareMap, telemetry, controls);
 
-        outtake = new Outtake(hardwareMap, 0, 0.01, 0, 0.00001, 0.0001, telemetry, controls); // tune PID values
+        outtake = new Outtake(hardwareMap, 0, .0008, 0, 0, 0.01, telemetry, controls); // tune PID values
         //ultraSonics = new ReLocalizer(hardwareMap, imu);
     }
 
@@ -95,8 +95,8 @@ public class Robot{
         // reset specimen claw
     }
 
-    public static void botReadyForDeposit() {
-        intake.extendForOuttake();
-        outtake.bucketTilt();
-    }
+//    public void botReadyForDeposit() {
+//        intake.extendForOuttake();
+//        outtake.bucketTilt();
+//    }
 }

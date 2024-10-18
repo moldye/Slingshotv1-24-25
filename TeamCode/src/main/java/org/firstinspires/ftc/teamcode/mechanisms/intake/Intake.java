@@ -176,10 +176,10 @@ public class Intake {
         switch(intakeState){
             case FULLY_RETRACTED:
                 extendoFullRetract();
-                if (controls.extend.value()) {
+                if (controls.extend.changed()) {
                     intakeState = IntakeConstants.IntakeState.EXTENDING;
                 }
-                if (controls.retract.value()){
+                if (controls.retract.changed()){
                     intakeState = IntakeConstants.IntakeState.RETRACTING;
                 }
                 break;
