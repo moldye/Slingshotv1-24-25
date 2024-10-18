@@ -27,6 +27,7 @@ public class FSMTest extends OpMode {
         intake = robot.intake;
         outtake = robot.outtake;
         robot.outtake.resetEncoders();
+        robot.outtake.returnToRetracted();
         // robot.resetHardware();
         intakeState = IntakeConstants.IntakeState.FULLY_RETRACTED;
         // cycle = new Cycle(hardwareMap, telemetry, controls);
@@ -35,12 +36,12 @@ public class FSMTest extends OpMode {
     @Override
     public void loop() {
         controls.update();
-        // intake.update();
-        if(controls.extend.value()) {
-            intake.motorRollerOnToIntake();
-        } else {
-            intake.motorRollerOff();
-        }
+        intake.update();
+//        if(controls.extend.value()) {
+//            intake.motorRollerOnToIntake();
+//        } else {
+//            intake.motorRollerOff();
+//        }
 
     }
 }

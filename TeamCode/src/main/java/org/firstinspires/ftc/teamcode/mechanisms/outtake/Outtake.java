@@ -53,7 +53,6 @@ public class Outtake {
 
         this.telemetry = telemetry;
         this.controls = controls;
-
     }
 
     // this is for J-Unit testing only
