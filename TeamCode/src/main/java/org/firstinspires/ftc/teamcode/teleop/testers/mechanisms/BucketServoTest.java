@@ -12,7 +12,6 @@ import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 public class BucketServoTest extends OpMode {
     private GamepadMapping controls;
     private Outtake outtake;
-
     private double servoPos;
     private double speed = .001;
     @Override

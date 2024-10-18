@@ -77,6 +77,10 @@ public class GamepadMapping {
     public static Toggle flipBucket;
     public static Toggle pivot;
 
+    // claw
+    public static Toggle closeClaw;
+    public static Toggle armDown;
+
     public GamepadMapping(Gamepad gamepad1, Gamepad gamepad2) {
         this.gamepad1 = gamepad1;
         this.gamepad2 = gamepad2;
@@ -105,6 +109,10 @@ public class GamepadMapping {
         transfer = new Toggle(false);
         deposit = new Toggle(false);
         flipBucket = new Toggle(false);
+
+        // claw (could be real?)
+        closeClaw = new Toggle(false);
+        armDown = new Toggle(false);
     }
 
     public void update() {
