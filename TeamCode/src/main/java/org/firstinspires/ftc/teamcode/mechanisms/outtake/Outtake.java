@@ -14,8 +14,8 @@ import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 public class Outtake {
     // SLIDES
     private PIDController controller;
-    private DcMotorEx outtakeSlideRight;
-    private DcMotorEx outtakeSlideLeft;
+    public DcMotorEx outtakeSlideRight;
+    public DcMotorEx outtakeSlideLeft;
     private static double p, i, d; //has to be tuned
     private static double f; // usually mass moved * constant G
     private OuttakeConstants.SlidePositions slideState;
@@ -207,14 +207,12 @@ public class Outtake {
 //        }
         if (controls.highBasket.value()) {
             slideState = OuttakeConstants.SlidePositions.HIGH_BASKET;
-            Intake.setIntakeState(IntakeConstants.IntakeState.OUTTAKING);
         } else {
             slideState = OuttakeConstants.SlidePositions.RETRACTED;
             Intake.setIntakeState(IntakeConstants.IntakeState.FULLY_RETRACTED); // this should move the intake back in
         }
         if (controls.lowBasket.value()) {
             slideState = OuttakeConstants.SlidePositions.LOW_BASKET;
-            Intake.setIntakeState(IntakeConstants.IntakeState.OUTTAKING);
         } else {
             slideState = OuttakeConstants.SlidePositions.RETRACTED;
             Intake.setIntakeState(IntakeConstants.IntakeState.FULLY_RETRACTED);

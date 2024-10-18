@@ -28,7 +28,7 @@ public class GamepadMapping {
     public static double strafe = 0.0;
     public static double turn = 0.0;
 
-    // INTAKE
+    // INTAKE (ACTIVE)
     // --------------
     public static Toggle extend; // extend intake
     public static Toggle retract; // retract intake
@@ -37,6 +37,9 @@ public class GamepadMapping {
     public static Toggle transfer;
     public static Toggle intakeOnToIntake;
     public static Toggle intakeOnToClear;
+
+    // INTAKE (CLAW)
+    public static double wristYaw = 0;
 
     // OUTTAKE
     // --------------
@@ -141,5 +144,9 @@ public class GamepadMapping {
         drive = gamepad1.left_stick_y;
         strafe = gamepad1.left_stick_x;
         turn = gamepad1.right_stick_x;
+    }
+
+    public void clawUpdate() {
+        wristYaw = gamepad2.right_stick_x;
     }
 }

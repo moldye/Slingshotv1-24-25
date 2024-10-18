@@ -256,9 +256,6 @@ public class Intake {
                 // automatically, already verified a right colored sample, rolls it into the bucket
                 transferSample();
                 break;
-            case OUTTAKING:
-                extendForOuttake();
-                break;
         }
         updateTelemetry();
     }
