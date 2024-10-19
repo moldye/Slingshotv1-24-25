@@ -86,8 +86,8 @@ public class Robot{
     // This is for EVERYTHING, to be called before auton and only before auton (or in the resetHardware auton class if we don't run auton)
     public void resetHardware() {
         // reset outtake
-        outtake.resetHardware();
         outtake.resetEncoders();
+        outtake.resetHardware();
         // reset intake
         intake.resetHardware();
         // reset dt & ultrasonics

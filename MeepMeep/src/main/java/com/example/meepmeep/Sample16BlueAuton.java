@@ -19,39 +19,56 @@ public class Sample16BlueAuton {
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-                .setConstraints(70, 55, 2.5, 2, 14)
+                .setConstraints(65, 80, 2.5, 5, 12.7)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(-12, -60, Math.toRadians(270)))
+                        drive.trajectorySequenceBuilder(new Pose2d(-12, -60, Math.toRadians(0)))
+                                //start by raising slides to go score
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                     //raise slides
+                                    //raise slides
+//                                    outtake.moveTicks(2400);
                                 })
-                                .back(28)
+                                .setReversed(true)
+                                //preload to bucket
+                                .splineToLinearHeading(new Pose2d(-50,-50,Math.toRadians(45)),Math.toRadians(180))
+                                .setReversed(false)
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    //place specimen
-                                    //lower  slides
+                                    //flip bucket
+//                                    outtake.bucketDeposit();
+                                })
+                                .waitSeconds(0.2)
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+//                                    outtake.returnToRetracted();
                                 })
 
-                                //SAMPLE INTAKE STARTS HERE
-                                .splineToLinearHeading(new Pose2d(-50,-50,Math.toRadians(90)),Math.toRadians(180))
+                                //1st yellow to bucket
+                                .turn(Math.toRadians(45))
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    //extendo out
-                                    //run intkw
+//                                    extendoIntake();
                                 })
                                 .waitSeconds(0.5)
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    //deeextend
+//                                    deextend();
                                 })
                                 .turn(Math.toRadians(-45))
                                 .UNSTABLE_addTemporalMarkerOffset(0.75, () -> {
                                     //transfer sample
+//                                    intake.motorRollerOnToClear();
+                                })
+                                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
+//                                    intake.motorRollerOff();
                                 })
                                 .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                                     //raise slides
+//                                    outtake.moveTicks(2400);
                                 })
                                 .waitSeconds(0.5)
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    //flip outtake
-                                    //lower slides
+                                    //flip bucket
+//                                    outtake.bucketDeposit();
+                                })
+                                .waitSeconds(0.2)
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+//                                    outtake.returnToRetracted();
                                 })
 
 
@@ -59,54 +76,67 @@ public class Sample16BlueAuton {
                                 //MNEXT SAMPLE
                                 .turn(Math.toRadians(60))
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    //extendo out
-                                    //run intkw
+//                                    extendoIntake();
                                 })
-
                                 .waitSeconds(0.5)
-
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    //deeextend
+
                                 })
 
                                 .turn(Math.toRadians(-60))
                                 .UNSTABLE_addTemporalMarkerOffset(0.75, () -> {
                                     //transfer sample
+//                                    intake.motorRollerOnToClear();
+                                })
+                                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
+//                                    intake.motorRollerOff();
                                 })
                                 .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                                     //raise slides
+//                                    outtake.moveTicks(2400);
                                 })
                                 .waitSeconds(0.5)
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    //flip outtake
-                                    //lower slides
+                                    //flip bucket
+//                                    outtake.bucketDeposit();
+                                })
+                                .waitSeconds(0.2)
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+//                                    outtake.returnToRetracted();
                                 })
 
 
                                 //NEXT SAMPLE
                                 .turn(Math.toRadians(90))
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    //extendo out
-                                    //run intkw
+//                                    extendoIntake();
                                 })
-
                                 .waitSeconds(0.5)
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    //deeextend
+//                                    deextend();
                                 })
+
                                 .turn(Math.toRadians(-90))
                                 .UNSTABLE_addTemporalMarkerOffset(0.75, () -> {
                                     //transfer sample
+//                                    intake.motorRollerOnToClear();
+                                })
+                                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
+//                                    intake.motorRollerOff();
                                 })
                                 .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                                     //raise slides
+//                                    outtake.moveTicks(2400);
                                 })
                                 .waitSeconds(0.5)
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    //flip outtake
-                                    //lower slides
+                                    //flip bucket
+//                                    outtake.bucketDeposit();
                                 })
-                                .waitSeconds(1.5)
+                                .waitSeconds(0.2)
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+//                                    outtake.returnToRetracted();
+                                })
 
 
                                 //beyond this point is the other 3 samples
@@ -114,59 +144,75 @@ public class Sample16BlueAuton {
 
                                 .lineToSplineHeading(new Pose2d(30,-36,Math.toRadians(30)))
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    //extendo out
-                                    //run intkw
+//                                    extendoIntake();
                                 })
                                 .waitSeconds(0.5)
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    //deeextend
+//                                    deextend();
                                 })
                                 .setReversed(true)
                                 .lineToSplineHeading(new Pose2d(-12,-36, Math.toRadians(0)))
-                                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
+                                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> {
                                     //transfer sample
+//                                    intake.motorRollerOnToClear();
+                                })
+                                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
+//                                    intake.motorRollerOff();
                                 })
                                 .splineTo(new Vector2d(-50,-50),Math.toRadians(225))
 
                                 .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                                     //raise slides
+//                                    outtake.moveTicks(2400);
                                 })
                                 .waitSeconds(0.5)
                                 .setReversed(false)
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    //flip outtake
-                                    //lower slides
+                                    //flip bucket
+//                                    outtake.bucketDeposit();
+                                })
+                                .waitSeconds(0.2)
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+//                                    outtake.returnToRetracted();
                                 })
 
-
-
-
+                                //next sample
                                 .splineTo(new Vector2d(-12,-36),Math.toRadians(0))
                                 .lineToSplineHeading(new Pose2d(36,-36,Math.toRadians(30)))
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    //extendo out
-                                    //run intkw
+//                                    extendoIntake();
                                 })
                                 .waitSeconds(0.5)
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    //deeextend
+//                                    deextend();
                                 })
                                 .setReversed(true)
                                 .lineToSplineHeading(new Pose2d(-12,-36, Math.toRadians(0)))
-                                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
+                                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> {
                                     //transfer sample
+//                                    intake.motorRollerOnToClear();
+                                })
+                                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
+//                                    intake.motorRollerOff();
                                 })
                                 .splineTo(new Vector2d(-50,-50),Math.toRadians(225))
 
                                 .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                                     //raise slides
+//                                    outtake.moveTicks(2400);
                                 })
                                 .waitSeconds(0.5)
                                 .setReversed(false)
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    //flip outtake
-                                    //lower slides
+                                    //flip bucket
+//                                    outtake.bucketDeposit();
                                 })
+                                .waitSeconds(0.2)
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+//                                    outtake.returnToRetracted();
+                                })
+
+                                //park
                                 .lineToLinearHeading(new Pose2d(-30, -12, Math.toRadians(90)))
 
 
