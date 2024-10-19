@@ -16,6 +16,6 @@ public class ResetHardware extends LinearOpMode {
 
         waitForStart();
 
-        robot.resetHardware();
+        robot.hardwareHardReset();
     }
 }

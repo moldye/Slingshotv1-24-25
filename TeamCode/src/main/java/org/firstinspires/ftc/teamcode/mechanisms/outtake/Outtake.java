@@ -149,81 +149,84 @@ public class Outtake {
         bucketDeposit();
     }
 
-    public void update() {
-        // going to need ElapsedTime likely
-        switch(slideState) {
-            case RETRACTED:
-                updateHang();
-                updateOuttakeSlides();
-                break;
-            case LOW_BASKET:
-                updateHang();
-                extendToLowBasket();
-                // prob need to tune 10 as threshold
-                if (controls.flipBucket.value() &&
-                        outtakeSlideLeft.getCurrentPosition() <= OuttakeConstants.SlidePositions.LOW_BASKET.getSlidePos() + 10) {
-                    bucketDeposit();
-                } else {
-                    bucketToReadyForTransfer();
-                }
-                updateOuttakeSlides();
-                break;
-            case HIGH_BASKET:
-                updateHang();
-                extendToHighBasket();
-                if (controls.flipBucket.value() &&
-                        outtakeSlideLeft.getCurrentPosition() <= OuttakeConstants.SlidePositions.HIGH_BASKET.getSlidePos() + 10) {
-                    bucketDeposit();
-                } else {
-                    bucketToReadyForTransfer();
-                }
-                updateOuttakeSlides();
-                break;
-//            case SPECIMEN_HIGH_RACK:
-//                extendToSpecimenHighRack();
-//                updateOuttakeSlides();
-//                break;
-            case BASE_STATE:
-                slideState = OuttakeConstants.SlidePositions.RETRACTED;
-                resetHardware();
-                break;
-            default:
-                // should never be reached since the state shouldn't ever be null
-                slideState = OuttakeConstants.SlidePositions.BASE_STATE;
-        }
-
-        // TODO add the failsafe code here instead of writing it in each box
-        // prob stick updateHang here too (with a condition that excludes base state)
-    }
-
     public static boolean getOuttakeDTSlow() {
         return outtakeDTSlow;
     }
 
-    public void updateOuttakeSlides() {
-//        if (controls.botToBaseState.value()) {
-//            slideState = OuttakeConstants.SlidePositions.BASE_STATE;
-//        }
-        if (controls.highBasket.value()) {
-            slideState = OuttakeConstants.SlidePositions.HIGH_BASKET;
-        } else {
-            slideState = OuttakeConstants.SlidePositions.RETRACTED;
-            Intake.setIntakeState(IntakeConstants.IntakeState.FULLY_RETRACTED); // this should move the intake back in
-        }
-        if (controls.lowBasket.value()) {
-            slideState = OuttakeConstants.SlidePositions.LOW_BASKET;
-        } else {
-            slideState = OuttakeConstants.SlidePositions.RETRACTED;
-            Intake.setIntakeState(IntakeConstants.IntakeState.FULLY_RETRACTED);
-        }
+    public void updateTelemetry() {
+        telemetry.addData("bucket servo pos: ", bucketServo.getPosition());
+        telemetry.addData("right motor pos/ticks: ", outtakeSlideRight.getCurrentPosition());
+        telemetry.addData("left motor pos/ticks: ", outtakeSlideLeft.getCurrentPosition());
     }
 
-    public void updateHang() {
-        if (controls.L1hang.value()) {
-            hang();
-        } else {
-            bucketToReadyForTransfer();
-            returnToRetracted();
-        }
-    }
+//    public void update() {
+//        // going to need ElapsedTime likely
+//        switch(slideState) {
+//            case RETRACTED:
+//                updateHang();
+//                updateOuttakeSlides();
+//                break;
+//            case LOW_BASKET:
+//                updateHang();
+//                extendToLowBasket();
+//                // prob need to tune 10 as threshold
+//                if (controls.flipBucket.value() &&
+//                        outtakeSlideLeft.getCurrentPosition() <= OuttakeConstants.SlidePositions.LOW_BASKET.getSlidePos() + 10) {
+//                    bucketDeposit();
+//                } else {
+//                    bucketToReadyForTransfer();
+//                }
+//                updateOuttakeSlides();
+//                break;
+//            case HIGH_BASKET:
+//                updateHang();
+//                extendToHighBasket();
+//                if (controls.flipBucket.value() &&
+//                        outtakeSlideLeft.getCurrentPosition() <= OuttakeConstants.SlidePositions.HIGH_BASKET.getSlidePos() + 10) {
+//                    bucketDeposit();
+//                } else {
+//                    bucketToReadyForTransfer();
+//                }
+//                updateOuttakeSlides();
+//                break;
+////            case SPECIMEN_HIGH_RACK:
+////                extendToSpecimenHighRack();
+////                updateOuttakeSlides();
+////                break;
+//            case BASE_STATE:
+//                slideState = OuttakeConstants.SlidePositions.RETRACTED;
+//                resetHardware();
+//                break;
+//            default:
+//                // should never be reached since the state shouldn't ever be null
+//                slideState = OuttakeConstants.SlidePositions.BASE_STATE;
+//        }
+//    }
+
+//    public void updateOuttakeSlides() {
+////        if (controls.botToBaseState.value()) {
+////            slideState = OuttakeConstants.SlidePositions.BASE_STATE;
+////        }
+//        if (controls.highBasket.value()) {
+//            slideState = OuttakeConstants.SlidePositions.HIGH_BASKET;
+//        } else {
+//            slideState = OuttakeConstants.SlidePositions.RETRACTED;
+//            Intake.setIntakeState(IntakeConstants.IntakeState.FULLY_RETRACTED); // this should move the intake back in
+//        }
+//        if (controls.lowBasket.value()) {
+//            slideState = OuttakeConstants.SlidePositions.LOW_BASKET;
+//        } else {
+//            slideState = OuttakeConstants.SlidePositions.RETRACTED;
+//            Intake.setIntakeState(IntakeConstants.IntakeState.FULLY_RETRACTED);
+//        }
+//    }
+
+//    public void updateHang() {
+//        if (controls.L1hang.value()) {
+//            hang();
+//        } else {
+//            bucketToReadyForTransfer();
+//            returnToRetracted();
+//        }
+//    }
 }

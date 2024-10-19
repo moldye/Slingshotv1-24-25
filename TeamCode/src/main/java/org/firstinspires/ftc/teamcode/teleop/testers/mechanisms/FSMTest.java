@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.mechanisms.Cycle;
-import org.firstinspires.ftc.teamcode.mechanisms.DriveTrain;
 import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.intake.IntakeConstants;
 import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
@@ -27,21 +26,13 @@ public class FSMTest extends OpMode {
         intake = robot.intake;
         outtake = robot.outtake;
         robot.outtake.resetEncoders();
-        robot.outtake.returnToRetracted();
-        // robot.resetHardware();
-        // intakeState = IntakeConstants.IntakeState.FULLY_RETRACTED;
-        cycle = new Cycle(hardwareMap, telemetry, controls, robot);
+        robot.hardwareHardReset();
+        cycle = new Cycle(telemetry, controls, robot);
     }
 
     @Override
     public void loop() {
         controls.update();
         cycle.update();
-        /*if(controls.extend.value()) {
-            intake.motorRollerOnToIntake();
-        } else {
-            intake.motorRollerOff();
-        }*/
-
     }
 }

@@ -16,14 +16,22 @@ public class Cycle {
     private GamepadMapping controls;
     private Robot robot;
 
-    private CycleState cycleState = CycleState.INTAKING;
-    private IntakeConstants.IntakeState intakeState = IntakeConstants.IntakeState.FULLY_RETRACTED;
+    private CycleState cycleState = CycleState.BASE_STATE;
 
-    public Cycle(HardwareMap hardwareMap, Telemetry telemetry, GamepadMapping controls, Robot robot) {
+    // FAILSAFES
+    private boolean pivotUp;
+    private boolean extendoIn;
+    private boolean outtakeIn;
+
+    public Cycle(Telemetry telemetry, GamepadMapping controls, Robot robot) {
         this.robot = robot;
         this.intake = robot.intake;
         this.outtake = robot.outtake;
         this.controls = controls;
+
+        pivotUp = true;
+        extendoIn = true;
+        outtakeIn = true;
     }
 
     public void update() {
@@ -33,13 +41,18 @@ public class Cycle {
         switch(cycleState){
             case INTAKING:
                 if (controls.extend.value()) {
+                    extendoIn = true;
                     intake.extendoFullExtend();
                 } else if (!controls.extend.value()) {
+                    extendoIn = true;
+                    pivotUp = true;
                     intake.flipUp();
                     intake.motorRollerOff();
                     intake.extendoFullRetract();
                 }
                 if (controls.retract.value()) {
+                    pivotUp = true;
+                    extendoIn = true;
                     intake.flipUp();
                     intake.motorRollerOff();
                     intake.extendoFullRetract();
@@ -49,11 +62,13 @@ public class Cycle {
                 }
                 // a (bottom button)
                 if (controls.pivot.value()) {
+                    pivotUp = false;
                     intake.flipDownFull();
                 } else {
+                    pivotUp = true;
                     intake.flipUp();
                 }
-                if (controls.intakeOnToIntake.value()) {
+                if (controls.intakeOnToIntake.value() && extendoIn == false) {
                     intake.motorRollerOnToIntake();
                     intake.backRollerIdle();
                 } else if (controls.intakeOnToClear.value()){
@@ -62,16 +77,9 @@ public class Cycle {
                     intake.motorRollerOff();
                     intake.backRollerIdle();
                 }
-                // we may need to add an if statement here so it only does this when a sample is actually in the intake, not anytime we retract slides
-//            case WRONG_ALLIANCE_COLOR_SAMPLE:
-//                // probably need to do this for some amount of time, test later
-//                pushOutSample();
-//                break;
-//                else if(intakeState.equals(IntakeConstants.IntakeState.TRANSFER)) {
-//                    intakeState = IntakeConstants.IntakeState.FULLY_RETRACTED;
-//                    intake.pivotAxon.setPosition(IntakeConstants.IntakeState.TRANSFER.pivotPos());
-//                    // pivotAnalog.runToPos(IntakeConstants.IntakeState.TRANSFER.pivotPos());
-//                    intake.transferSample();
+                // TODO ASK JAMS
+//                if (colorSensorSensesBadColor) {
+//                    pushOutSample
 //                }
                 if (controls.highBasket.value()) {
                     cycleState = CycleState.OUTTAKING;
@@ -85,6 +93,8 @@ public class Cycle {
                 break;
             case OUTTAKING:
                 if (controls.highBasket.value()) {
+                    extendoIn = false;
+                    outtakeIn = false;
                     intake.extendForOuttake();
                     outtake.extendToHighBasket();
                     if (controls.flipBucket.value() &&
@@ -93,11 +103,9 @@ public class Cycle {
                     } else {
                         outtake.bucketToReadyForTransfer();
                     }
-                } else {
-                    outtake.returnToRetracted();// this should move the intake back in
-                }
-
-                if (controls.lowBasket.value()) {
+                } else if (controls.lowBasket.value()) {
+                    extendoIn = false;
+                    outtakeIn = false;
                     intake.extendForOuttake();
                     outtake.extendToLowBasket();
                     // prob need to tune 10 as threshold
@@ -108,7 +116,11 @@ public class Cycle {
                         outtake.bucketToReadyForTransfer();
                     }
                 } else {
+                    extendoIn = true;
+                    outtakeIn = true;
                     outtake.returnToRetracted();
+                    // this should move the intake back in
+                    intake.extendoFullRetract();
                 }
                 if (controls.botToBaseState.changed()) {
                     cycleState = CycleState.BASE_STATE;
@@ -118,14 +130,21 @@ public class Cycle {
                 }
                 break;
             case BASE_STATE:
+                // bucket to ready for transfer & returns to retracted
                 outtake.resetHardware();
+
+                // motor off, sets direction back, flips pivot up, back roller still, full retract
                 intake.resetHardware();
+
                 if (controls.L1hang.value()) {
                     outtake.hang();
                 }
+
+                cycleState = CycleState.INTAKING;
+
                 break;
         }
-        intake.updateTelemetry();
+        robot.updateTelemetry();
     }
 
     public enum CycleState {
