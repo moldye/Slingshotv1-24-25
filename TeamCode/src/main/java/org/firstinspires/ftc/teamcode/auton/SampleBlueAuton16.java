@@ -33,7 +33,7 @@ public class SampleBlueAuton16 extends LinearOpMode {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
 
-        Pose2d startPose = new Pose2d(-12, -60, Math.toRadians(270));
+        Pose2d startPose = new Pose2d(-12, -60, Math.toRadians(0));
 
         drive.setPoseEstimate(startPose);
 
