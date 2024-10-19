@@ -95,6 +95,7 @@ public class Cycle {
                 if (controls.highBasket.value()) {
                     extendoIn = false;
                     outtakeIn = false;
+                    // TODO tune this
                     intake.extendForOuttake();
                     outtake.extendToHighBasket();
                     if (controls.flipBucket.value() &&

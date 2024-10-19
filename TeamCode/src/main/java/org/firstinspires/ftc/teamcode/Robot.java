@@ -88,6 +88,12 @@ public class Robot{
         // reset specimen claw
     }
 
+    // this is for teleop, when we ant to preserve encoder and sensor input
+    public void hardwareSoftReset() {
+        outtake.resetHardware();
+        intake.resetHardware();
+    }
+
     public void updateTelemetry() {
         intake.updateTelemetry();
         outtake.updateTelemetry();
