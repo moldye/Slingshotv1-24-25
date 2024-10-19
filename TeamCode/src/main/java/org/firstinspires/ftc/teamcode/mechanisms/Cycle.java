@@ -63,6 +63,7 @@ public class Cycle {
                 break;
             case EXTENDO_FULLY_EXTENDED:
                 telemetry.addData("extend value:", controls.extend.value());
+                telemetry.update();
                 if (!controls.extend.value()) {
                     extendoIn = true;
                     pivotUp = true;
@@ -70,18 +71,21 @@ public class Cycle {
                     intake.motorRollerOff();
                     intake.extendoFullRetract();
                     transferState = TransferState.EXTENDO_FULLY_RETRACTED;
+                    break;
                 }
                 else if (controls.pivot.value()) {
                     pivotUp = false;
+                    intake.flipDownFull();
                     transferState = TransferState.PIVOT_DOWN;
+                    break;
                 }
-                break;
             case PIVOT_DOWN:
                 // a (bottom button)
                 if (!controls.pivot.value()) {
                     pivotUp = true;
                     intake.flipUp();
                     transferState = TransferState.EXTENDO_FULLY_EXTENDED;
+                    break;
                 }
                 // TODO try pressing these at the same time
                 else if (controls.intakeOnToIntake.value()) {
@@ -104,6 +108,7 @@ public class Cycle {
                     intake.motorRollerOff();
                     intake.backRollerIdle();
                     transferState = TransferState.EXTENDO_FULLY_RETRACTED;
+                    break;
                 }
                 break;
             case HIGH_BASKET:
@@ -116,6 +121,7 @@ public class Cycle {
                 }
                 else if (!controls.highBasket.value()) {
                     transferState = TransferState.SLIDES_RETRACTED;
+                    break;
                 }
                 break;
             case LOW_BASKET:
@@ -128,6 +134,7 @@ public class Cycle {
                 }
                 else if (!controls.lowBasket.value()) {
                     transferState = TransferState.SLIDES_RETRACTED;
+                    break;
                 }
                 break;
             case SLIDES_RETRACTED:
