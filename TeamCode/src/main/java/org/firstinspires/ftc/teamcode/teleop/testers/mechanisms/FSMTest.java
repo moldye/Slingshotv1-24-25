@@ -25,7 +25,9 @@ public class FSMTest extends OpMode {
         robot = new Robot(hardwareMap, telemetry, controls);
         intake = robot.intake;
         outtake = robot.outtake;
-        robot.hardwareHardReset();
+        robot.outtake.resetEncoders();
+        robot.intake.resetHardware();
+        robot.outtake.resetHardware();
         cycle = new Cycle(telemetry, controls, robot);
     }
 

@@ -29,7 +29,7 @@ public class MechPIDTuning extends OpMode {
     // private String configName = "";
     public static int target = 0;
     public static double p = 0, i = 0, d = 0, f = 0;
-    private int type = 2; // 0 is slides 1 is arm 2 is analog
+    private int type = 0; // 0 is slides 1 is arm 2 is analog
 
     private Telemetry dashboardTelemetry;
     @Override
@@ -37,12 +37,12 @@ public class MechPIDTuning extends OpMode {
         controls = new GamepadMapping(gamepad1, gamepad2);
         // slide = new BasicSlides(hardwareMap, configName, 0,p,i,d,f);
         // arm = new BasicArm(hardwareMap, configName, 0, p,i,d,f, ticksPerDegree);
-        outtake = new Outtake(hardwareMap, 0, .0008, 0, 0, 0.01, this.telemetry, controls);
+        outtake = new Outtake(hardwareMap, 0, .5, 0, 0, 0.03, this.telemetry, controls);
         // intake = new Intake(hardwareMap, telemetry, controls);
         intake = new Intake(hardwareMap, telemetry, controls);
         dashboardTelemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
-//        outtake.resetEncoders();
-//        outtake.returnToRetracted();
+        outtake.resetEncoders();
+        outtake.returnToRetracted();
     }
 
     @Override
@@ -55,7 +55,8 @@ public class MechPIDTuning extends OpMode {
         } else if (type == 2) {
             intake.pivotAnalog.changePIDF(p,i,d,f);
             intake.pivotAnalog.runToPos(target);
-            dashboardTelemetry.addData("position: ", intake.pivotAnalog.getPosition());
+            dashboardTelemetry.addData("analog position: ", intake.pivotAnalog.getPosition());
+            dashboardTelemetry.addData("servo position: ", intake.pivotAxon.getPosition());
         }
 //        else{
 //            arm.moveTicks(target);

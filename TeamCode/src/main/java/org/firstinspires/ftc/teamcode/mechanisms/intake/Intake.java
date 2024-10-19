@@ -98,13 +98,10 @@ public class Intake {
 
     public void transferSample() {
         // this should run transfer for half a second
-        startTime = System.currentTimeMillis();
-        while (System.currentTimeMillis() - startTime >= 0 && System.currentTimeMillis() - startTime <= 500) {
-            rollerMotor.setPower(1);
-            backRollerServo.setPosition(IntakeConstants.IntakeState.TRANSFER.backRollerPos());
-        }
-        rollerMotor.setPower(0);
-        backRollerServo.setPosition(IntakeConstants.IntakeState.BASE_STATE.backRollerPos());
+        pivotAxon.setPosition(IntakeConstants.IntakeState.TRANSFER.pivotPos());
+        // pivotAnalog.runToPos(IntakeConstants.IntakeState.TRANSFER.pivotPos());
+        rollerMotor.setPower(1);
+        backRollerServo.setPosition(IntakeConstants.IntakeState.TRANSFER.backRollerPos());
     }
 
     public void clearIntake() {

@@ -113,11 +113,13 @@ public class Outtake {
     }
 
     public void returnToRetracted() {
+        outtakeDTSlow = false;
         moveLeftTicks(OuttakeConstants.SlidePositions.RETRACTED.getSlidePos());
         moveRightTicks(OuttakeConstants.SlidePositions.RETRACTED.getSlidePos());
     }
 
     public void resetHardware() {
+        outtakeDTSlow = false;
         returnToRetracted();
         // other resetting bucket stuff here
         bucketToReadyForTransfer();

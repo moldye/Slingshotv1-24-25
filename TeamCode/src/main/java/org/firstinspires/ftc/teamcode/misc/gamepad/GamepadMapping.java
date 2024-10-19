@@ -125,11 +125,12 @@ public class GamepadMapping {
         intakeOnToIntake.update(gamepad1.right_trigger > 0.5);
         intakeOnToClear.update(gamepad1.left_trigger > 0.5);
         pivot.update(gamepad1.a);
+        transfer.update(gamepad2.y);
 
         // Outtake (All Gamepad2)
         lowBasket.update(gamepad2.right_bumper);
         highBasket.update(gamepad2.left_bumper);
-        bucketDeposit.update(gamepad2.a); 
+        flipBucket.update(gamepad2.a);
 
         // Specimen
 //        latchSpecimen.update(gamepad2.a);

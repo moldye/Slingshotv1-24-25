@@ -20,7 +20,7 @@ public class Robot{
 
     // intake:
     // pivot (max) -> 1 on expansion hub
-    // left linkage (max) -> 1 on control hub // TODO reconfig
+    // left linkage (max) -> 4 on control hub // TODO reconfig
     // right linkage (max) -> 0 on control hub
     // back roller (mini) -> 0 on expansion hub
     // roller motor -> 1 on expansion hub
@@ -64,7 +64,7 @@ public class Robot{
         drivetrain = new DriveTrain(hardwareMap, imu, telemetry, controls);
         intake = new Intake(hardwareMap, telemetry, controls);
 
-        outtake = new Outtake(hardwareMap, 0, .0008, 0, 0, 0.01, telemetry, controls); // tune PID values
+        outtake = new Outtake(hardwareMap, 0, .5, 0, 0, 0.03, telemetry, controls); // tune PID values
         //ultraSonics = new ReLocalizer(hardwareMap, imu);
         cycle = new Cycle(telemetry, controls, this);
     }

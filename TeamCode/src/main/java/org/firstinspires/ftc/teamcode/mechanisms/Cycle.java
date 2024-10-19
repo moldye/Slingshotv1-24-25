@@ -16,7 +16,7 @@ public class Cycle {
     private GamepadMapping controls;
     private Robot robot;
 
-    private CycleState cycleState = CycleState.BASE_STATE;
+    private TransferState transferState = CycleState.BASE_STATE;
 
     // FAILSAFES
     private boolean pivotUp;
@@ -34,44 +34,184 @@ public class Cycle {
         outtakeIn = true;
     }
 
+//    public void update() {
+//        controls.update();
+//        robot.drivetrain.update();
+
+//        switch(cycleState){
+//            case INTAKING:
+//                if (controls.extend.value()) {
+//                    extendoIn = true;
+//                    intake.extendoFullExtend();
+//                } else if (!controls.extend.value()) {
+//                    extendoIn = true;
+//                    pivotUp = true;
+//                    intake.flipUp();
+//                    intake.motorRollerOff();
+//                    intake.extendoFullRetract();
+//                }
+////                if (controls.retract.value()) {
+////                    pivotUp = true;
+////                    extendoIn = true;
+////                    intake.flipUp();
+////                    intake.pivotAxon.setPosition(IntakeConstants.IntakeState.TRANSFER.pivotPos());
+//////                    // pivotAnalog.runToPos(IntakeConstants.IntakeState.TRANSFER.pivotPos());
+////                }
+//                // a (bottom button)
+//                if (controls.pivot.value()) {
+//                    pivotUp = false;
+//                    intake.flipDownFull();
+//                } else {
+//                    pivotUp = true;
+//                    intake.flipUp();
+//                }
+//                if (controls.intakeOnToIntake.value()) {
+//                    intake.motorRollerOnToIntake();
+//                    intake.backRollerIdle();
+//                } else if (controls.intakeOnToClear.value()) {
+//                    intake.clearIntake();
+//                } else if (controls.transfer.value()) {
+//                    intake.transferSample();
+//                } else {
+//                    intake.motorRollerOff();
+//                    intake.backRollerIdle();
+//                }
+//                // TODO ASK JAMS
+////                if (colorSensorSensesBadColor) {
+////                    pushOutSample
+////                }
+//                if (controls.highBasket.value()) {
+//                    cycleState = CycleState.OUTTAKING;
+//                }
+//                if (controls.lowBasket.value()) {
+//                    cycleState = CycleState.OUTTAKING;
+//                }
+//                if (controls.botToBaseState.changed()) {
+//                    cycleState = CycleState.BASE_STATE;
+//                }
+//                break;
+//            case OUTTAKING:
+//                if (controls.highBasket.value()) {
+//                    extendoIn = false;
+//                    outtakeIn = false;
+//                    // TODO tune this
+//                    intake.extendForOuttake();
+//                    outtake.extendToHighBasket();
+//                    if (controls.flipBucket.value()) {
+//                        outtake.bucketDeposit();
+//                    }
+////                } else if (controls.lowBasket.value()) {
+////                    extendoIn = false;
+////                    outtakeIn = false;
+////                    intake.extendForOuttake();
+////                    outtake.extendToLowBasket();
+////                    // prob need to tune 10 as threshold
+////                    if (controls.flipBucket.value() &&
+////                            outtake.outtakeSlideLeft.getCurrentPosition() <= OuttakeConstants.SlidePositions.LOW_BASKET.getSlidePos() + 10) {
+////                        outtake.bucketDeposit();
+////                    } else {
+////                        outtake.bucketToReadyForTransfer();
+////                    }
+//                }
+//                else {
+//                    extendoIn = true;
+//                    outtakeIn = true;
+//                    outtake.returnToRetracted();
+//                    // this should move the intake back in
+//                    intake.extendoFullRetract();
+//                    outtake.bucketToReadyForTransfer();
+//                }
+//                if (controls.botToBaseState.changed()) {
+//                    cycleState = CycleState.BASE_STATE;
+//                }
+//                if (controls.L1hang.value()) {
+//                    outtake.hang();
+//                }
+//                if (controls.extend.value()) {
+//                    cycleState = CycleState.INTAKING;
+//                }
+//                break;
+//            case BASE_STATE:
+//                // bucket to ready for transfer & returns to retracted
+//                outtake.resetHardware();
+//
+//                // motor off, sets direction back, flips pivot up, back roller still, full retract
+//                intake.resetHardware();
+//
+//                if (controls.L1hang.value()) {
+//                    outtake.hang();
+//                }
+//
+//                cycleState = CycleState.INTAKING;
+//
+//                break;
+//        }
+//        robot.updateTelemetry();
+//    }
+
+    public enum TransferState {
+        BASE_STATE,
+        EXTENDO_FULLY_RETRACTED,
+        EXTENDO_FULLY_EXTENDED,
+        PIVOT_DOWN,
+        INTAKING,
+        DEPOSITING,
+        TRANSFERING,
+        SLIDES_RETRACTED,
+        HIGH_BASKET,
+        LOW_BASKET;
+
+    }
+
     public void update() {
         controls.update();
         robot.drivetrain.update();
 
-        switch(cycleState){
-            case INTAKING:
+        switch(transferState){
+            case BASE_STATE:
+                robot.hardwareSoftReset();
+                transferState = TransferState.EXTENDO_FULLY_RETRACTED;
+            case EXTENDO_FULLY_RETRACTED:
                 if (controls.extend.value()) {
-                    extendoIn = true;
+                    extendoIn = false;
                     intake.extendoFullExtend();
-                } else if (!controls.extend.value()) {
+                    transferState = TransferState.EXTENDO_FULLY_EXTENDED;
+                }
+                if (controls.transfer.value()) {
+                    transferState = TransferState.TRANSFERING;
+                }
+                if (controls.highBasket.value()) {
+                    transferState = TransferState.HIGH_BASKET;
+                }
+                if (controls.lowBasket.value()) {
+                    transferState = TransferState.LOW_BASKET;
+                }
+                break;
+            case EXTENDO_FULLY_EXTENDED:
+                if (!controls.extend.value()) {
                     extendoIn = true;
                     pivotUp = true;
                     intake.flipUp();
                     intake.motorRollerOff();
                     intake.extendoFullRetract();
+                    transferState = TransferState.EXTENDO_FULLY_RETRACTED;
                 }
-                if (controls.retract.value()) {
-                    pivotUp = true;
-                    extendoIn = true;
-                    intake.flipUp();
-                    intake.motorRollerOff();
-                    intake.extendoFullRetract();
-                    intake.pivotAxon.setPosition(IntakeConstants.IntakeState.TRANSFER.pivotPos());
-//                    // pivotAnalog.runToPos(IntakeConstants.IntakeState.TRANSFER.pivotPos());
-                    intake.transferSample();
-                }
-                // a (bottom button)
                 if (controls.pivot.value()) {
                     pivotUp = false;
-                    intake.flipDownFull();
-                } else {
+                    transferState = TransferState.PIVOT_DOWN;
+                }
+            case PIVOT_DOWN:
+                // a (bottom button)
+                if (!controls.pivot.value()) {
                     pivotUp = true;
                     intake.flipUp();
+                    transferState = TransferState.EXTENDO_FULLY_EXTENDED;
                 }
-                if (controls.intakeOnToIntake.value() && extendoIn == false) {
+                // TODO try pressing these at the same time
+                if (controls.intakeOnToIntake.value()) {
                     intake.motorRollerOnToIntake();
                     intake.backRollerIdle();
-                } else if (controls.intakeOnToClear.value()){
+                } else if (controls.intakeOnToClear.value()) {
                     intake.clearIntake();
                 } else {
                     intake.motorRollerOff();
@@ -81,77 +221,48 @@ public class Cycle {
 //                if (colorSensorSensesBadColor) {
 //                    pushOutSample
 //                }
-                if (controls.highBasket.value()) {
-                    cycleState = CycleState.OUTTAKING;
-                }
-                if (controls.lowBasket.value()) {
-                    cycleState = CycleState.OUTTAKING;
-                }
-                if (controls.botToBaseState.changed()) {
-                    cycleState = CycleState.BASE_STATE;
+                break;
+            case TRANSFERING:
+                intake.transferSample();
+                if (!controls.transfer.value()) {
+                    intake.motorRollerOff();
+                    intake.backRollerIdle();
+                    transferState = TransferState.EXTENDO_FULLY_RETRACTED;
                 }
                 break;
-            case OUTTAKING:
-                if (controls.highBasket.value()) {
-                    extendoIn = false;
-                    outtakeIn = false;
-                    // TODO tune this
-                    intake.extendForOuttake();
-                    outtake.extendToHighBasket();
-                    if (controls.flipBucket.value() &&
-                            outtake.outtakeSlideLeft.getCurrentPosition() <= OuttakeConstants.SlidePositions.HIGH_BASKET.getSlidePos() + 10) {
-                        outtake.bucketDeposit();
-                    } else {
-                        outtake.bucketToReadyForTransfer();
-                    }
-                } else if (controls.lowBasket.value()) {
-                    extendoIn = false;
-                    outtakeIn = false;
-                    intake.extendForOuttake();
-                    outtake.extendToLowBasket();
-                    // prob need to tune 10 as threshold
-                    if (controls.flipBucket.value() &&
-                            outtake.outtakeSlideLeft.getCurrentPosition() <= OuttakeConstants.SlidePositions.LOW_BASKET.getSlidePos() + 10) {
-                        outtake.bucketDeposit();
-                    } else {
-                        outtake.bucketToReadyForTransfer();
-                    }
-                } else {
-                    extendoIn = true;
-                    outtakeIn = true;
-                    outtake.returnToRetracted();
-                    // this should move the intake back in
-                    intake.extendoFullRetract();
+            case HIGH_BASKET:
+                extendoIn = false;
+                outtakeIn = false;
+                intake.extendForOuttake();
+                outtake.extendToHighBasket();
+                if (controls.flipBucket.value()) {
+                    outtake.bucketDeposit();
                 }
-                if (controls.botToBaseState.changed()) {
-                    cycleState = CycleState.BASE_STATE;
-                }
-                if (controls.L1hang.value()) {
-                    outtake.hang();
+                if (!controls.highBasket.value()) {
+                    transferState = TransferState.SLIDES_RETRACTED;
                 }
                 break;
-            case BASE_STATE:
-                // bucket to ready for transfer & returns to retracted
-                outtake.resetHardware();
-
-                // motor off, sets direction back, flips pivot up, back roller still, full retract
-                intake.resetHardware();
-
-                if (controls.L1hang.value()) {
-                    outtake.hang();
+            case LOW_BASKET:
+                extendoIn = false;
+                outtakeIn = false;
+                intake.extendForOuttake();
+                outtake.extendToLowBasket();
+                if (controls.flipBucket.value()) {
+                    outtake.bucketDeposit();
                 }
-
-                cycleState = CycleState.INTAKING;
-
+                if (!controls.lowBasket.value()) {
+                    transferState = TransferState.SLIDES_RETRACTED;
+                }
+                break;
+            case SLIDES_RETRACTED:
+                // could also do to base state
+                outtake.bucketToReadyForTransfer();
+                outtake.returnToRetracted();
+                intake.extendoFullRetract();
+                transferState = TransferState.EXTENDO_FULLY_RETRACTED;
                 break;
         }
         robot.updateTelemetry();
-    }
-
-    public enum CycleState {
-        INTAKING,
-        OUTTAKING,
-        BASE_STATE
     }
 
 }
