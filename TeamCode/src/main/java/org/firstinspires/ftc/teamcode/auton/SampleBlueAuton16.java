@@ -28,7 +28,7 @@ public class SampleBlueAuton16 extends LinearOpMode {
         robot.outtake.resetEncoders();
         robot.outtake.returnToRetracted();
 
-        robot.resetHardware();
+        robot.hardwareHardReset();
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
@@ -276,8 +276,8 @@ public class SampleBlueAuton16 extends LinearOpMode {
 
     public void extendoIntake(){
         //extendo out
-        robot.intake.flipDownFull();
         robot.intake.extendoFullExtend();
+        robot.intake.flipDownFull();
         //run intake
         intake.motorRollerOnToIntake();
     }
