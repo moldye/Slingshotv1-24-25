@@ -129,7 +129,7 @@ public class GamepadMapping {
         // Outtake (All Gamepad2)
         lowBasket.update(gamepad2.right_bumper);
         highBasket.update(gamepad2.left_bumper);
-        bucketDeposit.update(gamepad2.a);
+        bucketDeposit.update(gamepad2.a); 
 
         // Specimen
 //        latchSpecimen.update(gamepad2.a);
