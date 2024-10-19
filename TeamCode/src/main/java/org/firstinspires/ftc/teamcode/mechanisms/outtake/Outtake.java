@@ -128,8 +128,8 @@ public class Outtake {
         outtakeSlideLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         outtakeSlideRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        outtakeSlideLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        outtakeSlideRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        outtakeSlideLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        outtakeSlideRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void bucketToReadyForTransfer() {

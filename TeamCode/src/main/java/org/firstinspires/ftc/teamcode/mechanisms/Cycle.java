@@ -16,8 +16,8 @@ public class Cycle {
     private GamepadMapping controls;
     private Robot robot;
 
-    private CycleState cycleState = CycleState.BASE_STATE;
-    private IntakeConstants.IntakeState intakeState = IntakeConstants.IntakeState.BASE_STATE;
+    private CycleState cycleState = CycleState.INTAKING;
+    private IntakeConstants.IntakeState intakeState = IntakeConstants.IntakeState.FULLY_RETRACTED;
 
     public Cycle(HardwareMap hardwareMap, Telemetry telemetry, GamepadMapping controls, Robot robot) {
         this.robot = robot;
@@ -31,74 +31,48 @@ public class Cycle {
         robot.drivetrain.update();
 
         switch(cycleState){
-            // I think else ifs will be good here? may need to adjust depending on loop time :)
             case INTAKING:
-                if (intakeState.equals(IntakeConstants.IntakeState.FULLY_RETRACTED)) {
-                    intake.extendoFullRetract();
-                    if (controls.extend.value()) {
-                        intakeState = IntakeConstants.IntakeState.EXTENDING;
-                    } else {
-                        intakeState = IntakeConstants.IntakeState.RETRACTING;
-                    }
-                }
-                else if (intakeState.equals(IntakeConstants.IntakeState.FULLY_EXTENDED)) {
-                    intakeState = IntakeConstants.IntakeState.INTAKING;
-                    if (controls.clearIntake.value()) {
-                        intake.clearIntake();
-                    } else {
-                        intake.motorRollerOff();
-                        intake.backRollerIdle();
-                    }
-                }
-                else if (intakeState.equals(IntakeConstants.IntakeState.EXTENDING)) {
-                    intakeState = IntakeConstants.IntakeState.FULLY_EXTENDED;
-                    if (controls.clearIntake.value()) {
-                        intake.clearIntake();
-                    } else {
-                        intake.motorRollerOff();
-                        intake.backRollerIdle();
-                    }
+                if (controls.extend.value()) {
                     intake.extendoFullExtend();
-                }
-                else if (intakeState.equals(IntakeConstants.IntakeState.INTAKING)) {
-                    if (controls.pivot.value()) {
-                        intake.flipDownFull();
-                    } else {
-                        intake.flipUp();
-                    }
-                    if (controls.intakeOnToIntake.value()) {
-                        intake.motorRollerOnToIntake();
-                    } else {
-                        intake.motorRollerOff();
-                    }
-                    if (controls.intakeOnToClear.value()) {
-                        intake.clearIntake();
-                    } else {
-                        intake.motorRollerOff();
-                        intake.backRollerIdle();
-                    }
-                    if (controls.retract.value()) {
-                        intakeState = IntakeConstants.IntakeState.RETRACTING;
-                    }
-                }
-                else if (intakeState.equals(IntakeConstants.IntakeState.RETRACTING)) {
-                    intakeState = IntakeConstants.IntakeState.TRANSFER;
+                } else if (!controls.extend.value()) {
                     intake.flipUp();
                     intake.motorRollerOff();
                     intake.extendoFullRetract();
                 }
+                if (controls.retract.value()) {
+                    intake.flipUp();
+                    intake.motorRollerOff();
+                    intake.extendoFullRetract();
+                    intake.pivotAxon.setPosition(IntakeConstants.IntakeState.TRANSFER.pivotPos());
+//                    // pivotAnalog.runToPos(IntakeConstants.IntakeState.TRANSFER.pivotPos());
+                    intake.transferSample();
+                }
+                // a (bottom button)
+                if (controls.pivot.value()) {
+                    intake.flipDownFull();
+                } else {
+                    intake.flipUp();
+                }
+                if (controls.intakeOnToIntake.value()) {
+                    intake.motorRollerOnToIntake();
+                    intake.backRollerIdle();
+                } else if (controls.intakeOnToClear.value()){
+                    intake.clearIntake();
+                } else {
+                    intake.motorRollerOff();
+                    intake.backRollerIdle();
+                }
                 // we may need to add an if statement here so it only does this when a sample is actually in the intake, not anytime we retract slides
 //            case WRONG_ALLIANCE_COLOR_SAMPLE:
-//                intakeState = IntakeConstants.IntakeState.FULLY_EXTENDED;
 //                // probably need to do this for some amount of time, test later
 //                pushOutSample();
 //                break;
-                if(intakeState.equals(IntakeConstants.IntakeState.TRANSFER)) {
-                    intakeState = IntakeConstants.IntakeState.FULLY_RETRACTED;
-                    intake.pivotAxon.setPosition(IntakeConstants.IntakeState.TRANSFER.pivotPos());
-                    // pivotAnalog.runToPos(IntakeConstants.IntakeState.TRANSFER.pivotPos());
-                    intake.transferSample();
-                }
+//                else if(intakeState.equals(IntakeConstants.IntakeState.TRANSFER)) {
+//                    intakeState = IntakeConstants.IntakeState.FULLY_RETRACTED;
+//                    intake.pivotAxon.setPosition(IntakeConstants.IntakeState.TRANSFER.pivotPos());
+//                    // pivotAnalog.runToPos(IntakeConstants.IntakeState.TRANSFER.pivotPos());
+//                    intake.transferSample();
+//                }
                 if (controls.highBasket.value()) {
                     cycleState = CycleState.OUTTAKING;
                 }
@@ -146,6 +120,9 @@ public class Cycle {
             case BASE_STATE:
                 outtake.resetHardware();
                 intake.resetHardware();
+                if (controls.L1hang.value()) {
+                    outtake.hang();
+                }
                 break;
         }
         intake.updateTelemetry();

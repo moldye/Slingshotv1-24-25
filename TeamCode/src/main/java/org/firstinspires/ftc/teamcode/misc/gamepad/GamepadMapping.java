@@ -90,6 +90,7 @@ public class GamepadMapping {
         readyForDeposit = new Toggle(false);
         intakeOnToIntake = new Toggle(false);
         intakeOnToClear = new Toggle(false);
+        pivot = new Toggle(false);
 
         bucketDeposit = new Toggle(false);
         highBasket = new Toggle(false);
@@ -104,7 +105,7 @@ public class GamepadMapping {
 
         // TESTING BUTTONS
         toggleIntakePower = new Toggle(false);
-        pivot = new Toggle(false);
+        // pivot = new Toggle(false);
         powerIntake = new Toggle(false);
         transfer = new Toggle(false);
         deposit = new Toggle(false);
@@ -123,6 +124,7 @@ public class GamepadMapping {
         retract.update(gamepad1.left_bumper);
         intakeOnToIntake.update(gamepad1.right_trigger > 0.5);
         intakeOnToClear.update(gamepad1.left_trigger > 0.5);
+        pivot.update(gamepad1.a);
 
         // Outtake (All Gamepad2)
         lowBasket.update(gamepad2.right_bumper);

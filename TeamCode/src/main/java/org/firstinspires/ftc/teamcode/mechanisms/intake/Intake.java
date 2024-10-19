@@ -25,6 +25,7 @@ public class Intake {
     public static IntakeConstants.IntakeState intakeState;
     private GamepadMapping controls;
     private Telemetry telemetry;
+    private long startTime;
 
     // CONTROLS
     // -----------
@@ -43,7 +44,7 @@ public class Intake {
         //sets the analogServos PID and stuff
         pivotAnalog = new AnalogServo(pivotAxon, hwMap.get(AnalogInput.class, "pivotAnalog"), 0, 0, 0, 0); //TODO: add tuned PIDF later
 
-        rollerMotor.setDirection(DcMotorEx.Direction.FORWARD);
+        rollerMotor.setDirection(DcMotorEx.Direction.REVERSE);
         rollerMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
         pivotAxon.setDirection(Servo.Direction.FORWARD);
@@ -102,7 +103,7 @@ public class Intake {
 
     public void transferSample() {
         // this should run transfer for half a second
-        long startTime = System.currentTimeMillis();
+        startTime = System.currentTimeMillis();
         while (System.currentTimeMillis() - startTime >= 0 && System.currentTimeMillis() - startTime <= 500) {
             rollerMotor.setPower(1);
             backRollerServo.setPosition(IntakeConstants.IntakeState.TRANSFER.backRollerPos());
@@ -112,7 +113,7 @@ public class Intake {
     }
 
     public void clearIntake() {
-        rollerMotor.setPower(-0.5);
+        rollerMotor.setPower(1);
         backRollerServo.setPosition(IntakeConstants.IntakeState.TRANSFER.backRollerPos());
     }
 
@@ -150,7 +151,7 @@ public class Intake {
 
     public void resetHardware() {
         motorRollerOff();
-        rollerMotor.setDirection(DcMotorEx.Direction.FORWARD);
+        rollerMotor.setDirection(DcMotorEx.Direction.REVERSE);
 
         flipUp();
         backRollerIdle();

@@ -103,10 +103,8 @@ public class IntakeTests {
     }
 
     @Test
-    public void testGradualExtend() {
-        when(rightExtendo.getPosition()).thenReturn(0.0);
-        double newPos = rightExtendo.getPosition() + .1; // tune this val
-//        intake.extendoExtend();
-        verify(rightExtendo).setPosition(newPos);
+    public void testTimedTransfer() {
+        intake.transferSample();
+        verify(rollerMotor).setPower(0);
     }
 }

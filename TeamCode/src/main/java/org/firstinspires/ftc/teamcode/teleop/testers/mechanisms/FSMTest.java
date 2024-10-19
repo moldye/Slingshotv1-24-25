@@ -29,19 +29,19 @@ public class FSMTest extends OpMode {
         robot.outtake.resetEncoders();
         robot.outtake.returnToRetracted();
         // robot.resetHardware();
-        intakeState = IntakeConstants.IntakeState.FULLY_RETRACTED;
-        // cycle = new Cycle(hardwareMap, telemetry, controls);
+        // intakeState = IntakeConstants.IntakeState.FULLY_RETRACTED;
+        cycle = new Cycle(hardwareMap, telemetry, controls, robot);
     }
 
     @Override
     public void loop() {
         controls.update();
-        intake.update();
-//        if(controls.extend.value()) {
-//            intake.motorRollerOnToIntake();
-//        } else {
-//            intake.motorRollerOff();
-//        }
+        cycle.update();
+        /*if(controls.extend.value()) {
+            intake.motorRollerOnToIntake();
+        } else {
+            intake.motorRollerOff();
+        }*/
 
     }
 }
