@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-public class SampleBlueAuton16 extends LinearOpMode {
+public class SampleAuton16 extends LinearOpMode {
 
     private GamepadMapping controls;
     private Robot robot;
