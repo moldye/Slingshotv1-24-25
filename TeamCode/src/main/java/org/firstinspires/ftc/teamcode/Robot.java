@@ -1,15 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.mechanisms.Cycle;
 import org.firstinspires.ftc.teamcode.mechanisms.DriveTrain;
-import org.firstinspires.ftc.teamcode.mechanisms.ReLocalizer;
-import org.firstinspires.ftc.teamcode.mechanisms.outtake.OuttakeConstants;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
@@ -23,7 +20,7 @@ public class Robot{
 
     // intake:
     // pivot (max) -> 1 on expansion hub
-    // left linkage (max) -> 1 on control hub // TODO reconfig
+    // left linkage (max) -> 4 on control hub // TODO reconfig
     // right linkage (max) -> 0 on control hub
     // back roller (mini) -> 0 on expansion hub
     // roller motor -> 1 on expansion hub
@@ -46,6 +43,7 @@ public class Robot{
     public Outtake outtake;
     public Intake intake;
     public GamepadMapping controls;
+    public Cycle cycle;
 
     public Robot(HardwareMap hardwareMap, Telemetry telemetry, GamepadMapping controls) {
         imu = hardwareMap.get(IMU.class, "imu");
@@ -66,8 +64,9 @@ public class Robot{
         drivetrain = new DriveTrain(hardwareMap, imu, telemetry, controls);
         intake = new Intake(hardwareMap, telemetry, controls);
 
-        outtake = new Outtake(hardwareMap, 0, .0008, 0, 0, 0.01, telemetry, controls); // tune PID values
+        outtake = new Outtake(hardwareMap, 0, .5, 0, 0, 0.03, telemetry, controls); // tune PID values
         //ultraSonics = new ReLocalizer(hardwareMap, imu);
+        cycle = new Cycle(telemetry, controls, this);
     }
 
 //    public Pose2d reLocalize(){
@@ -77,14 +76,8 @@ public class Robot{
 //        return new Pose2d(-72 + backDistance, -72 + sideDistance, Math.toRadians(currentAngle));
 //    }
 
-    public void update() {
-        drivetrain.update();
-        outtake.update();
-        intake.update();
-    }
-
     // This is for EVERYTHING, to be called before auton and only before auton (or in the resetHardware auton class if we don't run auton)
-    public void resetHardware() {
+    public void hardwareHardReset() {
         // reset outtake
         outtake.resetEncoders();
         outtake.resetHardware();
@@ -95,8 +88,14 @@ public class Robot{
         // reset specimen claw
     }
 
-//    public void botReadyForDeposit() {
-//        intake.extendForOuttake();
-//        outtake.bucketTilt();
-//    }
+    // this is for teleop, when we ant to preserve encoder and sensor input
+    public void hardwareSoftReset() {
+        outtake.resetHardware();
+        intake.resetHardware();
+    }
+
+    public void updateTelemetry() {
+        intake.updateTelemetry();
+        outtake.updateTelemetry();
+    }
 }

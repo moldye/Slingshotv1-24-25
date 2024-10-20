@@ -26,7 +26,7 @@ public class BlueParkingAuton extends LinearOpMode {
         robot = new Robot(hardwareMap, telemetry, controls);
 
 
-        robot.resetHardware();
+        robot.hardwareHardReset();
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 

@@ -131,6 +131,8 @@ public class DriveTrain {
         // TODO: this may not work
         if (Outtake.getOuttakeDTSlow()) {
             slowMultiplier = 0.25;
+        } else {
+            slowMultiplier = 1;
         }
 
         leftFront.setPower(((drive + strafe + turn) / denominator) * slowMultiplier);
