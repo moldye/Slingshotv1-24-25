@@ -21,7 +21,7 @@ public class DriveConstants {
     /*
      * These are motor constants that should be listed online for your motors.
      */
-    public static final double TICKS_PER_REV = 28*13.7;
+    public static final double TICKS_PER_REV = 13.7*28;
     public static final double MAX_RPM = 435;
 
     /*
@@ -33,8 +33,8 @@ public class DriveConstants {
      * from DriveVelocityPIDTuner.
      */
     public static final boolean RUN_USING_ENCODER = false;
-    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(12, 0, 0,
-            13);
+    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(0, 0, 0,
+            getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV));
 
     /*
      * These are physical constants that can be determined from your robot (including the track
@@ -44,10 +44,9 @@ public class DriveConstants {
      * angular distances although most angular parameters are wrapped in Math.toRadians() for
      * convenience. Make sure to exclude any gear ratio included in MOTOR_CONFIG from GEAR_RATIO.
      */
-    public static double WHEEL_RADIUS = 1.88976; // in
+    public static double WHEEL_RADIUS = 1.889; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
-    //TODO: Remeasure Track Width
-    public static double TRACK_WIDTH = 12.75; // in
+    public static double TRACK_WIDTH = 12; // in
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -55,8 +54,8 @@ public class DriveConstants {
      * motor encoders or have elected not to use them for velocity control, these values should be
      * empirically tuned.
      */
-    public static double kV = 0.01;
-    public static double kA = 0.005;
+    public static double kV = 0.015;
+    public static double kA = 0.003;
     public static double kStatic = 0;
 
     /*
@@ -69,7 +68,7 @@ public class DriveConstants {
     public static double MAX_VEL = 65;
     public static double MAX_ACCEL = 80;
     public static double MAX_ANG_VEL = 2.5;
-    public static double MAX_ANG_ACCEL = 5;
+    public static double MAX_ANG_ACCEL = 4;
 
     /*
      * Adjust the orientations here to match your robot. See the FTC SDK documentation for details.
@@ -77,7 +76,7 @@ public class DriveConstants {
     public static RevHubOrientationOnRobot.LogoFacingDirection LOGO_FACING_DIR =
             RevHubOrientationOnRobot.LogoFacingDirection.UP;
     public static RevHubOrientationOnRobot.UsbFacingDirection USB_FACING_DIR =
-            RevHubOrientationOnRobot.UsbFacingDirection.LEFT;
+            RevHubOrientationOnRobot.UsbFacingDirection.RIGHT;
 
 
     public static double encoderTicksToInches(double ticks) {
