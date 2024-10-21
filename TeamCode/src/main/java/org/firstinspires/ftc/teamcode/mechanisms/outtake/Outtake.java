@@ -49,8 +49,6 @@ public class Outtake {
 
         p = inP; i = inI; d = inD; f = inF;
 
-        slideState = OuttakeConstants.SlidePositions.RETRACTED;
-
         this.telemetry = telemetry;
         this.controls = controls;
     }
@@ -114,8 +112,7 @@ public class Outtake {
 
     public void returnToRetracted() {
         outtakeDTSlow = false;
-        moveLeftTicks(OuttakeConstants.SlidePositions.RETRACTED.getSlidePos());
-        moveRightTicks(OuttakeConstants.SlidePositions.RETRACTED.getSlidePos());
+        moveTicks(OuttakeConstants.SlidePositions.RETRACTED.getSlidePos());
     }
 
     public void resetHardware() {

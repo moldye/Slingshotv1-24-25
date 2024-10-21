@@ -15,7 +15,6 @@ public class FSMTest extends OpMode {
     private GamepadMapping controls;
     private Cycle cycle;
     private Robot robot;
-    private static IntakeConstants.IntakeState intakeState;
     private Intake intake;
     private Outtake outtake;
 
@@ -23,17 +22,25 @@ public class FSMTest extends OpMode {
     public void init() {
         controls = new GamepadMapping(gamepad1, gamepad2);
         robot = new Robot(hardwareMap, telemetry, controls);
+        cycle = new Cycle(telemetry, controls, robot);
+
         intake = robot.intake;
         outtake = robot.outtake;
+
         robot.outtake.resetEncoders();
+
         robot.intake.resetHardware();
         robot.outtake.resetHardware();
-        cycle = new Cycle(telemetry, controls, robot);
+
+        // robot.hardwareHardReset();
+
+        // robot.outtake.resetEncoders();
+        // robot.outtake.returnToRetracted();
     }
 
     @Override
     public void loop() {
-        controls.update();
+        // already does dt & controls.update();
         cycle.update();
     }
 }
