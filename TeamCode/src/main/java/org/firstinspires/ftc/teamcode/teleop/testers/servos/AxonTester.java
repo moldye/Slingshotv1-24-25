@@ -16,25 +16,22 @@ public class AxonTester extends OpMode {
     private Robot robot;
     private GamepadMapping controls;
     private Intake intake;
-
-    public static double servoPos = .325;
-
-    // NOTES
-    // PIVOT
-    // - start should be .12 so it doesn't hit as hard
+    public static double servoPos = 0;
 
     @Override
     public void init() {
         controls = new GamepadMapping(gamepad1, gamepad2);
         robot = new Robot(hardwareMap, telemetry, controls);
         intake = robot.intake;
-        // intake.rightExtendo.setPosition(.325);
-        // intake.leftExtendo.setPosition(.325);
+//         intake.rightExtendo.setPosition(.325);
+//         intake.leftExtendo.setPosition(.325);
         intake.pivotAxon.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.pivotPos());
     }
 
     @Override
     public void loop() {
         intake.pivotAxon.setPosition(servoPos);
+//         intake.rightExtendo.setPosition(servoPos);
+//         intake.leftExtendo.setPosition(servoPos);
     }
 }
