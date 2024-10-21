@@ -18,8 +18,6 @@ public class Outtake {
     public DcMotorEx outtakeSlideLeft;
     private static double p, i, d; //has to be tuned
     private static double f; // usually mass moved * constant G
-    private OuttakeConstants.SlidePositions slideState;
-
     // BUCKET
     public Servo bucketServo;
 
@@ -92,12 +90,12 @@ public class Outtake {
 
     public void extendToLowBasket() {
         outtakeDTSlow = true;
-        moveTicks(OuttakeConstants.SlidePositions.LOW_BASKET.getSlidePos()); // tune target obviously
+        moveTicks(OuttakeConstants.SlidePositions.LOW_BASKET.getSlidePos());
     }
 
     public void extendToHighBasket() {
         outtakeDTSlow = true;
-        moveTicks(OuttakeConstants.SlidePositions.HIGH_BASKET.getSlidePos()); // tune target obviously
+        moveTicks(OuttakeConstants.SlidePositions.HIGH_BASKET.getSlidePos());
     }
 
 //    public void extendToSpecimenHighRack() {

@@ -22,7 +22,6 @@ public class Intake {
 
     // OTHER
     // ----------
-    public static IntakeConstants.IntakeState intakeState;
     private GamepadMapping controls;
     private Telemetry telemetry;
     private long startTime;
@@ -48,8 +47,6 @@ public class Intake {
         rollerMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
         pivotAxon.setDirection(Servo.Direction.FORWARD);
-
-        intakeState = IntakeConstants.IntakeState.FULLY_RETRACTED;
 
         this.telemetry = telemetry;
         this.controls = controls;
@@ -248,7 +245,6 @@ public class Intake {
         telemetry.addData("Right Linkage Pos", rightExtendo.getPosition());
         telemetry.addData("Left Linkage Pos", leftExtendo.getPosition());
         telemetry.addData("Pivot pos", pivotAxon.getPosition());
-        telemetry.addData("intakeState:", intakeState);
         telemetry.addData("Back Roller Pos: ", backRollerServo.getPosition());
         telemetry.update();
     }

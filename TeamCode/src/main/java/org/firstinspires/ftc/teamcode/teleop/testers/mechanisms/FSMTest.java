@@ -34,8 +34,10 @@ public class FSMTest extends OpMode {
 
         // robot.hardwareHardReset();
 
+        // try reset with mode RUN_USING_ENCODER (shouldn't do anything)
         // robot.outtake.resetEncoders();
         // robot.outtake.returnToRetracted();
+        // robot.intake.resetHardware();
     }
 
     @Override

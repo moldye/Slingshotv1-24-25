@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.auton;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
+@Autonomous
 // this class is for when we cannot/don't run auton. We will run this class to be ready for teleop since we can not move in the transition from auton to teleop
 public class ResetHardware extends LinearOpMode {
     private Robot robot;

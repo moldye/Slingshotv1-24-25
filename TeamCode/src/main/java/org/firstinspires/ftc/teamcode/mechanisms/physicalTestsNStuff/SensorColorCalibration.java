@@ -17,7 +17,6 @@ public class SensorColorCalibration extends OpMode {
     List<Object> test;
     @Override
     public void init() {
-
         sensor = hardwareMap.get(ColorSensor.class, "colorSensor");
     }
 
