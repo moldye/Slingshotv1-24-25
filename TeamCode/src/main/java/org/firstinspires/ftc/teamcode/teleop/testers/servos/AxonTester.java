@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
+import org.firstinspires.ftc.teamcode.mechanisms.intake.IntakeConstants;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
 @Config
@@ -29,22 +30,11 @@ public class AxonTester extends OpMode {
         intake = robot.intake;
         // intake.rightExtendo.setPosition(.325);
         // intake.leftExtendo.setPosition(.325);
-        intake.pivotAxon.setPosition(.2);
+        intake.pivotAxon.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.pivotPos());
     }
 
     @Override
     public void loop() {
-        //controls.extend.update(gamepad1.right_bumper);
         intake.pivotAxon.setPosition(servoPos);
-        //intake.motorRollerOn();
-
-//        if (controls.extend.value()) {
-//            intake.rightExtendo.setPosition(-.1);
-//            intake.leftExtendo.setPosition(-.1);
-//        } else {
-//            intake.rightExtendo.setPosition(.325);
-//            intake.leftExtendo.setPosition(.325);
-//        }
     }
-
 }

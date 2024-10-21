@@ -1,7 +1,5 @@
-package org.firstinspires.ftc.teamcode.mechanisms.intake;
+package org.firstinspires.ftc.teamcode.mechanisms.template;
 
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
