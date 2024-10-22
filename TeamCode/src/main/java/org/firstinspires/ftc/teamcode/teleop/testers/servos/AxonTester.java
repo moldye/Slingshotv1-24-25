@@ -17,7 +17,8 @@ public class AxonTester extends OpMode {
     private GamepadMapping controls;
     private Intake intake;
 
-    public static double servoPos = .33;
+    public static double servoPos = 0;
+
 //    public static double rservoPos = .5;
 //    public static double lservoPos = .5;
 
