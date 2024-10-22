@@ -12,10 +12,10 @@ public class colorSensorModule {
     ColorSensor sensor;
     boolean isBlue;
     //TODO:I'm too lazy to actually put this into intake, so I'm making a class for it HOORAY!!
-    public colorSensorModule(Telemetry t, HardwareMap hm, boolean isBlue){
+    public colorSensorModule(Telemetry t, HardwareMap hm/* boolean isBlue*/){
         this.telemetry = t;
         this.sensor = hm.get(ColorSensor.class, "colorSensor");
-        this.isBlue = isBlue;
+        /*this.isBlue = isBlue;*/
     }
     public SampleTypes checkSample(){
         double[] sensorVals = new double[3];
@@ -32,7 +32,7 @@ public class colorSensorModule {
         }
         return best;
     }
-    public boolean opposingColor(){
+   /* public boolean opposingColor(){
         double[] sensorVals = new double[3];
         sensorVals[0] = sensor.red();
         sensorVals[1] = sensor.green();
@@ -47,5 +47,5 @@ public class colorSensorModule {
         }
         //if we are blue alliance, return the sample color == red, else return color = blue!
         return isBlue?(best.equals(SampleTypes.RED)):(best.equals(SampleTypes.BLUE));
-    }
+    }*/
 }
