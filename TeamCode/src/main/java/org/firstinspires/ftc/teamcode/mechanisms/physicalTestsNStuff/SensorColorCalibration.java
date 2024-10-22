@@ -44,8 +44,8 @@ public class SensorColorCalibration extends OpMode {
         int len = array.length;
         String s = "";
         for(int i = 0;i<len;i++){
-            s += (int) array[i];
+            s += (int) array[i]+", ";
         }
-        return s;
+        return s.substring(0,s.length()-2);
     }
 }
