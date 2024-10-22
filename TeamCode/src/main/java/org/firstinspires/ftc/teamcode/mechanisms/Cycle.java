@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
+import com.qualcomm.robotcore.util.ElapsedTime;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
@@ -14,6 +16,7 @@ public class Cycle {
 
     private TransferState transferState;
     private Telemetry telemetry;
+    private ElapsedTime loopTime;
 
     public Cycle(Telemetry telemetry, GamepadMapping controls, Robot robot) {
         this.robot = robot;
@@ -24,6 +27,8 @@ public class Cycle {
         this.telemetry = telemetry;
 
         transferState = TransferState.BASE_STATE;
+
+        loopTime = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
     }
 
     public void update() {
@@ -38,7 +43,6 @@ public class Cycle {
             case EXTENDO_FULLY_RETRACTED:
                 // have to constantly set power of slide motors back
                 outtake.returnToRetracted();
-                intake.extendoFullRetract();
                 if (controls.extend.value()) {
                     transferState = TransferState.EXTENDO_FULLY_EXTENDED;
                     intake.extendoFullExtend();
@@ -61,16 +65,13 @@ public class Cycle {
                     intake.motorRollerOff();
                     intake.extendoFullRetract();
                     transferState = TransferState.EXTENDO_FULLY_RETRACTED;
-                    // break;
                 }
                 else if (controls.pivot.value()) {
                     intake.flipDownFull();
                     transferState = TransferState.INTAKING;
-                    // break;
                 }
                 else if (controls.botToBaseState.value()) {
                     transferState = TransferState.BASE_STATE;
-                    // break;
                 }
                 break;
             case INTAKING:
@@ -79,7 +80,6 @@ public class Cycle {
                 if (!controls.pivot.value()) {
                     intake.flipUp();
                     transferState = TransferState.EXTENDO_FULLY_EXTENDED;
-                    // break;
                 }
                 // TODO try pressing these at the same time
                 else if (controls.intakeOnToIntake.locked()) {
@@ -124,7 +124,6 @@ public class Cycle {
                 }
                 else if (!controls.lowBasket.value()) {
                     transferState = TransferState.SLIDES_RETRACTED;
-                    // break;
                 }
                 break;
             case SLIDES_RETRACTED:
