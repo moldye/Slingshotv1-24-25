@@ -33,9 +33,10 @@ public class Cycle {
         switch(transferState){
             case BASE_STATE:
                 robot.hardwareSoftReset();
-                transferState = TransferState.RETRACT_ALL;
+                transferState = TransferState.EXTENDO_FULLY_RETRACTED;
                 break;
-            case RETRACT_ALL:
+            case EXTENDO_FULLY_RETRACTED:
+                // have to constantly set power of slide motors back
                 outtake.returnToRetracted();
                 if (controls.extend.value()) {
                     transferState = TransferState.EXTENDO_FULLY_EXTENDED;
@@ -52,11 +53,12 @@ public class Cycle {
                 }
                 break;
             case EXTENDO_FULLY_EXTENDED:
+                outtake.returnToRetracted();
                 if (!controls.extend.value()) {
                     intake.flipUp();
                     intake.motorRollerOff();
                     intake.extendoFullRetract();
-                    transferState = TransferState.RETRACT_ALL;
+                    transferState = TransferState.EXTENDO_FULLY_RETRACTED;
                     // break;
                 }
                 else if (controls.pivot.value()) {
@@ -70,6 +72,7 @@ public class Cycle {
                 }
                 break;
             case INTAKING:
+                outtake.returnToRetracted();
                 // a (bottom button)
                 if (!controls.pivot.value()) {
                     intake.flipUp();
@@ -92,11 +95,12 @@ public class Cycle {
 //                }
                 break;
             case TRANSFERING:
+                outtake.returnToRetracted();
                 intake.transferSample();
                 if (!controls.transfer.value()) {
                     intake.motorRollerOff();
                     intake.backRollerIdle();
-                    transferState = TransferState.RETRACT_ALL;
+                    transferState = TransferState.EXTENDO_FULLY_RETRACTED;
                 }
                 break;
             case HIGH_BASKET:
@@ -126,7 +130,7 @@ public class Cycle {
                 outtake.bucketToReadyForTransfer();
                 outtake.returnToRetracted();
                 intake.extendoFullRetract();
-                transferState = TransferState.RETRACT_ALL;
+                transferState = TransferState.EXTENDO_FULLY_RETRACTED;
                 break;
         }
         robot.updateTelemetry();
@@ -250,7 +254,7 @@ public class Cycle {
 
     public enum TransferState {
         BASE_STATE("BASE_STATE"),
-        RETRACT_ALL("EXTENDO_FULLY_RETRACTED"),
+        EXTENDO_FULLY_RETRACTED("EXTENDO_FULLY_RETRACTED"),
         EXTENDO_FULLY_EXTENDED("EXTENDO_FULLY_EXTENDED"),
         INTAKING("INTAKING"),
         TRANSFERING("TRANSFERING"),
