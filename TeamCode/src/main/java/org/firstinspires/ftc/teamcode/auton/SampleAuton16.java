@@ -43,7 +43,7 @@ public class SampleAuton16 extends LinearOpMode {
                 //start by raising slides to go score
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //raise slides
-                    outtake.moveTicks(2400);
+//                    outtake.moveTicks(2400);
                 })
                 .setReversed(true)
                 //preload to bucket
@@ -55,7 +55,7 @@ public class SampleAuton16 extends LinearOpMode {
                 })
                 .waitSeconds(0.2)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    outtake.returnToRetracted();
+//                    outtake.returnToRetracted();
                 })
 
                 //1st yellow to bucket
@@ -77,7 +77,7 @@ public class SampleAuton16 extends LinearOpMode {
                 })
                 .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                     //raise slides
-                    outtake.moveTicks(2400);
+//                    outtake.moveTicks(2400);
                 })
                 .waitSeconds(0.5)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
@@ -86,7 +86,7 @@ public class SampleAuton16 extends LinearOpMode {
                 })
                 .waitSeconds(0.2)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    outtake.returnToRetracted();
+//                    outtake.returnToRetracted();
                 })
 
 
@@ -111,7 +111,7 @@ public class SampleAuton16 extends LinearOpMode {
                 })
                 .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                     //raise slides
-                    outtake.moveTicks(2400);
+//                    outtake.moveTicks(2400);
                 })
                 .waitSeconds(0.5)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
@@ -120,7 +120,7 @@ public class SampleAuton16 extends LinearOpMode {
                 })
                 .waitSeconds(0.2)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    outtake.returnToRetracted();
+//                    outtake.returnToRetracted();
                 })
 
 
@@ -144,7 +144,7 @@ public class SampleAuton16 extends LinearOpMode {
                 })
                 .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                     //raise slides
-                    outtake.moveTicks(2400);
+//                    outtake.moveTicks(2400);
                 })
                 .waitSeconds(0.5)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
@@ -153,7 +153,7 @@ public class SampleAuton16 extends LinearOpMode {
                 })
                 .waitSeconds(0.2)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    outtake.returnToRetracted();
+//                    outtake.returnToRetracted();
                 })
 
 
@@ -181,7 +181,7 @@ public class SampleAuton16 extends LinearOpMode {
 
                 .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                     //raise slides
-                    outtake.moveTicks(2400);
+//                    outtake.moveTicks(2400);
                 })
                 .waitSeconds(0.5)
                 .setReversed(false)
@@ -191,7 +191,7 @@ public class SampleAuton16 extends LinearOpMode {
                 })
                 .waitSeconds(0.2)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    outtake.returnToRetracted();
+//                    outtake.returnToRetracted();
                 })
 
                 //next sample
@@ -217,7 +217,7 @@ public class SampleAuton16 extends LinearOpMode {
 
                 .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                     //raise slides
-                    outtake.moveTicks(2400);
+//                    outtake.moveTicks(2400);
                 })
                 .waitSeconds(0.5)
                 .setReversed(false)
@@ -227,7 +227,7 @@ public class SampleAuton16 extends LinearOpMode {
                 })
                 .waitSeconds(0.2)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    outtake.returnToRetracted();
+//                    outtake.returnToRetracted();
                 })
 
                 //next sample
@@ -253,7 +253,7 @@ public class SampleAuton16 extends LinearOpMode {
 
                 .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                     //raise slides
-                    outtake.moveTicks(2400);
+//                    outtake.moveTicks(2400);
                 })
                 .waitSeconds(0.5)
                 .setReversed(false)
@@ -263,7 +263,7 @@ public class SampleAuton16 extends LinearOpMode {
                 })
                 .waitSeconds(0.2)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    outtake.returnToRetracted();
+//                    outtake.returnToRetracted();
                 })
 
                 //park
