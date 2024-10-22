@@ -29,13 +29,15 @@ public class SampleAuton16 extends LinearOpMode {
         outtake = robot.outtake;
         robot.outtake.resetEncoders();
         robot.outtake.returnToRetracted();
+        intake.extendoFullRetract();
+        intake.flipUp();
 
         robot.hardwareHardReset();
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
 
-        Pose2d startPose = new Pose2d(-12, -60, Math.toRadians(0));
+        Pose2d startPose = new Pose2d(-12, -63.5, Math.toRadians(0));
 
         drive.setPoseEstimate(startPose);
 
@@ -47,11 +49,11 @@ public class SampleAuton16 extends LinearOpMode {
                 })
                 .setReversed(true)
                 //preload to bucket
-                .splineToLinearHeading(new Pose2d(-50,-50,Math.toRadians(45)),Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(-55,-59,Math.toRadians(45)),Math.toRadians(225))
                 .setReversed(false)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //flip bucket
-                    outtake.bucketDeposit();
+//                    outtake.bucketDeposit();
                 })
                 .waitSeconds(0.2)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
@@ -59,21 +61,23 @@ public class SampleAuton16 extends LinearOpMode {
                 })
 
                 //1st yellow to bucket
-                .turn(Math.toRadians(45))
+                .splineToLinearHeading(new Pose2d(-50,-50,Math.toRadians(90)),Math.toRadians(45))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                    extendoIntake();
                 })
-                .waitSeconds(0.5)
+                .waitSeconds(1)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     deextend();
                 })
-                .turn(Math.toRadians(-45))
+                .setReversed(true)
+                .splineToLinearHeading(new Pose2d(-55,-59,Math.toRadians(45)),Math.toRadians(225))
+                .setReversed(false)
                 .UNSTABLE_addTemporalMarkerOffset(0.75, () -> {
                     //transfer sample
-                    intake.motorRollerOnToClear();
+//                    intake.transferSample();
                 })
                 .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
-                    intake.motorRollerOff();
+//                    intake.motorRollerOff();
                 })
                 .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                     //raise slides
@@ -82,7 +86,7 @@ public class SampleAuton16 extends LinearOpMode {
                 .waitSeconds(0.5)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //flip bucket
-                    outtake.bucketDeposit();
+//                    outtake.bucketDeposit();
                 })
                 .waitSeconds(0.2)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
@@ -92,22 +96,24 @@ public class SampleAuton16 extends LinearOpMode {
 
 
                 //MNEXT SAMPLE
-                .turn(Math.toRadians(60))
+                .splineToLinearHeading(new Pose2d(-55,-50,Math.toRadians(90)),Math.toRadians(45))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     extendoIntake();
                 })
-                .waitSeconds(0.5)
+                .waitSeconds(1)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-
+                    deextend();
                 })
 
-                .turn(Math.toRadians(-60))
+                .setReversed(true)
+                .splineToLinearHeading(new Pose2d(-54,-58,Math.toRadians(45)),Math.toRadians(225))
+                .setReversed(false)
                 .UNSTABLE_addTemporalMarkerOffset(0.75, () -> {
                     //transfer sample
-                    intake.motorRollerOnToClear();
+//                    intake.transferSample();
                 })
                 .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
-                    intake.motorRollerOff();
+//                    intake.motorRollerOff();
                 })
                 .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                     //raise slides
@@ -116,7 +122,7 @@ public class SampleAuton16 extends LinearOpMode {
                 .waitSeconds(0.5)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //flip bucket
-                    outtake.bucketDeposit();
+//                    outtake.bucketDeposit();
                 })
                 .waitSeconds(0.2)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
@@ -125,149 +131,152 @@ public class SampleAuton16 extends LinearOpMode {
 
 
                 //NEXT SAMPLE
-                .turn(Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-46,-53,Math.toRadians(135)),Math.toRadians(45))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     extendoIntake();
                 })
-                .waitSeconds(0.5)
+                .waitSeconds(1)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     deextend();
                 })
 
-                .turn(Math.toRadians(-90))
-                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> {
-                    //transfer sample
-                    intake.motorRollerOnToClear();
-                })
-                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
-                    intake.motorRollerOff();
-                })
-                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
-                    //raise slides
-//                    outtake.moveTicks(2400);
-                })
-                .waitSeconds(0.5)
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    //flip bucket
-                    outtake.bucketDeposit();
-                })
-                .waitSeconds(0.2)
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-//                    outtake.returnToRetracted();
-                })
-
-
-                //beyond this point is the other 3 samples
-                .splineTo(new Vector2d(-12,-36),Math.toRadians(0))
-
-                .lineToSplineHeading(new Pose2d(30,-36,Math.toRadians(30)))
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    extendoIntake();
-                })
-                .waitSeconds(0.5)
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    deextend();
-                })
                 .setReversed(true)
-                .lineToSplineHeading(new Pose2d(-12,-36, Math.toRadians(0)))
+                .splineToLinearHeading(new Pose2d(-54,-58,Math.toRadians(45)),Math.toRadians(225))
+                .setReversed(false)
                 .UNSTABLE_addTemporalMarkerOffset(0.75, () -> {
                     //transfer sample
-                    intake.motorRollerOnToClear();
+//                    intake.motorRollerOnToClear();
                 })
                 .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
-                    intake.motorRollerOff();
+//                    intake.motorRollerOff();
                 })
-                .splineTo(new Vector2d(-50,-50),Math.toRadians(225))
-
                 .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                     //raise slides
 //                    outtake.moveTicks(2400);
                 })
                 .waitSeconds(0.5)
-                .setReversed(false)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //flip bucket
-                    outtake.bucketDeposit();
+//                    outtake.bucketDeposit();
                 })
                 .waitSeconds(0.2)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
 //                    outtake.returnToRetracted();
                 })
 
-                //next sample
-                .splineTo(new Vector2d(-12,-36),Math.toRadians(0))
-                .lineToSplineHeading(new Pose2d(36,-36,Math.toRadians(30)))
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    extendoIntake();
-                })
-                .waitSeconds(0.5)
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    deextend();
-                })
-                .setReversed(true)
-                .lineToSplineHeading(new Pose2d(-12,-36, Math.toRadians(0)))
-                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> {
-                    //transfer sample
-                    intake.motorRollerOnToClear();
-                })
-                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
-                    intake.motorRollerOff();
-                })
-                .splineTo(new Vector2d(-50,-50),Math.toRadians(225))
 
-                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
-                    //raise slides
-//                    outtake.moveTicks(2400);
-                })
-                .waitSeconds(0.5)
+//                //beyond this point is the other 3 samples
+//                .splineTo(new Vector2d(-12,-36),Math.toRadians(0))
+//
+//                .lineToSplineHeading(new Pose2d(30,-36,Math.toRadians(30)))
+//                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+//                    extendoIntake();
+//                })
+//                .waitSeconds(0.5)
+//                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+//                    deextend();
+//                })
+//                .setReversed(true)
+//                .lineToSplineHeading(new Pose2d(-12,-36, Math.toRadians(0)))
+//                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> {
+//                    //transfer sample
+//                    intake.motorRollerOnToClear();
+//                })
+//                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
+//                    intake.motorRollerOff();
+//                })
+//                .splineTo(new Vector2d(-50,-50),Math.toRadians(225))
+//
+//                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
+//                    //raise slides
+////                    outtake.moveTicks(2400);
+//                })
+//                .waitSeconds(0.5)
+//                .setReversed(false)
+//                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+//                    //flip bucket
+//                    outtake.bucketDeposit();
+//                })
+//                .waitSeconds(0.2)
+//                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+////                    outtake.returnToRetracted();
+//                })
+//
+//                //next sample
+//                .splineTo(new Vector2d(-12,-36),Math.toRadians(0))
+//                .lineToSplineHeading(new Pose2d(36,-36,Math.toRadians(30)))
+//                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+//                    extendoIntake();
+//                })
+//                .waitSeconds(0.5)
+//                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+//                    deextend();
+//                })
+//                .setReversed(true)
+//                .lineToSplineHeading(new Pose2d(-12,-36, Math.toRadians(0)))
+//                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> {
+//                    //transfer sample
+//                    intake.motorRollerOnToClear();
+//                })
+//                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
+//                    intake.motorRollerOff();
+//                })
+//                .splineTo(new Vector2d(-50,-50),Math.toRadians(225))
+//
+//                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
+//                    //raise slides
+////                    outtake.moveTicks(2400);
+//                })
+//                .waitSeconds(0.5)
+//                .setReversed(false)
+//                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+//                    //flip bucket
+//                    outtake.bucketDeposit();
+//                })
+//                .waitSeconds(0.2)
+//                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+////                    outtake.returnToRetracted();
+//                })
+//
+//                //next sample
+//                .splineTo(new Vector2d(-12,-36),Math.toRadians(0))
+//                .lineToSplineHeading(new Pose2d(40,-36,Math.toRadians(30)))
+//                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+//                    extendoIntake();
+//                })
+//                .waitSeconds(0.5)
+//                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+//                    deextend();
+//                })
+//                .setReversed(true)
+//                .lineToSplineHeading(new Pose2d(-12,-36, Math.toRadians(0)))
+//                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> {
+//                    //transfer sample
+//                    intake.motorRollerOnToClear();
+//                })
+//                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
+//                    intake.motorRollerOff();
+//                })
+//                .splineTo(new Vector2d(-50,-50),Math.toRadians(225))
+//
+//                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
+//                    //raise slides
+////                    outtake.moveTicks(2400);
+//                })
+//                .waitSeconds(0.5)
+//                .setReversed(false)
+//                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+//                    //flip bucket
+//                    outtake.bucketDeposit();
+//                })
+//                .waitSeconds(0.2)
+//                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+////                    outtake.returnToRetracted();
+//                })
+//
+//                //park
                 .setReversed(false)
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    //flip bucket
-                    outtake.bucketDeposit();
-                })
-                .waitSeconds(0.2)
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-//                    outtake.returnToRetracted();
-                })
-
-                //next sample
-                .splineTo(new Vector2d(-12,-36),Math.toRadians(0))
-                .lineToSplineHeading(new Pose2d(40,-36,Math.toRadians(30)))
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    extendoIntake();
-                })
-                .waitSeconds(0.5)
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    deextend();
-                })
-                .setReversed(true)
-                .lineToSplineHeading(new Pose2d(-12,-36, Math.toRadians(0)))
-                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> {
-                    //transfer sample
-                    intake.motorRollerOnToClear();
-                })
-                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
-                    intake.motorRollerOff();
-                })
-                .splineTo(new Vector2d(-50,-50),Math.toRadians(225))
-
-                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
-                    //raise slides
-//                    outtake.moveTicks(2400);
-                })
-                .waitSeconds(0.5)
-                .setReversed(false)
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    //flip bucket
-                    outtake.bucketDeposit();
-                })
-                .waitSeconds(0.2)
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-//                    outtake.returnToRetracted();
-                })
-
-                //park
-                .lineToLinearHeading(new Pose2d(-30, -12, Math.toRadians(90)))
+                .splineToLinearHeading(new Pose2d(-30, -12, Math.toRadians(90)),Math.toRadians(0))
                 .build();
 
         waitForStart();
@@ -278,16 +287,16 @@ public class SampleAuton16 extends LinearOpMode {
 
     public void extendoIntake(){
         //extendo out
-        robot.intake.extendoFullExtend();
-        robot.intake.flipDownFull();
+//        robot.intake.extendoFullExtend();
+//        robot.intake.flipDownFull();
         //run intake
-        intake.motorRollerOnToIntake();
+//        intake.motorRollerOnToIntake();
     }
     public void deextend(){
         //deeextend
-        robot.intake.flipUp();
-        robot.intake.extendoFullRetract();
+//        robot.intake.flipUp();
+//        robot.intake.extendoFullRetract();
         //stop Intake
-        intake.motorRollerOff();
+//        intake.motorRollerOff();
     }
 }

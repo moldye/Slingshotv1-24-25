@@ -18,14 +18,14 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'org.team11260:fast-load-plugin:0.1.1'
+//        classpath 'org.team11260:fast-load-plugin:0.1.1'
     }
 }
 
 // Include common definitions from above.
 apply from: '../build.common.gradle'
 apply from: '../build.dependencies.gradle'
-apply plugin: 'org.team11260.fast-load-plugin'
+//apply plugin: 'org.team11260.fast-load-plugin'
 
 android {
     namespace = 'org.firstinspires.ftc.teamcode'
