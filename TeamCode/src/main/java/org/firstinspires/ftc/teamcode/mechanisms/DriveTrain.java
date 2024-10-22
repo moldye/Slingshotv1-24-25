@@ -35,6 +35,8 @@ public class DriveTrain {
     private PIDFControllerEx turnController = new PIDFControllerEx(turnP, turnI, turnD, turnF);
 
     private DriveMode driveMode;
+
+    private boolean slowMode = false;
     private boolean lockedHeadingMode = false;
     private double slowMultiplier = 1;
 
@@ -128,8 +130,7 @@ public class DriveTrain {
         // but only if at least one is out of the range [-1, 1]
         double denominator = Math.max(Math.abs(drive) + Math.abs(strafe) + Math.abs(turn), 1);
 
-        // TODO: this may not work
-        if (Outtake.getOuttakeDTSlow()) {
+        if (Outtake.getOuttakeDTSlow() && slowMode) {
             slowMultiplier = 0.25;
         } else {
             slowMultiplier = 1;
