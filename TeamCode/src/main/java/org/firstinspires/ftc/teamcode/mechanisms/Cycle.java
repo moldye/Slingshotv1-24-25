@@ -18,6 +18,8 @@ public class Cycle {
     private Telemetry telemetry;
     private ElapsedTime loopTime;
 
+    private double startTime;
+
     public Cycle(Telemetry telemetry, GamepadMapping controls, Robot robot) {
         this.robot = robot;
         this.intake = robot.intake;
@@ -29,6 +31,7 @@ public class Cycle {
         transferState = TransferState.BASE_STATE;
 
         loopTime = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+        startTime = loopTime.startTime();
     }
 
     public void update() {
@@ -46,7 +49,9 @@ public class Cycle {
                 if (controls.extend.value()) {
                     transferState = TransferState.EXTENDO_FULLY_EXTENDED;
                     intake.extendoFullExtend();
-                    intake.halfFlipDownToClear();
+                    if (loopTime.milliseconds() - startTime > 0 && loopTime.milliseconds() - startTime < 500) {
+                        intake.halfFlipDownToClear();
+                    }
                 }
                 else if (controls.transfer.value()) {
                     transferState = TransferState.TRANSFERING;

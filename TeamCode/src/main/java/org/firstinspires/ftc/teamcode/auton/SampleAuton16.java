@@ -166,26 +166,31 @@ public class SampleAuton16 extends LinearOpMode {
 
 
 //                //beyond this point is the other 3 samples
-//                .splineTo(new Vector2d(-12,-36),Math.toRadians(0))
+                .splineTo(new Vector2d(-12,-45),Math.toRadians(0))
 //
-//                .lineToSplineHeading(new Pose2d(30,-36,Math.toRadians(30)))
-//                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-//                    extendoIntake();
-//                })
-//                .waitSeconds(0.5)
-//                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-//                    deextend();
-//                })
-//                .setReversed(true)
-//                .lineToSplineHeading(new Pose2d(-12,-36, Math.toRadians(0)))
-//                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> {
-//                    //transfer sample
+                .lineToSplineHeading(new Pose2d(30,-45,Math.toRadians(30)))
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    extendoIntake();
+                })
+
+
+
+                .waitSeconds(0.5)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    //deextend();
+                })
+                .setReversed(true)
+                .lineToSplineHeading(new Pose2d(-12,-45, Math.toRadians(0)))
+                //why do we need offset here
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    //offset 0.75
+                    //transfer sample
 //                    intake.motorRollerOnToClear();
-//                })
-//                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
+                })
+                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
 //                    intake.motorRollerOff();
-//                })
-//                .splineTo(new Vector2d(-50,-50),Math.toRadians(225))
+                })
+//                .splineTo(new Vector2d(-54,-58),Math.toRadians(225))
 //
 //                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
 //                    //raise slides
@@ -275,8 +280,8 @@ public class SampleAuton16 extends LinearOpMode {
 //                })
 //
 //                //park
-                .setReversed(false)
-                .splineToLinearHeading(new Pose2d(-30, -12, Math.toRadians(90)),Math.toRadians(0))
+//                .setReversed(false)
+//                .splineToLinearHeading(new Pose2d(-30, -12, Math.toRadians(90)),Math.toRadians(0))
                 .build();
 
         waitForStart();

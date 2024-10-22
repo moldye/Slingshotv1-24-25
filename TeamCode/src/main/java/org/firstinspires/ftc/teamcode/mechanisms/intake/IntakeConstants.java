@@ -6,7 +6,7 @@ public class IntakeConstants {
 
     // pivoted up, pivoted down, transfer pos, clearing samples (half state for intaking)
     // axon programmed for 0-255, 66 PMW (inverted)
-    private static final double[] pivotPositions = {.33, .95, .2, .56}; // TODO: tune .85
+    private static final double[] pivotPositions = {.33, .75, .2, .56};
 
     // neutral pos, back roller push out sample (extendo), back roller transfer
     private static final double[] backRollerPositions = {0.5, 1, -1};
@@ -55,10 +55,10 @@ public class IntakeConstants {
 
     }
     public enum SampleTypes{
-        NONE(new double[]{0,0,0}),
-        YELLOW(new double[]{0,0,0}),
-        BLUE(new double[]{0,0,0}),
-        RED(new double[]{0,0,0});
+        NONE(new double[]{55,89,108}),
+        YELLOW(new double[]{152,356,315}),
+        BLUE(new double[]{110,211,460}),
+        RED(new double[]{742,377,195});
         double[] color;
         SampleTypes(double[] color){
             this.color = color;

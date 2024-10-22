@@ -19,8 +19,8 @@ public class AxonTester extends OpMode {
 
     public static double servoPos = 0;
 
-//    public static double rservoPos = .5;
-//    public static double lservoPos = .5;
+    public static double rservoPos = .5;
+    public static double lservoPos = .5;
 
     @Override
     public void init() {
@@ -35,7 +35,7 @@ public class AxonTester extends OpMode {
     @Override
     public void loop() {
         intake.pivotAxon.setPosition(servoPos);
-//         intake.rightExtendo.setPosition(rservoPos);
-//         intake.leftExtendo.setPosition(lservoPos);
+//         intake.rightExtendo.setPosition(servoPos);
+//         intake.leftExtendo.setPosition(servoPos);
     }
 }

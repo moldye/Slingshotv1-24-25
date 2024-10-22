@@ -27,9 +27,12 @@ public class SensorColorCalibration extends OpMode {
         telemetry.clearAll();
         //uh, I feel like i had to add brackets, this is pretty much unnessesary...
         if(sensor != null){
-            currentMean[0] = (sensor.red()+currentMean[0]*iterationCount)/(iterationCount+1);
-            currentMean[1] = (sensor.green()+currentMean[1]*iterationCount)/(iterationCount+1);;
-            currentMean[2] = (sensor.blue()+currentMean[2]*iterationCount)/(iterationCount+1);;
+//            currentMean[0] = (sensor.red()+currentMean[0]*iterationCount)/(iterationCount+1);
+//            currentMean[1] = (sensor.green()+currentMean[1]*iterationCount)/(iterationCount+1);;
+//            currentMean[2] = (sensor.blue()+currentMean[2]*iterationCount)/(iterationCount+1);;
+            currentMean[0]=sensor.red();
+            currentMean[1]=sensor.green();
+            currentMean[2]=sensor.blue();
             iterationCount++;
         }
         //You can reset the current set using the options key!
@@ -37,7 +40,7 @@ public class SensorColorCalibration extends OpMode {
             currentMean = new double[3];
             iterationCount = 0;
         }
-        telemetry.addData("mean:", parseDoubleArray(currentMean));
+        telemetry.addData("mean:", (currentMean[0]));
     }
     public String parseDoubleArray(double[] array){
         //I chose to do this to sacrifice a little bit of memory for a little bit of speed :)
