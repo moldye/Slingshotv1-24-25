@@ -38,9 +38,11 @@ public class Cycle {
             case EXTENDO_FULLY_RETRACTED:
                 // have to constantly set power of slide motors back
                 outtake.returnToRetracted();
+                intake.extendoFullRetract();
                 if (controls.extend.value()) {
                     transferState = TransferState.EXTENDO_FULLY_EXTENDED;
                     intake.extendoFullExtend();
+                    intake.halfFlipDownToClear();
                 }
                 else if (controls.transfer.value()) {
                     transferState = TransferState.TRANSFERING;
@@ -80,12 +82,12 @@ public class Cycle {
                     // break;
                 }
                 // TODO try pressing these at the same time
-                else if (controls.intakeOnToIntake.value()) {
+                else if (controls.intakeOnToIntake.locked()) {
                     intake.motorRollerOnToIntake();
                     intake.backRollerIdle();
-                } else if (controls.intakeOnToClear.value()) {
+                } else if (controls.intakeOnToClear.locked()) {
                     intake.clearIntake();
-                } else if (!controls.intakeOnToIntake.value() || !controls.intakeOnToClear.value()){
+                } else if (!controls.intakeOnToIntake.locked() || !controls.intakeOnToClear.locked()){
                     intake.motorRollerOff();
                     intake.backRollerIdle();
                 }
@@ -134,7 +136,6 @@ public class Cycle {
                 break;
         }
         robot.updateTelemetry();
-        telemetry.addData("Transfer State: ", transferState.stateName());
     }
 
 //    public void update() {

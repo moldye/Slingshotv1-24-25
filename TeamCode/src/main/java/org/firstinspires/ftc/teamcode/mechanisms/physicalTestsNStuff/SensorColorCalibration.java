@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.mechanisms.physicalTestsNStuff;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -10,6 +11,7 @@ import org.opencv.core.Scalar;
 import java.util.Arrays;
 import java.util.List;
 
+@TeleOp
 public class SensorColorCalibration extends OpMode {
     int iterationCount = 0;
     double[] currentMean = new double[3];

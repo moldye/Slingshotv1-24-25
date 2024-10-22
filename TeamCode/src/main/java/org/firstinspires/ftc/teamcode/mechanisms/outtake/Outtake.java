@@ -79,6 +79,16 @@ public class Outtake {
         moveLeftTicks(target);
     }
 
+    // TODO less PID bro, test this
+//    public void moveTicks(double target) {
+//        controller.setPID(p,i,d);
+//        int pos = outtakeSlideLeft.getCurrentPosition();
+//        double pid = controller.calculate(pos, target);
+//        double power = pid + f;
+//        outtakeSlideRight.setPower(power);
+//        outtakeSlideLeft.setPower(power);
+//    }
+
     public void changePIDF(double inP, double inI, double inD, double inF){
         p = inP; i = inI; d = inD; f = inF;
     }

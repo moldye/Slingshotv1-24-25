@@ -66,10 +66,10 @@ public class Intake {
         // pivotAnalog.runToPos(IntakeConstants.IntakeState.FULLY_EXTENDED.pivotPos());
     }
 
-    public void flipDownInitial() {
+    public void halfFlipDownToClear() {
         // this is so the intake can flip down first past the full pos, then go to full to be ready for intaking
-        pivotAxon.setPosition(IntakeConstants.IntakeState.INTAKING.pivotPos());
-        // pivotAnalog.runToPos(IntakeConstants.IntakeState.INTAKING.pivotPos());
+        pivotAxon.setPosition(IntakeConstants.IntakeState.CLEARING.pivotPos());
+        // pivotAnalog.runToPos(IntakeConstants.IntakeState.CLEARING.pivotPos());
     }
 
     public void flipUp() {
@@ -105,20 +105,6 @@ public class Intake {
         rollerMotor.setPower(1);
         backRollerServo.setPosition(IntakeConstants.IntakeState.TRANSFER.backRollerPos());
     }
-
-//    public void extendoExtend() {
-//        // max pos is -1
-//        // at .325 -> .225
-//        double newPos = rightExtendo.getPosition() - .1; // * (triggerValue * 10) / 5;
-//        if (newPos <= linkageMax) {
-//            rightExtendo.setPosition(newPos);
-//            leftExtendo.setPosition(newPos);
-//        } else {
-//            rightExtendo.setPosition(linkageMax);
-//            leftExtendo.setPosition(linkageMax);
-//        }
-//
-//    }
 
     public void extendoFullExtend() {
         rightExtendo.setPosition(IntakeConstants.IntakeState.FULLY_EXTENDED.rLinkagePos());
