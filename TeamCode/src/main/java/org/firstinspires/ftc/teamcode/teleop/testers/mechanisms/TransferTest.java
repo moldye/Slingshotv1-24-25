@@ -35,6 +35,7 @@ public class TransferTest extends OpMode {
 
     @Override
     public void loop() {
+        controls.update();
         if(controls.highBasket.value()) {
             intake.extendForOuttake();
             outtake.extendToHighBasket();

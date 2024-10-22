@@ -1,13 +1,9 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
-import com.qualcomm.robotcore.hardware.HardwareMap;
-
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
-import org.firstinspires.ftc.teamcode.mechanisms.intake.IntakeConstants;
 import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
-import org.firstinspires.ftc.teamcode.mechanisms.outtake.OuttakeConstants;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
 public class Cycle {
@@ -37,9 +33,10 @@ public class Cycle {
         switch(transferState){
             case BASE_STATE:
                 robot.hardwareSoftReset();
-                transferState = TransferState.EXTENDO_FULLY_RETRACTED;
+                transferState = TransferState.RETRACT_ALL;
                 break;
-            case EXTENDO_FULLY_RETRACTED:
+            case RETRACT_ALL:
+                outtake.returnToRetracted();
                 if (controls.extend.value()) {
                     transferState = TransferState.EXTENDO_FULLY_EXTENDED;
                     intake.extendoFullExtend();
@@ -59,7 +56,7 @@ public class Cycle {
                     intake.flipUp();
                     intake.motorRollerOff();
                     intake.extendoFullRetract();
-                    transferState = TransferState.EXTENDO_FULLY_RETRACTED;
+                    transferState = TransferState.RETRACT_ALL;
                     // break;
                 }
                 else if (controls.pivot.value()) {
@@ -99,7 +96,7 @@ public class Cycle {
                 if (!controls.transfer.value()) {
                     intake.motorRollerOff();
                     intake.backRollerIdle();
-                    transferState = TransferState.EXTENDO_FULLY_RETRACTED;
+                    transferState = TransferState.RETRACT_ALL;
                 }
                 break;
             case HIGH_BASKET:
@@ -110,7 +107,7 @@ public class Cycle {
                 }
                 else if (!controls.highBasket.value()) {
                     transferState = TransferState.SLIDES_RETRACTED;
-                    // break;
+                    break;
                 }
                 break;
             case LOW_BASKET:
@@ -129,7 +126,7 @@ public class Cycle {
                 outtake.bucketToReadyForTransfer();
                 outtake.returnToRetracted();
                 intake.extendoFullRetract();
-                transferState = TransferState.EXTENDO_FULLY_RETRACTED;
+                transferState = TransferState.RETRACT_ALL;
                 break;
         }
         robot.updateTelemetry();
@@ -253,7 +250,7 @@ public class Cycle {
 
     public enum TransferState {
         BASE_STATE("BASE_STATE"),
-        EXTENDO_FULLY_RETRACTED("EXTENDO_FULLY_RETRACTED"),
+        RETRACT_ALL("EXTENDO_FULLY_RETRACTED"),
         EXTENDO_FULLY_EXTENDED("EXTENDO_FULLY_EXTENDED"),
         INTAKING("INTAKING"),
         TRANSFERING("TRANSFERING"),
