@@ -18,7 +18,7 @@ public class Intake {
     public Servo rightExtendo; // axon
     public Servo pivotAxon;
     public AnalogServo pivotAnalog;
-
+    public colorSensorModule sensorModule;
 
     // OTHER
     // ----------
@@ -35,6 +35,7 @@ public class Intake {
 //    private double linkageThreshold = -.00625; // full extension is -1, just multiplied 1.325 * .25 and subtracted it from min
 
     public Intake(HardwareMap hwMap, Telemetry telemetry, GamepadMapping controls) {
+        sensorModule = new colorSensorModule(telemetry, hwMap); //just call sensorModule.checkSample() for the color
         rollerMotor = hwMap.get(DcMotorEx.class, "rollerMotor");
         pivotAxon = hwMap.get(Servo.class, "pivotAxon");
         backRollerServo = hwMap.get(Servo.class, "backRoller");
