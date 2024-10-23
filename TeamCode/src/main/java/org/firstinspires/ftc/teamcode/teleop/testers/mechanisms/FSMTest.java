@@ -28,6 +28,7 @@ public class FSMTest extends OpMode {
         outtake = robot.outtake;
 
         robot.outtake.resetEncoders();
+        robot.outtake.setMotorsToTeleOpMode();
 
         robot.intake.resetHardware();
         robot.outtake.resetHardware();

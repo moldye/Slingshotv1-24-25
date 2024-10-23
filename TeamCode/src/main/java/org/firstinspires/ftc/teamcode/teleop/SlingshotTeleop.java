@@ -22,6 +22,7 @@ public class SlingshotTeleop extends OpMode {
         robot = new Robot(hardwareMap, telemetry, controls);
         dt = robot.drivetrain;
         cycle = new Cycle(telemetry, controls, robot);
+        robot.outtake.setMotorsToTeleOpMode();
         robot.hardwareSoftReset();
     }
 

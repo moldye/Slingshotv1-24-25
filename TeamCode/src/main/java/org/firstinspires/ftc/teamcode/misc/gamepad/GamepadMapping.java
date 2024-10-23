@@ -33,7 +33,6 @@ public class GamepadMapping {
     public static Toggle extend; // extend intake
     public static Toggle retract; // retract intake
     public static Toggle clearIntake;
-    public static boolean pivotState; // may need to change this
     public static Toggle transfer;
     public static Toggle intakeOnToIntake;
     public static Toggle intakeOnToClear;
@@ -46,7 +45,6 @@ public class GamepadMapping {
     public static Toggle bucketDeposit;
     public static Toggle highBasket;
     public static Toggle lowBasket;
-    public static Toggle readyForDeposit;
 
     // SCORING
     // --------------
@@ -71,9 +69,6 @@ public class GamepadMapping {
     // -------------------------------
     public static Toggle toggleIntakePower;
     public static Toggle powerIntake;
-    public static Toggle switchExtendo;
-    // public static Toggle transfer;
-    public static Toggle deposit;
     public static Toggle flipBucket;
     public static Toggle pivot;
 
@@ -87,7 +82,6 @@ public class GamepadMapping {
 
         extend = new Toggle(false);
         retract = new Toggle(false);
-        readyForDeposit = new Toggle(false);
         intakeOnToIntake = new Toggle(false);
         intakeOnToClear = new Toggle(false);
         pivot = new Toggle(false);
@@ -108,7 +102,6 @@ public class GamepadMapping {
         // pivot = new Toggle(false);
         powerIntake = new Toggle(false);
         transfer = new Toggle(false);
-        deposit = new Toggle(false);
         flipBucket = new Toggle(false);
 
         // claw (could be real?)

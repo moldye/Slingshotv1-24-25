@@ -6,7 +6,7 @@ public class IntakeConstants {
 
     // pivoted up, pivoted down, transfer pos, clearing samples (half state for intaking)
     // axon programmed for 0-255, 66 PMW (inverted)
-    private static final double[] pivotPositions = {.33, .75, .2, .56};
+    private static final double[] pivotPositions = {.3, .95, .3, .56};
 
     // neutral pos, back roller push out sample (extendo), back roller transfer
     private static final double[] backRollerPositions = {0.5, 1, -1};
@@ -26,7 +26,7 @@ public class IntakeConstants {
         WRONG_ALLIANCE_COLOR_SAMPLE(pivotPositions[1], backRollerPositions[1], rightLinkagePositions[1], leftLinkagePositions[1]), // pivoted down, pushing out sample, extended
         FULLY_EXTENDED(pivotPositions[1], backRollerPositions[0], rightLinkagePositions[1], leftLinkagePositions[1]), // pivoted down, idle back roller, extended
         TRANSFER(pivotPositions[2], backRollerPositions[2], rightLinkagePositions[0], leftLinkagePositions[0]), // pivoted up, back roller push, retracted
-        OUTTAKING(pivotPositions[0], backRollerPositions[0], rightLinkagePositions[2], leftLinkagePositions[2]),
+        OUTTAKING(pivotPositions[2], backRollerPositions[0], rightLinkagePositions[2], leftLinkagePositions[2]),
         BASE_STATE(pivotPositions[0], backRollerPositions[0], rightLinkagePositions[0], leftLinkagePositions[0]); // we're trying this, hopefully the same state in each mechanism that resets that specific mechanism (keyed to same button across robot)
 
         private final double pivotPos;

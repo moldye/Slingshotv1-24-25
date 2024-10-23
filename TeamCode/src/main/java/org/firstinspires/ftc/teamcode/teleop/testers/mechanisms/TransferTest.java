@@ -36,12 +36,10 @@ public class TransferTest extends OpMode {
     @Override
     public void loop() {
         controls.update();
-        if(controls.highBasket.value()) {
-            intake.extendForOuttake();
-            outtake.extendToHighBasket();
+        if (controls.flipBucket.value()) {
+            outtake.bucketTilt();
         } else {
-            intake.extendoFullRetract();
-            outtake.returnToRetracted();
+            outtake.bucketToReadyForTransfer();
         }
     }
 }
