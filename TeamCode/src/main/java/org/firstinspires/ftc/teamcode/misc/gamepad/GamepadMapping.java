@@ -63,6 +63,7 @@ public class GamepadMapping {
     // OTHER
     // --------------
     public static Toggle botToBaseState;
+    public static Toggle isBlue;
 
     // TESTING BUTTONS
     // NOT TO BE USED FOR COMP
@@ -96,6 +97,7 @@ public class GamepadMapping {
 
         botToBaseState = new Toggle(false);
         clearIntake = new Toggle(false);
+        isBlue = new Toggle(false);
 
         // TESTING BUTTONS
         toggleIntakePower = new Toggle(false);
@@ -130,18 +132,9 @@ public class GamepadMapping {
 //        switchClaw.update(gamepad1.x);
         L1hang.update(gamepad2.dpad_up); // TODO Ask Drivers
 
-        // Locked Heading
-        lock90 = gamepad1.dpad_up;
-        lock180 = gamepad1.dpad_left;
-        lock270 = gamepad1.dpad_down;
-        lock360 = gamepad1.dpad_right;
-
         // Reset/Fail Safes (Both controllers should have these)
-        botToBaseState.update(gamepad1.options);
-        botToBaseState.update(gamepad2.options);
-
-        clearIntake.update(gamepad1.left_trigger > 0.6);
-        clearIntake.update(gamepad2.left_trigger > 0.6);
+        botToBaseState.update(gamepad1.dpad_down);
+        botToBaseState.update(gamepad2.dpad_down);
     }
 
     public void joystickUpdate() {

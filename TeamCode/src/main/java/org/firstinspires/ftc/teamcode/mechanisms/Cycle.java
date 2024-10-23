@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.teamcode.mechanisms.intake.ColorSensorModule;
 import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.intake.IntakeConstants;
 import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
@@ -18,7 +19,7 @@ public class Cycle {
     private TransferState transferState;
     private Telemetry telemetry;
     private ElapsedTime loopTime;
-
+    private ColorSensorModule colorSensor;
     private double startTime;
 
     public Cycle(Telemetry telemetry, GamepadMapping controls, Robot robot) {
@@ -74,10 +75,11 @@ public class Cycle {
                     intake.pivotAxon.setPosition(IntakeConstants.IntakeState.TRANSFER.pivotPos());
                     transferState = TransferState.EXTENDO_FULLY_RETRACTED;
                 }
-                else if (controls.pivot.value()) {
-                    intake.flipDownFull();
-                    transferState = TransferState.INTAKING;
-                }
+                // TODO see if state pivot thingy I made below is better
+//                else if (controls.pivot.value()) {
+//                    intake.flipDownFull();
+//                    transferState = TransferState.INTAKING;
+//                }
                 else if (controls.botToBaseState.value()) {
                     transferState = TransferState.BASE_STATE;
                 } else if (controls.intakeOnToClear.locked()) {
@@ -91,23 +93,33 @@ public class Cycle {
                     intake.flipUp();
                     transferState = TransferState.EXTENDO_FULLY_EXTENDED;
                 }
-                // TODO try pressing these at the same time
+
                 else if (controls.intakeOnToIntake.locked()) {
+                    intake.flipDownFull();
                     intake.motorRollerOnToIntake();
                     intake.backRollerIdle();
                 } else if (controls.intakeOnToClear.locked()) {
+                    intake.halfFlipDownToClear();
                     intake.clearIntake();
                 } else if (!controls.intakeOnToIntake.locked() || !controls.intakeOnToClear.locked()){
+                    intake.flipUp();
                     intake.motorRollerOff();
                     intake.backRollerIdle();
                 }
-                // TODO ASK JAMS
-//                if (colorSensorSensesBadColor) {
-//                    pushOutSample
-//                }
+
+                if (intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.BLUE) && !colorSensor.isBlue) {
+                    intake.pushOutSample();
+                } else if (intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.RED) && colorSensor.isBlue) {
+                    intake.pushOutSample();
+                } else if (intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.BLUE) && colorSensor.isBlue
+                    || intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.RED) && !colorSensor.isBlue) {
+                    transferState = TransferState.TRANSFERING;
+                }
                 break;
             case TRANSFERING:
                 outtake.returnToRetracted();
+                intake.flipUp();
+                intake.extendoFullRetract();
                 intake.transferSample();
                 if (!controls.transfer.value()) {
                     intake.motorRollerOff();
@@ -117,6 +129,7 @@ public class Cycle {
                 break;
             case HIGH_BASKET:
                 intake.pivotUpForOuttake();
+                outtake.bucketTilt();
                 outtake.extendToHighBasket();
                 if (controls.flipBucket.value()) {
                     outtake.bucketDeposit();
@@ -128,6 +141,7 @@ public class Cycle {
                 break;
             case LOW_BASKET:
                 intake.pivotUpForOuttake();
+                outtake.bucketTilt();
                 outtake.extendToLowBasket();
                 if (controls.flipBucket.value()) {
                     outtake.bucketDeposit();

@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.mechanisms.intake;
 
+import android.graphics.Color;
+
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -18,7 +20,7 @@ public class Intake {
     public Servo rightExtendo; // axon
     public Servo pivotAxon;
     public AnalogServo pivotAnalog;
-    public colorSensorModule sensorModule;
+    public ColorSensorModule colorSensor;
 
     // OTHER
     // ----------
@@ -26,16 +28,8 @@ public class Intake {
     private Telemetry telemetry;
     private long startTime;
 
-    // CONTROLS
-    // -----------
-//    private boolean pivotUp; // true if pivot it is initial position (flipped up)
-//    private boolean extendoIn;
-//    private double linkageMax = -1;
-//    private double linkageMin = .325;
-//    private double linkageThreshold = -.00625; // full extension is -1, just multiplied 1.325 * .25 and subtracted it from min
-
     public Intake(HardwareMap hwMap, Telemetry telemetry, GamepadMapping controls) {
-        sensorModule = new colorSensorModule(telemetry, hwMap); //just call sensorModule.checkSample() for the color
+        colorSensor = new ColorSensorModule(telemetry, hwMap, true); //just call sensorModule.checkSample() for the color
         rollerMotor = hwMap.get(DcMotorEx.class, "rollerMotor");
         pivotAxon = hwMap.get(Servo.class, "pivotAxon");
         backRollerServo = hwMap.get(Servo.class, "backRoller");

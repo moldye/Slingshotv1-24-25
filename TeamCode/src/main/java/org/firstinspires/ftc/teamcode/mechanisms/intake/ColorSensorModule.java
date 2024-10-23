@@ -5,17 +5,16 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.mechanisms.intake.IntakeConstants.SampleTypes;
-import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
-public class colorSensorModule {
+public class ColorSensorModule {
     Telemetry telemetry;
     ColorSensor sensor;
-    boolean isBlue;
+    public boolean isBlue;
     //TODO:I'm too lazy to actually put this into intake, so I'm making a class for it HOORAY!!
-    public colorSensorModule(Telemetry t, HardwareMap hm/* boolean isBlue*/){
+    public ColorSensorModule(Telemetry t, HardwareMap hm, boolean isBlue){
         this.telemetry = t;
         this.sensor = hm.get(ColorSensor.class, "colorSensor");
-        /*this.isBlue = isBlue;*/
+        this.isBlue = isBlue;
     }
     public SampleTypes checkSample(){
         double[] sensorVals = new double[3];
@@ -32,7 +31,7 @@ public class colorSensorModule {
         }
         return best;
     }
-   /* public boolean opposingColor(){
+    public boolean opposingColor(){
         double[] sensorVals = new double[3];
         sensorVals[0] = sensor.red();
         sensorVals[1] = sensor.green();
@@ -47,5 +46,13 @@ public class colorSensorModule {
         }
         //if we are blue alliance, return the sample color == red, else return color = blue!
         return isBlue?(best.equals(SampleTypes.RED)):(best.equals(SampleTypes.BLUE));
-    }*/
+    }
+
+    public void setIsBlue(boolean isBlue) {
+        this.isBlue = isBlue;
+    }
+
+    public boolean getIsBlue() {
+        return isBlue;
+    }
 }
