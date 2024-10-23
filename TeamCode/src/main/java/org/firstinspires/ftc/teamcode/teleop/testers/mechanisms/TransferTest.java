@@ -5,8 +5,10 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.teamcode.mechanisms.Cycle;
 import org.firstinspires.ftc.teamcode.mechanisms.DriveTrain;
 import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
+import org.firstinspires.ftc.teamcode.mechanisms.intake.IntakeConstants;
 import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
@@ -27,8 +29,8 @@ public class TransferTest extends OpMode {
         intake = robot.intake;
         outtake = robot.outtake;
         dt = robot.drivetrain;
-        intake.extendoFullRetract();
-        intake.flipUp();
+//        intake.extendoFullRetract();
+//        intake.flipUp();
         outtake.resetEncoders();
         outtake.returnToRetracted();
     }
@@ -36,10 +38,19 @@ public class TransferTest extends OpMode {
     @Override
     public void loop() {
         controls.update();
-        if (controls.flipBucket.value()) {
-            outtake.bucketTilt();
+        if (controls.intakeOnToIntake.locked()) {
+            intake.motorRollerOnToIntake();
+            if (intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.BLUE) && !intake.colorSensor.isBlue) {
+                intake.pushOutSample();
+            } else if (intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.RED) && intake.colorSensor.isBlue) {
+                intake.pushOutSample();
+            } else if (intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.BLUE) && intake.colorSensor.isBlue
+                    || intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.RED) && !intake.colorSensor.isBlue) {
+                telemetry.addData("Sample: ", intake.colorSensor.checkSample());
+            }
         } else {
-            outtake.bucketToReadyForTransfer();
+            intake.motorRollerOff();
         }
+        telemetry.addData("Is Blue: ", controls.isBlue.value());
     }
 }

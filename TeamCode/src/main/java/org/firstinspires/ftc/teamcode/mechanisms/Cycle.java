@@ -63,6 +63,8 @@ public class Cycle {
                 }
                 else if (controls.lowBasket.value()) {
                     transferState = TransferState.LOW_BASKET;
+                } else if (controls.L1hang.value()) {
+                    transferState = TransferState.HANGING;
                 }
                 break;
             case EXTENDO_FULLY_EXTENDED:
@@ -158,7 +160,11 @@ public class Cycle {
                 transferState = TransferState.EXTENDO_FULLY_RETRACTED;
                 break;
             case HANGING:
-
+                outtake.hang();
+                if (!controls.L1hang.value()) {
+                    transferState = TransferState.SLIDES_RETRACTED;
+                }
+                break;
         }
         robot.updateTelemetry();
     }

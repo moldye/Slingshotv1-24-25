@@ -68,9 +68,9 @@ public class SampleAuton16 extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                    extendoIntake();
                 })
-                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
-                    intake.flipDownFull();
-                })
+//                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
+//                    intake.flipDownFull();
+//                })
                 .waitSeconds(1)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     deextend();
@@ -78,7 +78,7 @@ public class SampleAuton16 extends LinearOpMode {
                 .setReversed(true)
                 .splineToLinearHeading(new Pose2d(-55,-59,Math.toRadians(45)),Math.toRadians(225))
                 .setReversed(false)
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                     //transfer sample
                     intake.transferSample();
                 })
@@ -157,8 +157,9 @@ public class SampleAuton16 extends LinearOpMode {
                 .setReversed(true)
                 .splineToLinearHeading(new Pose2d(-54,-58,Math.toRadians(45)),Math.toRadians(225))
                 .setReversed(false)
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                     //transfer sample
+                    //offset testing
                     intake.transferSample();
                 })
                 .UNSTABLE_addTemporalMarkerOffset(0.3, () -> {
@@ -325,7 +326,7 @@ public class SampleAuton16 extends LinearOpMode {
     }
     public void deextend(){
         //deeextend
-        robot.intake.pivotAxon.setPosition(.56);
+        robot.intake.pivotAxon.setPosition(IntakeConstants.IntakeState.TRANSFER.pivotPos());
         robot.intake.extendoFullRetract();
         //stop Intake
         intake.motorRollerOff();
