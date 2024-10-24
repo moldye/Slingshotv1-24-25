@@ -90,12 +90,12 @@ public class Intake {
 
     public void transferSample() {
         // pivotAnalog.runToPos(IntakeConstants.IntakeState.TRANSFER.pivotPos());
-        rollerMotor.setPower(0.7);
         backRollerServo.setPosition(IntakeConstants.IntakeState.TRANSFER.backRollerPos());
+        rollerMotor.setPower(0.4);
     }
 
     public void clearIntake() {
-        rollerMotor.setPower(1);
+        rollerMotor.setPower(0.5);
         backRollerServo.setPosition(IntakeConstants.IntakeState.TRANSFER.backRollerPos());
     }
 
@@ -107,6 +107,11 @@ public class Intake {
     public void extendoFullRetract() {
         rightExtendo.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.rLinkagePos());
         leftExtendo.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.lLinkagePos());
+    }
+
+    public void extendForOuttake() {
+        rightExtendo.setPosition(IntakeConstants.IntakeState.OUTTAKING.rLinkagePos());
+        leftExtendo.setPosition(IntakeConstants.IntakeState.OUTTAKING.lLinkagePos());
     }
 
     public void pivotUpForOuttake() {

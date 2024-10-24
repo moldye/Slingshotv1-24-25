@@ -36,7 +36,10 @@ public class FSMTest extends OpMode {
 
     @Override
     public void init_loop() {
-        controls.isBlue.update(gamepad2.x);
+        telemetry.addData("Sample: ", intake.colorSensor.checkSample());
+        telemetry.addData("Color Sensor Is Blue", intake.colorSensor.getIsBlue());
+        telemetry.addData("Is Blue", controls.isBlue.value());
+        controls.isBlue.update(gamepad1.x);
         if (controls.isBlue.value()) {
             intake.colorSensor.setIsBlue(true);
         } else {
