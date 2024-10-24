@@ -138,6 +138,9 @@ public class Cycle {
                 intake.pivotUpForOuttake();
                 intake.extendForOuttake();
                 outtake.extendToHighBasket();
+                if (loopTime.milliseconds() - startTime <= 500) {
+                    outtake.bucketTilt();
+                }
                 if (controls.flipBucket.value()) {
                     outtake.bucketDeposit();
                 }
@@ -149,16 +152,19 @@ public class Cycle {
             case LOW_BASKET:
                 intake.pivotUpForOuttake();
                 intake.extendForOuttake();
-                outtake.bucketTilt();
                 outtake.extendToLowBasket();
+                if (loopTime.milliseconds() - startTime <= 500) {
+                    outtake.bucketTilt();
+                }
                 if (controls.flipBucket.value()) {
                     outtake.bucketDeposit();
                 }
-                else if (!controls.lowBasket.value()) {
+                if (!controls.lowBasket.value()) {
                     transferState = TransferState.SLIDES_RETRACTED;
                 }
                 break;
             case SLIDES_RETRACTED:
+                controls.flipBucket.set(false);
                 // could also do to base state
                 outtake.bucketToReadyForTransfer();
                 outtake.returnToRetracted();
@@ -182,7 +188,6 @@ public class Cycle {
                 }
             break;
         }
-        // robot.updateTelemetry();
     }
 
     public enum TransferState {

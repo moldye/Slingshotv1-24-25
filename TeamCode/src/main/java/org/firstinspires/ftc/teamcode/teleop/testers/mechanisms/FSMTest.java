@@ -51,5 +51,9 @@ public class FSMTest extends OpMode {
     public void loop() {
         // already does dt & controls.update();
         cycle.update();
+        robot.updateTelemetry();
+        telemetry.addData("Sample: ", intake.colorSensor.checkSample());
+        telemetry.addData("Color Sensor Is Blue", intake.colorSensor.getIsBlue());
+        telemetry.addData("Is Blue", controls.isBlue.value());
     }
 }

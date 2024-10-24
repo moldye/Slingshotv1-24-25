@@ -17,11 +17,11 @@ import java.util.List;
 public class SensorColorCalibration extends OpMode {
     int iterationCount = 0;
     double[] currentMean = new double[3];
-    ColorRangeSensor sensor;
+    ColorSensor sensor;
     List<Object> test;
     @Override
     public void init() {
-        sensor = hardwareMap.get(ColorRangeSensor.class, "colorSensor");
+        sensor = hardwareMap.get(ColorSensor.class, "colorSensor");
     }
 
     @Override
@@ -46,9 +46,9 @@ public class SensorColorCalibration extends OpMode {
             currentMean = new double[3];
             iterationCount = 0;
         }
-        telemetry.addData("dist: ", sensor.getDistance(DistanceUnit.CM));
-        telemetry.addData("mean:", parseDoubleArray(currentMean));
-        telemetry.addData("current Val:", parseDoubleArray(byeLoopTime));
+        telemetry.addData("mean:", (currentMean[0]));
+        telemetry.addData("mean:", (currentMean[1]));
+        telemetry.addData("mean:", (currentMean[2]));
     }
     public String parseDoubleArray(double[] array){
         //I chose to do this to sacrifice a little bit of memory for a little bit of speed :)

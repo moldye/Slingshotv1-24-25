@@ -64,9 +64,11 @@ public class TransferTest extends OpMode {
         }
         if (intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.BLUE) && !intake.colorSensor.isBlue) {
             // add motor to pushOutSample to make it faster
-            pushOut = true;
+            intake.backRollerServo.setPosition(1);
+            intake.motorRollerOnToIntake();
         } else if (intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.RED) && intake.colorSensor.isBlue) {
-            pushOut = true;
+            intake.backRollerServo.setPosition(1);
+            intake.motorRollerOnToIntake();
         } else if (intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.BLUE) && intake.colorSensor.isBlue
                 || intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.RED) && !intake.colorSensor.isBlue) {
             pushOut = false;
@@ -78,13 +80,13 @@ public class TransferTest extends OpMode {
         telemetry.addData("loop time", loopTime.milliseconds());
         telemetry.addData("start time", startTime);
 
-            if (loopTime.milliseconds() - startTime <= 5000) {
-                intake.backRollerServo.setPosition(1);
-                intake.motorRollerOnToIntake();
-            } else {
-                intake.motorRollerOff();
-                intake.backRollerIdle();
-            }
+//        if (loopTime.milliseconds() - startTime <= 2000) {
+//            intake.backRollerServo.setPosition(1);
+//            intake.motorRollerOnToIntake();
+//        } else {
+//            intake.motorRollerOff();
+//            intake.backRollerIdle();
+//        }
 
     }
 }
