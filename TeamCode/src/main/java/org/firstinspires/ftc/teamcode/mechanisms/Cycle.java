@@ -33,7 +33,7 @@ public class Cycle {
         transferState = TransferState.BASE_STATE;
 
         loopTime = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
-        startTime = loopTime.startTime();
+        startTime = loopTime.milliseconds();
     }
 
     public void update() {
@@ -78,28 +78,34 @@ public class Cycle {
                     transferState = TransferState.EXTENDO_FULLY_RETRACTED;
                 }
                 // TODO see if state pivot thingy I made below is better
-//                else if (controls.pivot.value()) {
-//                    intake.flipDownFull();
-//                    transferState = TransferState.INTAKING;
-//                }
-                else if (controls.botToBaseState.value()) {
+                if (controls.intakeOnToIntake.locked() || controls.intakeOnToClear.locked()) {
+                    transferState = TransferState.INTAKING;
+                }
+                if (controls.botToBaseState.value()) {
                     transferState = TransferState.BASE_STATE;
-                } else if (controls.intakeOnToClear.locked()) {
-                    intake.clearIntake();
                 }
                 break;
             case INTAKING:
                 outtake.returnToRetracted();
                 // a (bottom button)
-                if (!controls.pivot.value()) {
-                    intake.flipUp();
+//                if (!controls.pivot.value()) {
+//                    intake.flipUp();
+//                    transferState = TransferState.EXTENDO_FULLY_EXTENDED;
+//                }
+                if (!controls.extend.value()) {
                     transferState = TransferState.EXTENDO_FULLY_EXTENDED;
                 }
-
                 else if (controls.intakeOnToIntake.locked()) {
                     intake.flipDownFull();
                     intake.motorRollerOnToIntake();
                     intake.backRollerIdle();
+                    if (intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.BLUE) && !intake.colorSensor.isBlue) {
+                        transferState = TransferState.PUSH_OUT_BAD_COLOR;
+                        startTime = loopTime.milliseconds();
+                    } else if (intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.RED) && intake.colorSensor.isBlue) {
+                        transferState = TransferState.PUSH_OUT_BAD_COLOR;
+                        startTime = loopTime.milliseconds();
+                    }
                 } else if (controls.intakeOnToClear.locked()) {
                     intake.halfFlipDownToClear();
                     intake.clearIntake();
@@ -107,15 +113,14 @@ public class Cycle {
                     intake.flipUp();
                     intake.motorRollerOff();
                     intake.backRollerIdle();
-                }
-
-                if (intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.BLUE) && !colorSensor.isBlue) {
-                    intake.pushOutSample();
-                } else if (intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.RED) && colorSensor.isBlue) {
-                    intake.pushOutSample();
-                } else if (intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.BLUE) && colorSensor.isBlue
-                    || intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.RED) && !colorSensor.isBlue) {
-                    transferState = TransferState.TRANSFERING;
+                } else {
+                    if (intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.BLUE) && !intake.colorSensor.isBlue) {
+                        transferState = TransferState.PUSH_OUT_BAD_COLOR;
+                        startTime = loopTime.milliseconds();
+                    } else if (intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.RED) && intake.colorSensor.isBlue) {
+                        transferState = TransferState.PUSH_OUT_BAD_COLOR;
+                        startTime = loopTime.milliseconds();
+                    }
                 }
                 break;
             case TRANSFERING:
@@ -131,7 +136,7 @@ public class Cycle {
                 break;
             case HIGH_BASKET:
                 intake.pivotUpForOuttake();
-                outtake.bucketTilt();
+                intake.extendForOuttake();
                 outtake.extendToHighBasket();
                 if (controls.flipBucket.value()) {
                     outtake.bucketDeposit();
@@ -143,6 +148,7 @@ public class Cycle {
                 break;
             case LOW_BASKET:
                 intake.pivotUpForOuttake();
+                intake.extendForOuttake();
                 outtake.bucketTilt();
                 outtake.extendToLowBasket();
                 if (controls.flipBucket.value()) {
@@ -165,8 +171,18 @@ public class Cycle {
                     transferState = TransferState.SLIDES_RETRACTED;
                 }
                 break;
+            case PUSH_OUT_BAD_COLOR:
+                if (loopTime.milliseconds() - startTime <= 1300 && loopTime.milliseconds() - startTime >= 0) {
+                    intake.pushOutSample();
+                    intake.motorRollerOnToIntake();
+                } else {
+                    intake.motorRollerOff();
+                    intake.backRollerIdle();
+                    transferState = TransferState.INTAKING;
+                }
+            break;
         }
-        robot.updateTelemetry();
+        // robot.updateTelemetry();
     }
 
     public enum TransferState {
@@ -178,6 +194,7 @@ public class Cycle {
         SLIDES_RETRACTED("SLIDES_RETRACTED"),
         HIGH_BASKET("HIGH_BASKET"),
         LOW_BASKET("LOW_BASKET"),
+        PUSH_OUT_BAD_COLOR("PUSH_OUT_BAD_COLOR"),
         HANGING("HANGING");
 
         private String state;
