@@ -51,7 +51,7 @@ public class SampleAuton16 extends LinearOpMode {
                 })
                 .setReversed(true)
                 //preload to bucket
-                .splineToLinearHeading(new Pose2d(-55,-59,Math.toRadians(45)),Math.toRadians(225))
+                .splineToLinearHeading(new Pose2d(-57,-61,Math.toRadians(45)),Math.toRadians(225))
                 .setReversed(false)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //flip bucket
@@ -68,15 +68,16 @@ public class SampleAuton16 extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                    extendoIntake();
                 })
-                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(0.2, () -> {
                     intake.flipDownFull();
                 })
-                .waitSeconds(1)
+                .waitSeconds(1.5)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     deextend();
                 })
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-55,-59,Math.toRadians(45)),Math.toRadians(225))
+                .splineToLinearHeading(new Pose2d(-54,-58,Math.toRadians(45)),Math.toRadians(225))
+
                 .setReversed(false)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //transfer sample
@@ -90,6 +91,7 @@ public class SampleAuton16 extends LinearOpMode {
                     moveLift(2400);
                 })
                 .waitSeconds(1.5)
+                .back(3)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //flip bucket
                     outtake.bucketDeposit();
@@ -107,16 +109,16 @@ public class SampleAuton16 extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     extendoIntake();
                 })
-                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(0.2, () -> {
                     intake.flipDownFull();
                 })
-                .waitSeconds(1)
+                .waitSeconds(1.5)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     deextend();
                 })
 
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-54,-58,Math.toRadians(45)),Math.toRadians(225))
+                .splineToLinearHeading(new Pose2d(-53,-57,Math.toRadians(45)),Math.toRadians(225))
                 .setReversed(false)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //transfer sample
@@ -130,6 +132,7 @@ public class SampleAuton16 extends LinearOpMode {
                     moveLift(2400);
                 })
                 .waitSeconds(1.5)
+                .back(3)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //flip bucket
                     outtake.bucketDeposit();
@@ -146,16 +149,16 @@ public class SampleAuton16 extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     extendoIntake();
                 })
-                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(0.2, () -> {
                     intake.flipDownFull();
                 })
-                .waitSeconds(1)
+                .waitSeconds(1.5)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     deextend();
                 })
 
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-54,-58,Math.toRadians(45)),Math.toRadians(225))
+                .splineToLinearHeading(new Pose2d(-53,-57,Math.toRadians(45)),Math.toRadians(225))
                 .setReversed(false)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //transfer sample
@@ -168,6 +171,7 @@ public class SampleAuton16 extends LinearOpMode {
                     //raise slides
                     moveLift(2400);
                 })
+                .back(3)
                 .waitSeconds(1.5)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //flip bucket
@@ -319,13 +323,13 @@ public class SampleAuton16 extends LinearOpMode {
         public void extendoIntake(){
         //extendo out
         robot.intake.extendoFullExtend();
-        robot.intake.flipDownFull();
+//        robot.intake.flipDownFull();
         //run intake
         intake.motorRollerOnToIntake();
     }
     public void deextend(){
         //deeextend
-        robot.intake.pivotAxon.setPosition(.56);
+        robot.intake.pivotAxon.setPosition(.3);
         robot.intake.extendoFullRetract();
         //stop Intake
         intake.motorRollerOff();
