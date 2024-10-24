@@ -332,7 +332,7 @@ public class SampleAuton16 extends LinearOpMode {
     }
     public void deextend(){
         //deeextend
-        robot.intake.pivotAxon.setPosition(.3);
+        robot.intake.pivotAxon.setPosition(IntakeConstants.IntakeState.TRANSFER.pivotPos());
         robot.intake.extendoFullRetract();
         //stop Intake
         intake.motorRollerOff();
