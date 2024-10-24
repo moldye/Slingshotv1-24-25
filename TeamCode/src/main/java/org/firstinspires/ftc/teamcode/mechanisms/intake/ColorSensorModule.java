@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.mechanisms.intake;
 
+import com.qualcomm.robotcore.hardware.ColorRangeSensor;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -8,12 +9,12 @@ import org.firstinspires.ftc.teamcode.mechanisms.intake.IntakeConstants.SampleTy
 
 public class ColorSensorModule {
     Telemetry telemetry;
-    ColorSensor sensor;
+    ColorRangeSensor sensor;
     public boolean isBlue;
     //TODO:I'm too lazy to actually put this into intake, so I'm making a class for it HOORAY!!
     public ColorSensorModule(Telemetry t, HardwareMap hm, boolean isBlue){
         this.telemetry = t;
-        this.sensor = hm.get(ColorSensor.class, "colorSensor");
+        this.sensor = hm.get(ColorRangeSensor.class, "colorSensor");
         this.isBlue = isBlue;
     }
     public SampleTypes checkSample(){
@@ -36,6 +37,7 @@ public class ColorSensorModule {
         sensorVals[0] = sensor.red();
         sensorVals[1] = sensor.green();
         sensorVals[2] = sensor.blue();
+
         SampleTypes best = null;
         double least = 1000000000;
         for(SampleTypes s : SampleTypes.values()){
