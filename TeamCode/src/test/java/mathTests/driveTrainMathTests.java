@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.mechanisms.DriveTrain;
-import org.firstinspires.ftc.teamcode.mechanisms.ReLocalizer;
+import org.firstinspires.ftc.teamcode.mechanisms.drive.DriveTrain;
+import org.firstinspires.ftc.teamcode.mechanisms.misc.ReLocalizer;
 import org.firstinspires.ftc.teamcode.misc.PIDFControllerEx;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

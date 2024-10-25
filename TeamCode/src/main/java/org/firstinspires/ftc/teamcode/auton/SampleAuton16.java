@@ -89,8 +89,7 @@ public class SampleAuton16 extends LinearOpMode {
                     intake.rollerMotor.setPower(0.6);
                 })
                 .UNSTABLE_addTemporalMarkerOffset(1, () -> {
-                    intake.motorRollerOff();
-                    intake.backRollerIdle();
+                    intake.transferOff();
                     intake.flipUp();
                 })
                 .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
@@ -134,8 +133,7 @@ public class SampleAuton16 extends LinearOpMode {
                     intake.rollerMotor.setPower(0.6);
                 })
                 .UNSTABLE_addTemporalMarkerOffset(1, () -> {
-                    intake.motorRollerOff();
-                    intake.backRollerIdle();
+                    intake.transferOff();
                     intake.flipUp();
                 })
                 .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
@@ -180,8 +178,7 @@ public class SampleAuton16 extends LinearOpMode {
                     intake.rollerMotor.setPower(0.6);
                 })
                 .UNSTABLE_addTemporalMarkerOffset(1, () -> {
-                    intake.motorRollerOff();
-                    intake.backRollerIdle();
+                    intake.transferOff();
                     intake.flipUp();
                 })
                 .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
@@ -338,7 +335,7 @@ public class SampleAuton16 extends LinearOpMode {
             drive.followTrajectorySequence(trajSeq);
     }
 
-        public void extendoIntake(){
+    public void extendoIntake(){
         //extendo out
         robot.intake.extendoFullExtend();
         //run intake

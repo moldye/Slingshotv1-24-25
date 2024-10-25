@@ -75,6 +75,7 @@ public class Intake {
     public void pushOutSample() {
         // this happens when we're extended
         backRollerServo.setPosition(IntakeConstants.IntakeState.WRONG_ALLIANCE_COLOR_SAMPLE.backRollerPos());
+        motorRollerOnToIntake();
     }
     public void backRollerIdle() {
         backRollerServo.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.backRollerPos());
@@ -91,7 +92,12 @@ public class Intake {
     public void transferSample() {
         // pivotAnalog.runToPos(IntakeConstants.IntakeState.TRANSFER.pivotPos());
         backRollerServo.setPosition(IntakeConstants.IntakeState.TRANSFER.backRollerPos());
-        rollerMotor.setPower(0.4);
+        rollerMotor.setPower(0.6);
+    }
+
+    public void transferOff() {
+        motorRollerOff();
+        backRollerIdle();
     }
 
     public void clearIntake() {
