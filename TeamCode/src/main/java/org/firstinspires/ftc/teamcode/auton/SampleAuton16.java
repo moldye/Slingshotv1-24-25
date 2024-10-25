@@ -69,12 +69,12 @@ public class SampleAuton16 extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                    extendoIntake();
                 })
-                .forward(5)
                 .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                     intake.flipDownFull();
-                    intake.motorRollerOnToIntake();
+//                    intake.motorRollerOnToIntake();
                 })
-                .waitSeconds(1.3)
+                .waitSeconds(1.5)
+                .forward(7)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     deextend();
                 })
@@ -328,9 +328,8 @@ public class SampleAuton16 extends LinearOpMode {
         public void extendoIntake(){
         //extendo out
         robot.intake.extendoFullExtend();
-//        robot.intake.flipDownFull();
         //run intake
-        //intake.motorRollerOnToIntake();
+        intake.motorRollerOnToIntake();
     }
     public void deextend(){
         //deeextend

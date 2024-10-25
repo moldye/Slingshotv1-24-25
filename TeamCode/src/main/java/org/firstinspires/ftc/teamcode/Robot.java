@@ -25,6 +25,7 @@ public class Robot{
     // back roller (mini) -> 0 on expansion hub
     // roller motor -> 1 on expansion hub
     // analog encoder -> 0 on expansion analog ports
+    //color sensor -> _ on ______ i2c ports//TODO add port num
 
     // drivetrain:
     // rightBack = 0 control
