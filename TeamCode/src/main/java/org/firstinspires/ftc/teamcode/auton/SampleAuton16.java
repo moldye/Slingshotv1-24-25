@@ -90,6 +90,7 @@ public class SampleAuton16 extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(1, () -> {
                     intake.motorRollerOff();
                     intake.backRollerIdle();
+                    intake.flipUp();
                 })
                 .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                     //raise slides
@@ -133,6 +134,7 @@ public class SampleAuton16 extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(1, () -> {
                     intake.motorRollerOff();
                     intake.backRollerIdle();
+                    intake.flipUp();
                 })
                 .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                     //raise slides
@@ -177,18 +179,20 @@ public class SampleAuton16 extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(1, () -> {
                     intake.motorRollerOff();
                     intake.backRollerIdle();
+                    intake.flipUp();
                 })
                 .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                     //raise slides
                     moveLift(2400);
                 })
-                .back(6)
                 .waitSeconds(1.5)
+                .back(6)
+
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //flip bucket
                     outtake.bucketDeposit();
                 })
-                .waitSeconds(0.75)
+                .waitSeconds(0.25)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     outtake.bucketToReadyForTransfer();
                     moveLift(0);
