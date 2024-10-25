@@ -122,6 +122,13 @@ public class Cycle {
                         startTime = loopTime.milliseconds();
                     }
                 }
+                if (intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.BLUE) && !intake.colorSensor.isBlue) {
+                    transferState = TransferState.PUSH_OUT_BAD_COLOR;
+                    startTime = loopTime.milliseconds();
+                } else if (intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.RED) && intake.colorSensor.isBlue) {
+                    transferState = TransferState.PUSH_OUT_BAD_COLOR;
+                    startTime = loopTime.milliseconds();
+                }
                 break;
             case TRANSFERING:
                 outtake.returnToRetracted();

@@ -34,7 +34,7 @@ public class SampleAuton16 extends LinearOpMode {
         intake.extendoFullRetract();
         intake.flipUp();
 
-        robot.hardwareHardReset();
+        //robot.hardwareHardReset();
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
@@ -51,27 +51,30 @@ public class SampleAuton16 extends LinearOpMode {
                 })
                 .setReversed(true)
                 //preload to bucket
-                .splineToLinearHeading(new Pose2d(-55,-59,Math.toRadians(45)),Math.toRadians(225))
+                .splineToLinearHeading(new Pose2d(-54.5,-59,Math.toRadians(45)),Math.toRadians(225))
                 .setReversed(false)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //flip bucket
                     outtake.bucketDeposit();
                 })
-                .waitSeconds(0.2)
+                .waitSeconds(0.5)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     outtake.bucketToReadyForTransfer();
                     moveLift(0);
                 })
 
                 //1st yellow to bucket
-                .splineToLinearHeading(new Pose2d(-50,-53,Math.toRadians(90)),Math.toRadians(45))
+                .splineToLinearHeading(new Pose2d(-48.5,-59,Math.toRadians(90)),Math.toRadians(45))
+
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                    extendoIntake();
                 })
-//                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
-//                    intake.flipDownFull();
-//                })
-                .waitSeconds(1)
+                .forward(5)
+                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
+                    intake.flipDownFull();
+                    intake.motorRollerOnToIntake();
+                })
+                .waitSeconds(1.3)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     deextend();
                 })
@@ -320,9 +323,9 @@ public class SampleAuton16 extends LinearOpMode {
         public void extendoIntake(){
         //extendo out
         robot.intake.extendoFullExtend();
-        robot.intake.flipDownFull();
+//        robot.intake.flipDownFull();
         //run intake
-        intake.motorRollerOnToIntake();
+        //intake.motorRollerOnToIntake();
     }
     public void deextend(){
         //deeextend
