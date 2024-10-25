@@ -65,7 +65,7 @@ public class SampleAuton16 extends LinearOpMode {
                 })
 
                 //1st yellow to bucket
-                .splineToLinearHeading(new Pose2d(-49,-59,Math.toRadians(90)),Math.toRadians(45))
+                .splineToLinearHeading(new Pose2d(-48,-59,Math.toRadians(90)),Math.toRadians(45))
 
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                    extendoIntake();
@@ -86,6 +86,7 @@ public class SampleAuton16 extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //transfer sample
                     intake.transferSample();
+                    intake.rollerMotor.setPower(0.6);
                 })
                 .UNSTABLE_addTemporalMarkerOffset(1, () -> {
                     intake.motorRollerOff();
@@ -111,7 +112,7 @@ public class SampleAuton16 extends LinearOpMode {
 
 
                 //MNEXT SAMPLE
-                .splineToLinearHeading(new Pose2d(-56,-60,Math.toRadians(90)),Math.toRadians(45))
+                .splineToLinearHeading(new Pose2d(-56.5,-60,Math.toRadians(90)),Math.toRadians(45))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     extendoIntake();
                 })
@@ -130,6 +131,7 @@ public class SampleAuton16 extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //transfer sample
                     intake.transferSample();
+                    intake.rollerMotor.setPower(0.6);
                 })
                 .UNSTABLE_addTemporalMarkerOffset(1, () -> {
                     intake.motorRollerOff();
@@ -162,8 +164,8 @@ public class SampleAuton16 extends LinearOpMode {
                     intake.flipDownFull();
                 })
                 .waitSeconds(0.75)
-                .forward(15)
-                .back(15)
+                .forward(10)
+                .back(10)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     deextend();
                 })
@@ -175,6 +177,7 @@ public class SampleAuton16 extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //transfer sample
                     intake.transferSample();
+                    intake.rollerMotor.setPower(0.6);
                 })
                 .UNSTABLE_addTemporalMarkerOffset(1, () -> {
                     intake.motorRollerOff();
