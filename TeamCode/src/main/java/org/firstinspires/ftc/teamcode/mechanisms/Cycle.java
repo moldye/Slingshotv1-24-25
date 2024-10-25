@@ -19,7 +19,6 @@ public class Cycle {
     private TransferState transferState;
     private Telemetry telemetry;
     private ElapsedTime loopTime;
-    private ColorSensorModule colorSensor;
     private double startTime;
 
     public Cycle(Telemetry telemetry, GamepadMapping controls, Robot robot) {
@@ -51,9 +50,6 @@ public class Cycle {
                 if (controls.extend.value()) {
                     transferState = TransferState.EXTENDO_FULLY_EXTENDED;
                     intake.extendoFullExtend();
-                    if (loopTime.milliseconds() - startTime > 0 && loopTime.milliseconds() - startTime < 500) {
-                        intake.halfFlipDownToClear();
-                    }
                 }
                 else if (controls.transfer.value()) {
                     transferState = TransferState.TRANSFERING;
@@ -71,13 +67,11 @@ public class Cycle {
                 outtake.returnToRetracted();
                 if (!controls.extend.value()) {
                     intake.flipUp();
-                    intake.motorRollerOff();
+                    intake.transferOff();
                     intake.extendoFullRetract();
-                    // this should run transfer for half a second
                     intake.pivotAxon.setPosition(IntakeConstants.IntakeState.TRANSFER.pivotPos());
                     transferState = TransferState.EXTENDO_FULLY_RETRACTED;
                 }
-                // TODO see if state pivot thingy I made below is better
                 if (controls.intakeOnToIntake.locked() || controls.intakeOnToClear.locked()) {
                     transferState = TransferState.INTAKING;
                 }
@@ -87,11 +81,6 @@ public class Cycle {
                 break;
             case INTAKING:
                 outtake.returnToRetracted();
-                // a (bottom button)
-//                if (!controls.pivot.value()) {
-//                    intake.flipUp();
-//                    transferState = TransferState.EXTENDO_FULLY_EXTENDED;
-//                }
                 if (!controls.extend.value()) {
                     transferState = TransferState.EXTENDO_FULLY_EXTENDED;
                 }
@@ -111,8 +100,7 @@ public class Cycle {
                     intake.clearIntake();
                 } else if (!controls.intakeOnToIntake.locked() || !controls.intakeOnToClear.locked()){
                     intake.flipUp();
-                    intake.motorRollerOff();
-                    intake.backRollerIdle();
+                    intake.transferOff();
                 } else {
                     if (intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.BLUE) && !intake.colorSensor.isBlue) {
                         transferState = TransferState.PUSH_OUT_BAD_COLOR;
@@ -136,8 +124,7 @@ public class Cycle {
                 intake.extendoFullRetract();
                 intake.transferSample();
                 if (!controls.transfer.value()) {
-                    intake.motorRollerOff();
-                    intake.backRollerIdle();
+                    intake.transferOff();
                     transferState = TransferState.EXTENDO_FULLY_RETRACTED;
                 }
                 break;
@@ -187,10 +174,8 @@ public class Cycle {
             case PUSH_OUT_BAD_COLOR:
                 if (loopTime.milliseconds() - startTime <= 1300 && loopTime.milliseconds() - startTime >= 0) {
                     intake.pushOutSample();
-                    intake.motorRollerOnToIntake();
                 } else {
-                    intake.motorRollerOff();
-                    intake.backRollerIdle();
+                    intake.transferOff();
                     transferState = TransferState.INTAKING;
                 }
             break;
