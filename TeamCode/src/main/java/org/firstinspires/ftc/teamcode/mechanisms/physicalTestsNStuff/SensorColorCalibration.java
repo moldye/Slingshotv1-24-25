@@ -17,11 +17,11 @@ import java.util.List;
 public class SensorColorCalibration extends OpMode {
     int iterationCount = 0;
     double[] currentMean = new double[3];
-    ColorSensor sensor;
+    ColorRangeSensor sensor;
     List<Object> test;
     @Override
     public void init() {
-        sensor = hardwareMap.get(ColorSensor.class, "colorSensor");
+        sensor = hardwareMap.get(ColorRangeSensor.class, "colorSensor");
     }
 
     @Override
@@ -46,9 +46,9 @@ public class SensorColorCalibration extends OpMode {
             currentMean = new double[3];
             iterationCount = 0;
         }
-        telemetry.addData("mean:", (currentMean[0]));
-        telemetry.addData("mean:", (currentMean[1]));
-        telemetry.addData("mean:", (currentMean[2]));
+        telemetry.addData("dist: ", sensor.getDistance(DistanceUnit.CM)); //see if this changes when a pixel is placed in. this is used to verify if there is a pixel or not
+        telemetry.addData("mean:", parseDoubleArray(currentMean));
+        telemetry.addData("current Val:", parseDoubleArray(byeLoopTime));
     }
     public String parseDoubleArray(double[] array){
         //I chose to do this to sacrifice a little bit of memory for a little bit of speed :)
