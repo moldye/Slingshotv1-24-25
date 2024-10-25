@@ -322,7 +322,7 @@ public class SampleAuton16 extends LinearOpMode {
 //
 //                //park
                 .setReversed(false)
-                .splineToLinearHeading(new Pose2d(-30, -12, Math.toRadians(90)),Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-48, -36, Math.toRadians(90)),Math.toRadians(90))
                 .build();
 
         waitForStart();
