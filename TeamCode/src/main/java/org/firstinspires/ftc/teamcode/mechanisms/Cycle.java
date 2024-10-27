@@ -159,6 +159,7 @@ public class Cycle {
                 break;
             case SLIDES_RETRACTED:
                 controls.flipBucket.set(false);
+                controls.transfer.set(false);
                 // could also do to base state
                 outtake.bucketToReadyForTransfer();
                 outtake.returnToRetracted();
@@ -172,7 +173,7 @@ public class Cycle {
                 }
                 break;
             case PUSH_OUT_BAD_COLOR:
-                if (loopTime.milliseconds() - startTime <= 1300 && loopTime.milliseconds() - startTime >= 0) {
+                if (loopTime.milliseconds() - startTime <= 1000 && loopTime.milliseconds() - startTime >= 0) {
                     intake.pushOutSample();
                 } else {
                     intake.transferOff();

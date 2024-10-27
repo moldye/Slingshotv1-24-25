@@ -41,6 +41,7 @@ public class SlingshotTeleop extends OpMode {
     public void start() {
         // run once when we start
         robot.hardwareSoftReset();
+        robot.intake.extendoFullRetract();
     }
 
     @Override

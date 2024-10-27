@@ -27,14 +27,14 @@ public class AxonTester extends OpMode {
         controls = new GamepadMapping(gamepad1, gamepad2);
         robot = new Robot(hardwareMap, telemetry, controls);
         intake = robot.intake;
-//         intake.rightExtendo.setPosition(.5);
-//         intake.leftExtendo.setPosition(.5);
+//         intake.rightExtendo.setPosition(.59);
+//         intake.leftExtendo.setPosition(.59);
        intake.pivotAxon.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.pivotPos());
     }
 
     @Override
     public void loop() {
-        intake.pivotAxon.setPosition(servoPos);
+         intake.pivotAxon.setPosition(servoPos);
 //         intake.rightExtendo.setPosition(servoPos);
 //         intake.leftExtendo.setPosition(servoPos);
     }

@@ -6,18 +6,18 @@ public class IntakeConstants {
 
     // pivoted up, pivoted down, transfer pos, clearing samples (half state for intaking)
     // axon programmed for 0-255, 66 PMW (inverted)
-    private static final double[] pivotPositions = {.4, .99, .4, .6};
+    private static final double[] pivotPositions = {.4, .97, .4, .6};
 
     // neutral pos, back roller push out sample (extendo), back roller transfer
     private static final double[] backRollerPositions = {0.5, 1, -1};
 
     // right linkage in, right linkage extended, outtaking
     // axon programmed for 0-255, 66 PMW
-    private static final double[] rightLinkagePositions = {.59, -.8, .45};
+    private static final double[] rightLinkagePositions = {.57, -.8, .45};
 
     // left linkage in, left linkage extended
     // axon programmed for 0-255, 66 PMW
-    private static final double[] leftLinkagePositions = {.64, -.8, .45};
+    private static final double[] leftLinkagePositions = {.55, -.8, .45};
 
     public enum IntakeState {
         FULLY_RETRACTED(pivotPositions[0], backRollerPositions[0], rightLinkagePositions[0], leftLinkagePositions[0]), // pivoted up, idle back roller, retracted
