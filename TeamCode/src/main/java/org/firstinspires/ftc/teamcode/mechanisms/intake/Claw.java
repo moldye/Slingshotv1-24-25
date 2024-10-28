@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.mechanisms.template;
+package org.firstinspires.ftc.teamcode.mechanisms.intake;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;

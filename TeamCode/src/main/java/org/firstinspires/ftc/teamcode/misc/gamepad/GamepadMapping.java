@@ -31,7 +31,6 @@ public class GamepadMapping {
     // INTAKE (ACTIVE)
     // --------------
     public static Toggle extend; // extend intake
-    public static Toggle retract; // retract intake
     public static Toggle clearIntake;
     public static Toggle transfer;
     public static Toggle intakeOnToIntake;
@@ -40,9 +39,19 @@ public class GamepadMapping {
     // INTAKE (CLAW)
     public static double wristYaw = 0;
 
+    // INTAKE (ACTIVE CLAW)
+    // --------------
+    // this might be where we go between intaking and hovering, and then transfer pos is automatic reset when we extendo back in? (and transfer button moves it back too)
+    // also a trigger
+    // TODO edit these pivots, needs to be more automatic
+    public static Toggle pivot;
+    // transfer sample should be automatic here
+    public static Toggle transferHover;
+
+
     // OUTTAKE
     // --------------
-    public static Toggle bucketDeposit;
+    public static Toggle flipBucket;
     public static Toggle highBasket;
     public static Toggle lowBasket;
 
@@ -68,10 +77,6 @@ public class GamepadMapping {
     // TESTING BUTTONS
     // NOT TO BE USED FOR COMP
     // -------------------------------
-    public static Toggle toggleIntakePower;
-    public static Toggle powerIntake;
-    public static Toggle flipBucket;
-    public static Toggle pivot;
 
     // claw
     public static Toggle closeClaw;
@@ -82,12 +87,14 @@ public class GamepadMapping {
         this.gamepad2 = gamepad2;
 
         extend = new Toggle(false);
-        retract = new Toggle(false);
         intakeOnToIntake = new Toggle(false);
         intakeOnToClear = new Toggle(false);
-        pivot = new Toggle(false);
+        transfer = new Toggle(false);
 
-        bucketDeposit = new Toggle(false);
+        pivot = new Toggle(false);
+        transferHover = new Toggle(false);
+
+        flipBucket = new Toggle(false);
         highBasket = new Toggle(false);
         lowBasket = new Toggle(false);
         L1hang = new Toggle(false);
@@ -99,13 +106,6 @@ public class GamepadMapping {
         clearIntake = new Toggle(false);
         isBlue = new Toggle(false);
 
-        // TESTING BUTTONS
-        toggleIntakePower = new Toggle(false);
-        // pivot = new Toggle(false);
-        powerIntake = new Toggle(false);
-        transfer = new Toggle(false);
-        flipBucket = new Toggle(false);
-
         // claw (could be real?)
         closeClaw = new Toggle(false);
         armDown = new Toggle(false);
@@ -114,13 +114,8 @@ public class GamepadMapping {
     public void update() {
         joystickUpdate();
 
-        // Intake
-        extend.update(gamepad1.right_bumper);
-        retract.update(gamepad1.left_bumper);
-        intakeOnToIntake.update(gamepad1.right_trigger > 0.5);
-        intakeOnToClear.update(gamepad1.left_trigger > 0.5);
-        pivot.update(gamepad1.a);
-        transfer.update(gamepad2.y);
+        // Intake (Active)
+        activeIntakeUpdate();
 
         // Outtake (All Gamepad2)
         lowBasket.update(gamepad2.right_bumper);
@@ -145,5 +140,23 @@ public class GamepadMapping {
 
     public void clawUpdate() {
         wristYaw = gamepad2.right_stick_x;
+    }
+
+    public void activeClawUpdate() {
+        extend.update(gamepad1.right_bumper);
+        pivot.update(gamepad1.a); // hover and intaking
+
+        intakeOnToIntake.update(gamepad1.right_trigger > 0.5);
+        intakeOnToClear.update(gamepad1.left_trigger > 0.5);
+
+        transferHover.update(gamepad1.left_bumper);
+    }
+
+    // v1 robot
+    public void activeIntakeUpdate() {
+        extend.update(gamepad1.right_bumper);
+        intakeOnToIntake.update(gamepad1.right_trigger > 0.5);
+        intakeOnToClear.update(gamepad1.left_trigger > 0.5);
+        transfer.update(gamepad2.y);
     }
 }

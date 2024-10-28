@@ -44,7 +44,7 @@ public class IntakeTests {
     @Test
     public void testMotorDoesRollForward() {
         // not running constantly, block held in place by the back roller
-        intake.motorRollerOnToIntake();
+        intake.activeIntake.motorRollerOnToIntake();
         verify(rollerMotor).setPower(anyDouble());
     }
 
@@ -52,7 +52,7 @@ public class IntakeTests {
     public void testServoMovesBackRollerBackwards() {
         // servo should be set to backwards, only run when detects non-alliance colored block
         // should already be set to reverse
-        intake.pushOutSample();
+        intake.activeIntake.pushOutSample();
         verify(backRollerServo).setPosition(anyDouble());
     }
 
@@ -65,13 +65,13 @@ public class IntakeTests {
 
     @Test
     public void testPivotServoGoesToFullPos() {
-        intake.flipDownFull();
+        intake.activeIntake.flipDownFull();
         verify(pivotAxon).setPosition(anyDouble()); // tune with value
     }
 
     @Test
     public void testPivotServoGoesTotallyIn() {
-        intake.flipUp();
+        intake.activeIntake.flipUp();
         verify(pivotAxon).setPosition(anyDouble()); // tune with value
     }
 
@@ -104,7 +104,7 @@ public class IntakeTests {
 
     @Test
     public void testTimedTransfer() {
-        intake.transferSample();
+        intake.activeIntake.transferSample();
         verify(rollerMotor).setPower(0);
     }
 }

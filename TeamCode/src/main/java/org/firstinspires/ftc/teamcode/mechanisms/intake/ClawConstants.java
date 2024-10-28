@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.mechanisms.template;
+package org.firstinspires.ftc.teamcode.mechanisms.intake;
 
 public class ClawConstants {
     // idle, transfer, hover, picking up

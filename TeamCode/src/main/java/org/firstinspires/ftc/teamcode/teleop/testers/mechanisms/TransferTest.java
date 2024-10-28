@@ -45,11 +45,11 @@ public class TransferTest extends OpMode {
     public void init_loop() {
         controls.isBlue.update(gamepad1.x);
         if (controls.isBlue.value()) {
-            intake.colorSensor.setIsBlue(true);
+            intake.activeIntake.colorSensor.setIsBlue(true);
         } else {
-            intake.colorSensor.setIsBlue(false);
+            intake.activeIntake.colorSensor.setIsBlue(false);
         }
-        telemetry.addData("Color Sensor Is Blue", intake.colorSensor.getIsBlue());
+        telemetry.addData("Color Sensor Is Blue", intake.activeIntake.colorSensor.getIsBlue());
         telemetry.addData("Is Blue", controls.isBlue.value());
     }
 
@@ -57,24 +57,24 @@ public class TransferTest extends OpMode {
     public void loop() {
         controls.update();
         if (controls.intakeOnToIntake.locked()) {
-            intake.motorRollerOnToIntake();
+            intake.activeIntake.motorRollerOnToIntake();
         } else {
-            intake.motorRollerOff();
+            intake.activeIntake.motorRollerOff();
         }
-        if (intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.BLUE) && !intake.colorSensor.isBlue) {
+        if (intake.activeIntake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.BLUE) && !intake.activeIntake.colorSensor.isBlue) {
             // add motor to pushOutSample to make it faster
-            intake.backRollerServo.setPosition(1);
-            intake.motorRollerOnToIntake();
-        } else if (intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.RED) && intake.colorSensor.isBlue) {
-            intake.backRollerServo.setPosition(1);
-            intake.motorRollerOnToIntake();
-        } else if (intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.BLUE) && intake.colorSensor.isBlue
-                || intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.RED) && !intake.colorSensor.isBlue) {
+            intake.activeIntake.backRollerServo.setPosition(1);
+            intake.activeIntake.motorRollerOnToIntake();
+        } else if (intake.activeIntake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.RED) && intake.activeIntake.colorSensor.isBlue) {
+            intake.activeIntake.backRollerServo.setPosition(1);
+            intake.activeIntake.motorRollerOnToIntake();
+        } else if (intake.activeIntake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.BLUE) && intake.activeIntake.colorSensor.isBlue
+                || intake.activeIntake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.RED) && !intake.activeIntake.colorSensor.isBlue) {
             pushOut = false;
         }
 
-        telemetry.addData("Sample: ", intake.colorSensor.checkSample());
-        telemetry.addData("Color Sensor Is Blue", intake.colorSensor.getIsBlue());
+        telemetry.addData("Sample: ", intake.activeIntake.colorSensor.checkSample());
+        telemetry.addData("Color Sensor Is Blue", intake.activeIntake.colorSensor.getIsBlue());
         telemetry.addData("Is Blue", controls.isBlue.value());
         telemetry.addData("loop time", loopTime.milliseconds());
         telemetry.addData("start time", startTime);

@@ -11,7 +11,6 @@ import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 @TeleOp
 public class SlingshotTeleop extends OpMode {
     private GamepadMapping controls;
-    private DriveTrain dt;
     private Robot robot;
     private Cycle cycle;
     @Override
@@ -23,18 +22,19 @@ public class SlingshotTeleop extends OpMode {
         robot.outtake.setMotorsToTeleOpMode();
     }
 
-    @Override
-    public void init_loop() {
-        telemetry.addLine("If our alliance is blue, press gamepad1's x, BEFORE you start");
-        telemetry.addLine("The alliance color defaults to blue");
-        telemetry.addData("Color Sensor Is Blue", robot.intake.colorSensor.getIsBlue());
-        controls.isBlue.update(gamepad1.x);
-        if (controls.isBlue.value()) {
-            robot.intake.colorSensor.setIsBlue(true);
-        } else {
-            robot.intake.colorSensor.setIsBlue(false);
-        }
-    }
+// Only needed for active intake
+//    @Override
+//    public void init_loop() {
+//        telemetry.addLine("If our alliance is blue, press gamepad1's x, BEFORE you start");
+//        telemetry.addLine("The alliance color defaults to blue");
+//        telemetry.addData("Color Sensor Is Blue", robot.intake.colorSensor.getIsBlue());
+//        controls.isBlue.update(gamepad1.x);
+//        if (controls.isBlue.value()) {
+//            robot.intake.colorSensor.setIsBlue(true);
+//        } else {
+//            robot.intake.colorSensor.setIsBlue(false);
+//        }
+//    }
 
     // TODO ask jihoon, this is so we don't move during init
     @Override
@@ -46,7 +46,7 @@ public class SlingshotTeleop extends OpMode {
 
     @Override
     public void loop() {
-        telemetry.addData("Color Sensor Is Blue", robot.intake.colorSensor.getIsBlue());
+        telemetry.addData("Color Sensor Is Blue", robot.intake.activeIntake.colorSensor.getIsBlue());
         cycle.update();
     }
 }
