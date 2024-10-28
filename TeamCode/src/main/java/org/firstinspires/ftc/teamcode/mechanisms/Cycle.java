@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Robot;
-import org.firstinspires.ftc.teamcode.mechanisms.intake.ColorSensorModule;
 import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.intake.IntakeConstants;
 import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
@@ -66,10 +65,10 @@ public class Cycle {
             case EXTENDO_FULLY_EXTENDED:
                 outtake.returnToRetracted();
                 if (!controls.extend.value()) {
-                    intake.flipUp();
-                    intake.transferOff();
+                    intake.activeIntake.flipUp();
+                    intake.activeIntake.transferOff();
                     intake.extendoFullRetract();
-                    intake.pivotAxon.setPosition(IntakeConstants.IntakeState.TRANSFER.pivotPos());
+                    intake.activeIntake.pivotAxon.setPosition(IntakeConstants.IntakeState.TRANSFER.pivotPos());
                     transferState = TransferState.EXTENDO_FULLY_RETRACTED;
                 }
                 if (controls.intakeOnToIntake.locked() || controls.intakeOnToClear.locked()) {
@@ -85,51 +84,51 @@ public class Cycle {
                     transferState = TransferState.EXTENDO_FULLY_EXTENDED;
                 }
                 else if (controls.intakeOnToIntake.locked()) {
-                    intake.flipDownFull();
-                    intake.motorRollerOnToIntake();
-                    intake.backRollerIdle();
-                    if (intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.BLUE) && !intake.colorSensor.isBlue) {
+                    intake.activeIntake.flipDownFull();
+                    intake.activeIntake.motorRollerOnToIntake();
+                    intake.activeIntake.backRollerIdle();
+                    if (intake.activeIntake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.BLUE) && !intake.activeIntake.colorSensor.isBlue) {
                         transferState = TransferState.PUSH_OUT_BAD_COLOR;
                         startTime = loopTime.milliseconds();
-                    } else if (intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.RED) && intake.colorSensor.isBlue) {
+                    } else if (intake.activeIntake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.RED) && intake.activeIntake.colorSensor.isBlue) {
                         transferState = TransferState.PUSH_OUT_BAD_COLOR;
                         startTime = loopTime.milliseconds();
                     }
                 } else if (controls.intakeOnToClear.locked()) {
-                    intake.halfFlipDownToClear();
-                    intake.clearIntake();
+                    intake.activeIntake.flipDownToClear();
+                    intake.activeIntake.clearIntake();
                 } else if (!controls.intakeOnToIntake.locked() || !controls.intakeOnToClear.locked()){
-                    intake.flipUp();
-                    intake.transferOff();
+                    intake.activeIntake.flipUp();
+                    intake.activeIntake.transferOff();
                 } else {
-                    if (intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.BLUE) && !intake.colorSensor.isBlue) {
+                    if (intake.activeIntake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.BLUE) && !intake.activeIntake.colorSensor.isBlue) {
                         transferState = TransferState.PUSH_OUT_BAD_COLOR;
                         startTime = loopTime.milliseconds();
-                    } else if (intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.RED) && intake.colorSensor.isBlue) {
+                    } else if (intake.activeIntake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.RED) && intake.activeIntake.colorSensor.isBlue) {
                         transferState = TransferState.PUSH_OUT_BAD_COLOR;
                         startTime = loopTime.milliseconds();
                     }
                 }
-                if (intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.BLUE) && !intake.colorSensor.isBlue) {
+                if (intake.activeIntake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.BLUE) && !intake.activeIntake.colorSensor.isBlue) {
                     transferState = TransferState.PUSH_OUT_BAD_COLOR;
                     startTime = loopTime.milliseconds();
-                } else if (intake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.RED) && intake.colorSensor.isBlue) {
+                } else if (intake.activeIntake.colorSensor.checkSample().equals(IntakeConstants.SampleTypes.RED) && intake.activeIntake.colorSensor.isBlue) {
                     transferState = TransferState.PUSH_OUT_BAD_COLOR;
                     startTime = loopTime.milliseconds();
                 }
                 break;
             case TRANSFERING:
                 outtake.returnToRetracted();
-                intake.flipUp();
+                intake.activeIntake.flipUp();
                 intake.extendoFullRetract();
-                intake.transferSample();
+                intake.activeIntake.transferSample();
                 if (!controls.transfer.value()) {
-                    intake.transferOff();
+                    intake.activeIntake.transferOff();
                     transferState = TransferState.EXTENDO_FULLY_RETRACTED;
                 }
                 break;
             case HIGH_BASKET:
-                intake.pivotUpForOuttake();
+                intake.activeIntake.pivotUpForOuttake();
                 intake.extendForOuttake();
                 outtake.extendToHighBasket();
                 if (loopTime.milliseconds() - startTime <= 500) {
@@ -144,7 +143,7 @@ public class Cycle {
                 }
                 break;
             case LOW_BASKET:
-                intake.pivotUpForOuttake();
+                intake.activeIntake.pivotUpForOuttake();
                 intake.extendForOuttake();
                 outtake.extendToLowBasket();
                 if (loopTime.milliseconds() - startTime <= 500) {
@@ -174,9 +173,9 @@ public class Cycle {
                 break;
             case PUSH_OUT_BAD_COLOR:
                 if (loopTime.milliseconds() - startTime <= 1000 && loopTime.milliseconds() - startTime >= 0) {
-                    intake.pushOutSample();
+                    intake.activeIntake.pushOutSample();
                 } else {
-                    intake.transferOff();
+                    intake.activeIntake.transferOff();
                     transferState = TransferState.INTAKING;
                 }
             break;

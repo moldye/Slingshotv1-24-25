@@ -54,10 +54,10 @@ public class MechPIDTuning extends OpMode {
             outtake.changePIDF(p,i,d,f);
             dashboardTelemetry.addData("position: ", outtake.getPos());
         } else if (type == 2) {
-            intake.pivotAnalog.changePIDF(p,i,d,f);
-            intake.pivotAnalog.runToPos(target);
-            dashboardTelemetry.addData("analog position: ", intake.pivotAnalog.getPosition());
-            dashboardTelemetry.addData("servo position: ", intake.pivotAxon.getPosition());
+//            intake.activeIntake.pivotAnalog.changePIDF(p,i,d,f);
+//            intake.activeIntake.pivotAnalog.runToPos(target);
+//            dashboardTelemetry.addData("analog position: ", intake.activeIntake.pivotAnalog.getPosition());
+//            dashboardTelemetry.addData("servo position: ", intake.activeIntake.pivotAxon.getPosition());
         }
 //        else{
 //            arm.moveTicks(target);

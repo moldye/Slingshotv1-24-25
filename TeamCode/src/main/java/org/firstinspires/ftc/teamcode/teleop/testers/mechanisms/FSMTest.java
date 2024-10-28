@@ -38,12 +38,12 @@ public class FSMTest extends OpMode {
     public void init_loop() {
         telemetry.addLine("If our alliance is blue, press gamepad1's x, BEFORE you start");
         telemetry.addLine("The alliance color defaults to blue");
-        telemetry.addData("Color Sensor Is Blue", robot.intake.colorSensor.getIsBlue());
+        telemetry.addData("Color Sensor Is Blue", robot.intake.activeIntake.colorSensor.getIsBlue());
         controls.isBlue.update(gamepad1.x);
         if (controls.isBlue.value()) {
-            intake.colorSensor.setIsBlue(true);
+            intake.activeIntake.colorSensor.setIsBlue(true);
         } else {
-            intake.colorSensor.setIsBlue(false);
+            intake.activeIntake.colorSensor.setIsBlue(false);
         }
     }
 
@@ -51,8 +51,8 @@ public class FSMTest extends OpMode {
     public void loop() {
         // already does dt & controls.update();
         cycle.update();
-        telemetry.addData("Sample: ", intake.colorSensor.checkSample());
-        telemetry.addData("Color Sensor Is Blue", intake.colorSensor.getIsBlue());
+        telemetry.addData("Sample: ", intake.activeIntake.colorSensor.checkSample());
+        telemetry.addData("Color Sensor Is Blue", intake.activeIntake.colorSensor.getIsBlue());
         telemetry.addData("Is Blue", controls.isBlue.value());
     }
 }

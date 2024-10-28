@@ -12,20 +12,18 @@ import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
 
 public class Robot{
-    // needs to be able to access all methods for all the mechanisms used in opmodes
-
     // odo:
     // 0 control hub -> back
     // 2 control hub -> side/right
 
     // intake:
     // pivot (max) -> 1 on expansion hub
-    // left linkage (max) -> 4 on control hub // TODO reconfig
+    // left linkage (max) -> 4 on control hub
     // right linkage (max) -> 0 on control hub
     // back roller (mini) -> 0 on expansion hub
     // roller motor -> 1 on expansion hub
     // analog encoder -> 0 on expansion analog ports
-    //color sensor -> _ on ______ i2c ports //TODO add port num
+    //color sensor -> 1 on control hub i2c ports
 
     // drivetrain:
     // rightBack = 0 control
@@ -94,7 +92,7 @@ public class Robot{
     }
 
     public void updateTelemetry() {
-        intake.updateTelemetry();
+        intake.activeIntake.updateTelemetry();
         outtake.updateTelemetry();
     }
 }
