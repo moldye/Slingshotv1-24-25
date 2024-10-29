@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.mechanisms.Cycle;
-import org.firstinspires.ftc.teamcode.mechanisms.drive.DriveTrain;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
 @TeleOp
@@ -47,6 +46,6 @@ public class SlingshotTeleop extends OpMode {
     @Override
     public void loop() {
         telemetry.addData("Color Sensor Is Blue", robot.intake.activeIntake.colorSensor.getIsBlue());
-        cycle.update();
+        cycle.activeIntakeUpdate();
     }
 }

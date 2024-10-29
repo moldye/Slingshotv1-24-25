@@ -11,7 +11,8 @@ public class Intake {
     // HARDWARE
     // -----------
     public ActiveIntake activeIntake;
-    public ActiveClaw activeClaw;
+    public v4bActive v4bActiveIntake;
+    public Claw claw;
 
     public Servo leftExtendo; // axon
     public Servo rightExtendo; // axon
@@ -22,6 +23,10 @@ public class Intake {
     private Telemetry telemetry;
 
     public Intake(HardwareMap hwMap, Telemetry telemetry, GamepadMapping controls) {
+        activeIntake = new ActiveIntake(hwMap, telemetry, controls);
+        v4bActiveIntake = new v4bActive(hwMap, telemetry, controls);
+        claw = new Claw(hwMap, telemetry, controls);
+
         rightExtendo = hwMap.get(Servo.class, "rightLinkage");
         leftExtendo = hwMap.get(Servo.class, "leftLinkage");
 
@@ -36,18 +41,18 @@ public class Intake {
     }
 
     public void extendoFullExtend() {
-        rightExtendo.setPosition(IntakeConstants.IntakeState.FULLY_EXTENDED.rLinkagePos());
-        leftExtendo.setPosition(IntakeConstants.IntakeState.FULLY_EXTENDED.lLinkagePos());
+        rightExtendo.setPosition(IntakeConstants.ActiveIntakeStates.FULLY_EXTENDED.rLinkagePos());
+        leftExtendo.setPosition(IntakeConstants.ActiveIntakeStates.FULLY_EXTENDED.lLinkagePos());
     }
 
     public void extendoFullRetract() {
-        rightExtendo.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.rLinkagePos());
-        leftExtendo.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.lLinkagePos());
+        rightExtendo.setPosition(IntakeConstants.ActiveIntakeStates.FULLY_RETRACTED.rLinkagePos());
+        leftExtendo.setPosition(IntakeConstants.ActiveIntakeStates.FULLY_RETRACTED.lLinkagePos());
     }
 
     public void extendForOuttake() {
-        rightExtendo.setPosition(IntakeConstants.IntakeState.OUTTAKING.rLinkagePos());
-        leftExtendo.setPosition(IntakeConstants.IntakeState.OUTTAKING.lLinkagePos());
+        rightExtendo.setPosition(IntakeConstants.ActiveIntakeStates.OUTTAKING.rLinkagePos());
+        leftExtendo.setPosition(IntakeConstants.ActiveIntakeStates.OUTTAKING.lLinkagePos());
     }
 
     public void resetHardware() {

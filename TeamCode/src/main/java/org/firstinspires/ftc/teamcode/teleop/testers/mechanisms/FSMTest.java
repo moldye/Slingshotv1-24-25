@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.mechanisms.Cycle;
 import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
-import org.firstinspires.ftc.teamcode.mechanisms.intake.IntakeConstants;
 import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
@@ -50,7 +49,7 @@ public class FSMTest extends OpMode {
     @Override
     public void loop() {
         // already does dt & controls.update();
-        cycle.update();
+        cycle.activeIntakeUpdate();
         telemetry.addData("Sample: ", intake.activeIntake.colorSensor.checkSample());
         telemetry.addData("Color Sensor Is Blue", intake.activeIntake.colorSensor.getIsBlue());
         telemetry.addData("Is Blue", controls.isBlue.value());

@@ -29,7 +29,7 @@ public class AxonTester extends OpMode {
         intake = robot.intake;
 //         intake.rightExtendo.setPosition(.59);
 //         intake.leftExtendo.setPosition(.59);
-       intake.activeIntake.pivotAxon.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.pivotPos());
+       intake.activeIntake.pivotAxon.setPosition(IntakeConstants.ActiveIntakeStates.FULLY_RETRACTED.pivotPos());
     }
 
     @Override

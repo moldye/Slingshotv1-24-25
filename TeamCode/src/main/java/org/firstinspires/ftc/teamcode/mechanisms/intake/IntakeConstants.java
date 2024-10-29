@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.mechanisms.intake;
 
-import org.opencv.core.Scalar;
-
 public class IntakeConstants {
 
     // pivoted up, pivoted down, transfer pos, clearing samples (half state for intaking)
@@ -23,7 +21,7 @@ public class IntakeConstants {
     // transfer pos, hovering, intaking
     private static final double[] v4bPositions = {0, 0.5, 1};
 
-    public enum IntakeState {
+    public enum ActiveIntakeStates {
         FULLY_RETRACTED(pivotPositions[0], backRollerPositions[0], rightLinkagePositions[0], leftLinkagePositions[0]), // pivoted up, idle back roller, retracted
         CLEARING(pivotPositions[3], backRollerPositions[1], rightLinkagePositions[1], leftLinkagePositions[1]),
         WRONG_ALLIANCE_COLOR_SAMPLE(pivotPositions[1], backRollerPositions[1], rightLinkagePositions[1], leftLinkagePositions[1]), // pivoted down, pushing out sample, extended
@@ -37,7 +35,7 @@ public class IntakeConstants {
         private final double backRollerPos;
         private final double lLinkagePos;
 
-        IntakeState(double pivotPos, double backRollerPos, double rLinkagePos, double lLinkagePos) {
+        ActiveIntakeStates(double pivotPos, double backRollerPos, double rLinkagePos, double lLinkagePos) {
             this.pivotPos = pivotPos;
             this.backRollerPos = backRollerPos;
             this.rLinkagePos = rLinkagePos;
@@ -63,7 +61,7 @@ public class IntakeConstants {
         }
     }
 
-    public enum ActiveClawStates {
+    public enum v4bActiveStates {
         FULLY_RETRACTED(v4bPositions[0], rightLinkagePositions[0], leftLinkagePositions[0]),
         CLEARING(v4bPositions[1], rightLinkagePositions[1], leftLinkagePositions[1]),
         FULLY_EXTENDED(v4bPositions[1], rightLinkagePositions[1], leftLinkagePositions[1]), // pivoted down, idle back roller, extended
@@ -73,10 +71,14 @@ public class IntakeConstants {
         private double v4bPos;
         private final double rLinkagePos;
         private final double lLinkagePos;
-        ActiveClawStates(double v4bPos, double rightLinkagePos, double leftLinkagePos) {
+        v4bActiveStates (double v4bPos, double rightLinkagePos, double leftLinkagePos) {
             this.v4bPos = v4bPos;
             this.rLinkagePos = rightLinkagePos;
             this.lLinkagePos = leftLinkagePos;
         }
+
+        public double v4bPos() { return v4bPos; }
+        public double rLinkagePos() { return rLinkagePos; }
+        public double lLinkagePos() { return lLinkagePos; }
     }
 }

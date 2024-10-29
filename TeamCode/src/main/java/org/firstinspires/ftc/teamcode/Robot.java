@@ -23,7 +23,9 @@ public class Robot{
     // back roller (mini) -> 0 on expansion hub
     // roller motor -> 1 on expansion hub
     // analog encoder -> 0 on expansion analog ports
-    //color sensor -> 1 on control hub i2c ports
+    // color sensor -> 1 on control hub i2c ports
+
+    // wrist ->
 
     // drivetrain:
     // rightBack = 0 control

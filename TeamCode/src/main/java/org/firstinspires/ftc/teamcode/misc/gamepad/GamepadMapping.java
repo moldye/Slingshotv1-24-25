@@ -39,14 +39,16 @@ public class GamepadMapping {
     // INTAKE (CLAW)
     public static double wristYaw = 0;
 
-    // INTAKE (ACTIVE CLAW)
+    // INTAKE (v4b ACTIVE)
     // --------------
     // this might be where we go between intaking and hovering, and then transfer pos is automatic reset when we extendo back in? (and transfer button moves it back too)
     // also a trigger
     // TODO edit these pivots, needs to be more automatic
     public static Toggle pivot;
     // transfer sample should be automatic here
+    // button, driver 1
     public static Toggle transferHover;
+    public static Toggle openClaw;
 
 
     // OUTTAKE
@@ -78,10 +80,6 @@ public class GamepadMapping {
     // NOT TO BE USED FOR COMP
     // -------------------------------
 
-    // claw
-    public static Toggle closeClaw;
-    public static Toggle armDown;
-
     public GamepadMapping(Gamepad gamepad1, Gamepad gamepad2) {
         this.gamepad1 = gamepad1;
         this.gamepad2 = gamepad2;
@@ -93,6 +91,7 @@ public class GamepadMapping {
 
         pivot = new Toggle(false);
         transferHover = new Toggle(false);
+        openClaw = new Toggle(false);
 
         flipBucket = new Toggle(false);
         highBasket = new Toggle(false);
@@ -105,17 +104,35 @@ public class GamepadMapping {
         botToBaseState = new Toggle(false);
         clearIntake = new Toggle(false);
         isBlue = new Toggle(false);
-
-        // claw (could be real?)
-        closeClaw = new Toggle(false);
-        armDown = new Toggle(false);
     }
 
+    public void joystickUpdate() {
+        drive = gamepad1.left_stick_y;
+        strafe = gamepad1.left_stick_x;
+        turn = gamepad1.right_stick_x;
+    }
+
+    public void clawUpdate() {
+        v4bActiveUpdate();
+        wristYaw = gamepad2.right_stick_x;
+    }
+
+    public void v4bActiveUpdate() {
+        extend.update(gamepad1.right_bumper);
+        pivot.update(gamepad2.a); // hover and intaking, button held
+
+        // first driver
+        transferHover.update(gamepad1.left_bumper);
+        openClaw.update(gamepad2.b);
+    }
+
+    // v1 robot
     public void update() {
         joystickUpdate();
 
-        // Intake (Active)
-        activeIntakeUpdate();
+        clawUpdate();
+
+        extend.update(gamepad1.right_bumper);
 
         // Outtake (All Gamepad2)
         lowBasket.update(gamepad2.right_bumper);
@@ -132,29 +149,7 @@ public class GamepadMapping {
         botToBaseState.update(gamepad2.dpad_down);
     }
 
-    public void joystickUpdate() {
-        drive = gamepad1.left_stick_y;
-        strafe = gamepad1.left_stick_x;
-        turn = gamepad1.right_stick_x;
-    }
-
-    public void clawUpdate() {
-        wristYaw = gamepad2.right_stick_x;
-    }
-
-    public void activeClawUpdate() {
-        extend.update(gamepad1.right_bumper);
-        pivot.update(gamepad1.a); // hover and intaking
-
-        intakeOnToIntake.update(gamepad1.right_trigger > 0.5);
-        intakeOnToClear.update(gamepad1.left_trigger > 0.5);
-
-        transferHover.update(gamepad1.left_bumper);
-    }
-
-    // v1 robot
     public void activeIntakeUpdate() {
-        extend.update(gamepad1.right_bumper);
         intakeOnToIntake.update(gamepad1.right_trigger > 0.5);
         intakeOnToClear.update(gamepad1.left_trigger > 0.5);
         transfer.update(gamepad2.y);

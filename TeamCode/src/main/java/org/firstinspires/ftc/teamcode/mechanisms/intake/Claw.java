@@ -8,17 +8,17 @@ import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
 public class Claw {
     // HARDWARE
-    private Servo claw; // mini axon
-    private Servo wrist; // gobilda torque
-    private Servo v4b; // max axon (virtual fourbar)
+    public Servo clawServo; // mini axon
+    public Servo wrist; // gobilda torque
+    public Servo v4b; // max axon (virtual fourbar)
 
     // OTHER
     private Telemetry telemetry;
     private GamepadMapping controls;
-    private ClawConstants.ClawStates clawState = ClawConstants.ClawStates.TRANSFER;
+    private ClawConstants.ClawStates clawState = ClawConstants.ClawStates.BASE_STATE;
 
     public Claw(HardwareMap hardwareMap, Telemetry telemetry, GamepadMapping controls) {
-        claw = hardwareMap.get(Servo.class, "claw");
+        clawServo = hardwareMap.get(Servo.class, "claw");
         wrist = hardwareMap.get(Servo.class, "wrist");
         v4b = hardwareMap.get(Servo.class, "v4b");
 
@@ -28,21 +28,21 @@ public class Claw {
 
     public void moveToTransfer() {
         // v4b at an angle, claw parallel (or close ish)
-        claw.setPosition(ClawConstants.ClawStates.TRANSFER.getClawPos());
+        clawServo.setPosition(ClawConstants.ClawStates.TRANSFER.getClawPos());
         wrist.setPosition(ClawConstants.ClawStates.TRANSFER.getWristPos());
         v4b.setPosition(ClawConstants.ClawStates.TRANSFER.getV4bPos());
     }
 
     public void moveToHovering() {
         // v4b at an angle, claw also at an angle (90 angle between v4b and claw)
-        claw.setPosition(ClawConstants.ClawStates.HOVER_OVER_SAMPLES.getClawPos());
+        clawServo.setPosition(ClawConstants.ClawStates.HOVER_OVER_SAMPLES.getClawPos());
         wrist.setPosition(ClawConstants.ClawStates.HOVER_OVER_SAMPLES.getWristPos());
         v4b.setPosition(ClawConstants.ClawStates.HOVER_OVER_SAMPLES.getV4bPos());
     }
 
     public void moveToPickingSample() {
         // v4b parallel to ground, claw perpendicular
-        claw.setPosition(ClawConstants.ClawStates.PICKING_UP_SAMPLE.getClawPos());
+        clawServo.setPosition(ClawConstants.ClawStates.PICKING_UP_SAMPLE.getClawPos());
         wrist.setPosition(ClawConstants.ClawStates.PICKING_UP_SAMPLE.getWristPos());
         v4b.setPosition(ClawConstants.ClawStates.PICKING_UP_SAMPLE.getV4bPos());
 
@@ -50,7 +50,7 @@ public class Claw {
 
     public void moveToIdle() {
         // claw should be totally straight up (pointing towards ceiling)
-        claw.setPosition(ClawConstants.ClawStates.BASE_STATE.getClawPos());
+        clawServo.setPosition(ClawConstants.ClawStates.BASE_STATE.getClawPos());
         wrist.setPosition(ClawConstants.ClawStates.BASE_STATE.getWristPos());
         v4b.setPosition(ClawConstants.ClawStates.BASE_STATE.getV4bPos());
     }
@@ -60,5 +60,13 @@ public class Claw {
         double wristYaw = controls.wristYaw * wristSpeed;
         wristYaw = Math.min(Math.max(wristYaw, 0.0), 1.0);
         wrist.setPosition(wristYaw);
+    }
+
+    public void closeClaw() {
+        clawServo.setPosition(ClawConstants.ClawStates.BASE_STATE.getClawPos());
+    }
+
+    public void openClaw() {
+        clawServo.setPosition(ClawConstants.ClawStates.PICKING_UP_SAMPLE.getClawPos());
     }
 }

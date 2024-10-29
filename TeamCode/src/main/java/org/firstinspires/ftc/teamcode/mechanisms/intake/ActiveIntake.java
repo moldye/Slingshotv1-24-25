@@ -12,8 +12,6 @@ public class ActiveIntake {
     // -----------
     public DcMotorEx rollerMotor;
     public Servo backRollerServo; // set pos to 0.5 to get it to stop
-    public Servo leftExtendo; // axon
-    public Servo rightExtendo; // axon
     public Servo pivotAxon;
     public ColorSensorModule colorSensor;
 
@@ -21,15 +19,12 @@ public class ActiveIntake {
     // ----------
     private GamepadMapping controls;
     private Telemetry telemetry;
-    private long startTime;
 
     public ActiveIntake(HardwareMap hwMap, Telemetry telemetry, GamepadMapping controls) {
         colorSensor = new ColorSensorModule(telemetry, hwMap, true); //just call sensorModule.checkSample() for the color
         rollerMotor = hwMap.get(DcMotorEx.class, "rollerMotor");
         pivotAxon = hwMap.get(Servo.class, "pivotAxon");
         backRollerServo = hwMap.get(Servo.class, "backRoller");
-        rightExtendo = hwMap.get(Servo.class, "rightLinkage");
-        leftExtendo = hwMap.get(Servo.class, "leftLinkage");
 
         rollerMotor.setDirection(DcMotorEx.Direction.REVERSE);
         rollerMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
@@ -41,28 +36,27 @@ public class ActiveIntake {
     }
 
     public void flipDownFull() {
-        pivotAxon.setPosition(IntakeConstants.IntakeState.FULLY_EXTENDED.pivotPos());
+        pivotAxon.setPosition(IntakeConstants.ActiveIntakeStates.FULLY_EXTENDED.pivotPos());
         // pivotAnalog.runToPos(IntakeConstants.IntakeState.FULLY_EXTENDED.pivotPos());
     }
 
     public void flipDownToClear() {
-        // this is so the intake can flip down first past the full pos, then go to full to be ready for intaking
-        pivotAxon.setPosition(IntakeConstants.IntakeState.CLEARING.pivotPos());
+        pivotAxon.setPosition(IntakeConstants.ActiveIntakeStates.CLEARING.pivotPos());
         // pivotAnalog.runToPos(IntakeConstants.IntakeState.CLEARING.pivotPos());
     }
 
     public void flipUp() {
-        pivotAxon.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.pivotPos());
+        pivotAxon.setPosition(IntakeConstants.ActiveIntakeStates.FULLY_RETRACTED.pivotPos());
         // pivotAnalog.runToPos(IntakeConstants.IntakeState.FULLY_RETRACTED.pivotPos());
     }
 
     public void pushOutSample() {
         // this happens when we're extended
-        backRollerServo.setPosition(IntakeConstants.IntakeState.WRONG_ALLIANCE_COLOR_SAMPLE.backRollerPos());
+        backRollerServo.setPosition(IntakeConstants.ActiveIntakeStates.WRONG_ALLIANCE_COLOR_SAMPLE.backRollerPos());
         motorRollerOnToIntake();
     }
     public void backRollerIdle() {
-        backRollerServo.setPosition(IntakeConstants.IntakeState.FULLY_RETRACTED.backRollerPos());
+        backRollerServo.setPosition(IntakeConstants.ActiveIntakeStates.FULLY_RETRACTED.backRollerPos());
     }
 
     public void motorRollerOnToIntake() {
@@ -71,11 +65,11 @@ public class ActiveIntake {
     public void motorRollerOff() {
         rollerMotor.setPower(0);
     }
-    public void motorRollerOnToClear() { rollerMotor.setPower(1); }
+    public void motorRollerOnToClear() { rollerMotor.setPower(0.5); }
 
     public void transferSample() {
         // pivotAnalog.runToPos(IntakeConstants.IntakeState.TRANSFER.pivotPos());
-        backRollerServo.setPosition(IntakeConstants.IntakeState.TRANSFER.backRollerPos());
+        backRollerServo.setPosition(IntakeConstants.ActiveIntakeStates.TRANSFER.backRollerPos());
         rollerMotor.setPower(0.53);
     }
 
@@ -85,17 +79,15 @@ public class ActiveIntake {
     }
 
     public void clearIntake() {
-        rollerMotor.setPower(0.5);
-        backRollerServo.setPosition(IntakeConstants.IntakeState.TRANSFER.backRollerPos());
+        motorRollerOnToClear();
+        backRollerServo.setPosition(IntakeConstants.ActiveIntakeStates.TRANSFER.backRollerPos());
     }
 
     public void pivotUpForOuttake() {
-        pivotAxon.setPosition(IntakeConstants.IntakeState.OUTTAKING.pivotPos());
+        pivotAxon.setPosition(IntakeConstants.ActiveIntakeStates.OUTTAKING.pivotPos());
     }
 
     public void updateTelemetry() {
-        telemetry.addData("Right Linkage Pos", rightExtendo.getPosition());
-        telemetry.addData("Left Linkage Pos", leftExtendo.getPosition());
         telemetry.addData("Pivot pos", pivotAxon.getPosition());
         telemetry.addData("Back Roller Pos: ", backRollerServo.getPosition());
         telemetry.update();

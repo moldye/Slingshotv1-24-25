@@ -19,7 +19,7 @@ public class SampleAuton16 extends LinearOpMode {
 
     private GamepadMapping controls;
     private Robot robot;
-    private static IntakeConstants.IntakeState intakeState;
+    private static IntakeConstants.ActiveIntakeStates activeIntakeStates;
     private Intake intake;
     private Outtake outtake;
     @Override
@@ -346,7 +346,7 @@ public class SampleAuton16 extends LinearOpMode {
     }
     public void deextend(){
         //deeextend
-        robot.intake.activeIntake.pivotAxon.setPosition(IntakeConstants.IntakeState.TRANSFER.pivotPos());
+        robot.intake.activeIntake.pivotAxon.setPosition(IntakeConstants.ActiveIntakeStates.TRANSFER.pivotPos());
         robot.intake.extendoFullRetract();
         //stop Intake
         intake.activeIntake.motorRollerOff();

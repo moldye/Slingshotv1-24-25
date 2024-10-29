@@ -17,7 +17,7 @@ public class ParkingAuton extends LinearOpMode {
 
     private GamepadMapping controls;
     private Robot robot;
-    private static IntakeConstants.IntakeState intakeState;
+    private static IntakeConstants.ActiveIntakeStates activeIntakeStates;
     private Intake intake;
     private Outtake outtake;
 
