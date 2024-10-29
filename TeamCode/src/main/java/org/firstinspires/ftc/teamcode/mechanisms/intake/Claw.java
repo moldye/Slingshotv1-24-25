@@ -69,4 +69,8 @@ public class Claw {
     public void openClaw() {
         clawServo.setPosition(ClawConstants.ClawStates.PICKING_UP_SAMPLE.getClawPos());
     }
+
+    public void turnWristToTransfer() {
+        wrist.setPosition(ClawConstants.ClawStates.TRANSFER.getWristPos());
+    }
 }

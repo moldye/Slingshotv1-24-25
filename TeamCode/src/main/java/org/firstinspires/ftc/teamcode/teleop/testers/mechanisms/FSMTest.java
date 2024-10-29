@@ -4,7 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Robot;
-import org.firstinspires.ftc.teamcode.mechanisms.Cycle;
+import org.firstinspires.ftc.teamcode.fsm.ActiveCycle;
+import org.firstinspires.ftc.teamcode.fsm.ClawCycle;
 import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
@@ -12,7 +13,7 @@ import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 @TeleOp
 public class FSMTest extends OpMode {
     private GamepadMapping controls;
-    private Cycle cycle;
+    private ClawCycle cycle;
     private Robot robot;
     private Intake intake;
     private Outtake outtake;
@@ -21,7 +22,7 @@ public class FSMTest extends OpMode {
     public void init() {
         controls = new GamepadMapping(gamepad1, gamepad2);
         robot = new Robot(hardwareMap, telemetry, controls);
-        cycle = new Cycle(telemetry, controls, robot);
+        cycle = new ClawCycle(telemetry, controls, robot);
 
         intake = robot.intake;
         outtake = robot.outtake;
@@ -49,7 +50,7 @@ public class FSMTest extends OpMode {
     @Override
     public void loop() {
         // already does dt & controls.update();
-        cycle.activeIntakeUpdate();
+        cycle.clawIntakeUpdate();
         telemetry.addData("Sample: ", intake.activeIntake.colorSensor.checkSample());
         telemetry.addData("Color Sensor Is Blue", intake.activeIntake.colorSensor.getIsBlue());
         telemetry.addData("Is Blue", controls.isBlue.value());

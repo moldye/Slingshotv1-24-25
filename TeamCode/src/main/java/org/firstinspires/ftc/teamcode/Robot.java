@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.mechanisms.Cycle;
+import org.firstinspires.ftc.teamcode.fsm.ClawCycle;
 import org.firstinspires.ftc.teamcode.mechanisms.drive.DriveTrain;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
@@ -25,7 +25,9 @@ public class Robot{
     // analog encoder -> 0 on expansion analog ports
     // color sensor -> 1 on control hub i2c ports
 
-    // wrist ->
+    // wrist (gobilda torque) ->
+    // claw (mini) -> 0 on expansion hub
+    // v4b (max) ->
 
     // drivetrain:
     // rightBack = 0 control
@@ -44,7 +46,6 @@ public class Robot{
     public Outtake outtake;
     public Intake intake;
     public GamepadMapping controls;
-    public Cycle cycle;
 
     public Robot(HardwareMap hardwareMap, Telemetry telemetry, GamepadMapping controls) {
         imu = hardwareMap.get(IMU.class, "imu");

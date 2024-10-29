@@ -30,8 +30,7 @@ public class GamepadMapping {
 
     // INTAKE (ACTIVE)
     // --------------
-    public static Toggle extend; // extend intake
-    public static Toggle clearIntake;
+    public static Toggle extend;
     public static Toggle transfer;
     public static Toggle intakeOnToIntake;
     public static Toggle intakeOnToClear;
@@ -84,6 +83,7 @@ public class GamepadMapping {
         this.gamepad1 = gamepad1;
         this.gamepad2 = gamepad2;
 
+        // INTAKE
         extend = new Toggle(false);
         intakeOnToIntake = new Toggle(false);
         intakeOnToClear = new Toggle(false);
@@ -93,16 +93,14 @@ public class GamepadMapping {
         transferHover = new Toggle(false);
         openClaw = new Toggle(false);
 
+        // OUTTAKE
         flipBucket = new Toggle(false);
         highBasket = new Toggle(false);
         lowBasket = new Toggle(false);
         L1hang = new Toggle(false);
 
-//        latchSpecimen = new Toggle(false);
-//        switchClaw = new Toggle(false);
-
+        // OTHER
         botToBaseState = new Toggle(false);
-        clearIntake = new Toggle(false);
         isBlue = new Toggle(false);
     }
 
@@ -115,6 +113,7 @@ public class GamepadMapping {
     public void clawUpdate() {
         v4bActiveUpdate();
         wristYaw = gamepad2.right_stick_x;
+        openClaw.update(gamepad2.b);
     }
 
     public void v4bActiveUpdate() {
@@ -123,7 +122,9 @@ public class GamepadMapping {
 
         // first driver
         transferHover.update(gamepad1.left_bumper);
-        openClaw.update(gamepad2.b);
+
+        intakeOnToIntake.update(gamepad2.right_trigger > 0.5);
+        intakeOnToClear.update(gamepad2.left_trigger > 0.5);
     }
 
     // v1 robot
@@ -139,9 +140,6 @@ public class GamepadMapping {
         highBasket.update(gamepad2.left_bumper);
         flipBucket.update(gamepad2.a);
 
-        // Specimen
-//        latchSpecimen.update(gamepad2.a);
-//        switchClaw.update(gamepad1.x);
         L1hang.update(gamepad2.dpad_up); // TODO Ask Drivers
 
         // Reset/Fail Safes (Both controllers should have these)
