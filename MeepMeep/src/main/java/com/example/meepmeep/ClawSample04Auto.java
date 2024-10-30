@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class ClawSampleAuto {
+public class ClawSample04Auto {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
 
@@ -133,7 +133,7 @@ public class ClawSampleAuto {
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                                     //slides up
                                 })
-                                .waitSeconds(1)
+                                .waitSeconds(.5)
                                 .turn(Math.toRadians(-65))
                                 .lineToSplineHeading(new Pose2d(-58,-58, Math.toRadians(45)))
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
