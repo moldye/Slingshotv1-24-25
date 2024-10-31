@@ -36,7 +36,7 @@ public class GamepadMapping {
     public static Toggle intakeOnToClear;
 
     // INTAKE (CLAW)
-    public static double wristYaw = 0;
+    public static double wristYaw = 0.0;
 
     // INTAKE (v4b ACTIVE)
     // --------------
@@ -114,7 +114,7 @@ public class GamepadMapping {
         pivot.update(gamepad2.a); // hover and intaking, button held
         // first driver
         transferHover.update(gamepad1.left_bumper);
-        wristYaw = gamepad2.right_stick_x * -1;
+        wristYaw = gamepad2.right_stick_x;
         openClaw.update(gamepad2.b);
 
         transfer.update(gamepad2.y);

@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.mechanisms.intake;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
@@ -17,6 +18,7 @@ public class Claw {
     private Telemetry telemetry;
     private GamepadMapping controls;
     private ClawConstants.ClawStates clawState = ClawConstants.ClawStates.BASE_STATE;
+    private double wristYaw;
 
     public Claw(HardwareMap hardwareMap, Telemetry telemetry, GamepadMapping controls) {
         clawServo = hardwareMap.get(Servo.class, "claw");
@@ -47,18 +49,16 @@ public class Claw {
     }
 
     public void resetClaw() {
-        wrist.setPosition(ClawConstants.ClawStates.BASE_STATE.getWristPos());
+        wrist.setPosition(ClawConstants.ClawStates.TRANSFER.getWristPos());
         v4b.setPosition(ClawConstants.ClawStates.BASE_STATE.getV4bPos());
         clawServo.setPosition(ClawConstants.ClawStates.PICKING_UP_SAMPLE.getClawPos());
     }
 
     public void controlWristPos() {
-        double wristSpeed = 0.5;
-        double wristYaw = controls.wristYaw * wristSpeed;
-        if(controls.wristYaw != 0) {
-            // wristYaw = Math.min(Math.max(wristYaw, 0.0), 1.0);
-            wrist.setPosition(wristYaw);
-        }
+        double wristSpeed = 0.4;
+        wristYaw += controls.wristYaw * wristSpeed;
+        // controls.wristYaw = Range.clip(controls.wristYaw, .1, .6);
+        wrist.setPosition(wristYaw);
     }
 
     public void closeClaw() {

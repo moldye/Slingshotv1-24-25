@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.teleop.testers.mechanisms;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.fsm.ClawCycle;
@@ -16,6 +17,7 @@ public class ClawTest extends OpMode {
     private ClawCycle cycle;
     private ElapsedTime loopTime;
     private double startTime;
+    private double wristYaw;
 
     @Override
     public void init() {
@@ -34,12 +36,9 @@ public class ClawTest extends OpMode {
         controls.update();
         robot.drivetrain.update();
 
-        robot.intake.claw.moveToTransfer();
-        robot.intake.claw.turnWristToTransfer();
-        if (loopTime.milliseconds() - startTime > 10000){
-            robot.intake.claw.openClaw();
-        }
-
-        telemetry.addData("loop time - start time", loopTime.milliseconds() - startTime);
+        double wristSpeed = 0.4;
+        wristYaw += gamepad2.right_stick_x * wristSpeed;
+        wristYaw = Range.clip(wristYaw, .1, .6);
+        robot.intake.claw.wrist.setPosition(wristYaw);
     }
 }
