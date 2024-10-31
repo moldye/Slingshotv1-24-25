@@ -25,9 +25,9 @@ public class Robot{
     // analog encoder -> 0 on expansion analog ports
     // color sensor -> 1 on control hub i2c ports
 
-    // wrist (gobilda torque) ->
+    // wrist (gobilda torque) -> 2 on expansion hub
     // claw (mini) -> 0 on expansion hub
-    // v4b (max) ->
+    // v4b (max) -> 1 on expansion hub
 
     // drivetrain:
     // rightBack = 0 control
