@@ -34,25 +34,23 @@ public class FSMTest extends OpMode {
         robot.outtake.resetHardware();
     }
 
-    @Override
-    public void init_loop() {
-        telemetry.addLine("If our alliance is blue, press gamepad1's x, BEFORE you start");
-        telemetry.addLine("The alliance color defaults to blue");
-        telemetry.addData("Color Sensor Is Blue", robot.intake.activeIntake.colorSensor.getIsBlue());
-        controls.isBlue.update(gamepad1.x);
-        if (controls.isBlue.value()) {
-            intake.activeIntake.colorSensor.setIsBlue(true);
-        } else {
-            intake.activeIntake.colorSensor.setIsBlue(false);
-        }
-    }
+//    @Override
+//    public void init_loop() {
+//        telemetry.addLine("If our alliance is blue, press gamepad1's x, BEFORE you start");
+//        telemetry.addLine("The alliance color defaults to blue");
+//        telemetry.addData("Color Sensor Is Blue", robot.intake.activeIntake.colorSensor.getIsBlue());
+//        controls.isBlue.update(gamepad1.x);
+//        if (controls.isBlue.value()) {
+//            intake.activeIntake.colorSensor.setIsBlue(true);
+//        } else {
+//            intake.activeIntake.colorSensor.setIsBlue(false);
+//        }
+//    }
 
     @Override
     public void loop() {
         // already does dt & controls.update();
         cycle.clawIntakeUpdate();
-        telemetry.addData("Sample: ", intake.activeIntake.colorSensor.checkSample());
-        telemetry.addData("Color Sensor Is Blue", intake.activeIntake.colorSensor.getIsBlue());
-        telemetry.addData("Is Blue", controls.isBlue.value());
+        telemetry.addData("transferState", cycle.transferState.toString());
     }
 }

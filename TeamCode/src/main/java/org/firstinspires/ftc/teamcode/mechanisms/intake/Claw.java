@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.mechanisms.intake;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
@@ -28,46 +29,44 @@ public class Claw {
 
     public void moveToTransfer() {
         // v4b at an angle, claw parallel (or close ish)
-        clawServo.setPosition(ClawConstants.ClawStates.TRANSFER.getClawPos());
-        wrist.setPosition(ClawConstants.ClawStates.TRANSFER.getWristPos());
+        // this should move claw to transfer pos, then wrist to transfer pos, then open claw, may need elapsed time if too fast
         v4b.setPosition(ClawConstants.ClawStates.TRANSFER.getV4bPos());
     }
 
     public void moveToHovering() {
         // v4b at an angle, claw also at an angle (90 angle between v4b and claw)
-        clawServo.setPosition(ClawConstants.ClawStates.HOVER_OVER_SAMPLES.getClawPos());
-        wrist.setPosition(ClawConstants.ClawStates.HOVER_OVER_SAMPLES.getWristPos());
         v4b.setPosition(ClawConstants.ClawStates.HOVER_OVER_SAMPLES.getV4bPos());
     }
 
     public void moveToPickingSample() {
-        // v4b parallel to ground, claw perpendicular
-        clawServo.setPosition(ClawConstants.ClawStates.PICKING_UP_SAMPLE.getClawPos());
-        wrist.setPosition(ClawConstants.ClawStates.PICKING_UP_SAMPLE.getWristPos());
         v4b.setPosition(ClawConstants.ClawStates.PICKING_UP_SAMPLE.getV4bPos());
-
     }
 
-    public void moveToIdle() {
-        // claw should be totally straight up (pointing towards ceiling)
-        clawServo.setPosition(ClawConstants.ClawStates.BASE_STATE.getClawPos());
+    public void moveToOuttaking() {
+        v4b.setPosition(ClawConstants.ClawStates.OUTTAKING.getV4bPos());
+    }
+
+    public void resetClaw() {
         wrist.setPosition(ClawConstants.ClawStates.BASE_STATE.getWristPos());
         v4b.setPosition(ClawConstants.ClawStates.BASE_STATE.getV4bPos());
+        clawServo.setPosition(ClawConstants.ClawStates.PICKING_UP_SAMPLE.getClawPos());
     }
 
     public void controlWristPos() {
-        double wristSpeed = 1;
+        double wristSpeed = 0.5;
         double wristYaw = controls.wristYaw * wristSpeed;
-        wristYaw = Math.min(Math.max(wristYaw, 0.0), 1.0);
-        wrist.setPosition(wristYaw);
+        if(controls.wristYaw != 0) {
+            // wristYaw = Math.min(Math.max(wristYaw, 0.0), 1.0);
+            wrist.setPosition(wristYaw);
+        }
     }
 
     public void closeClaw() {
-        clawServo.setPosition(ClawConstants.ClawStates.BASE_STATE.getClawPos());
+        clawServo.setPosition(ClawConstants.ClawStates.PICKING_UP_SAMPLE.getClawPos());
     }
 
     public void openClaw() {
-        clawServo.setPosition(ClawConstants.ClawStates.PICKING_UP_SAMPLE.getClawPos());
+        clawServo.setPosition(ClawConstants.ClawStates.HOVER_OVER_SAMPLES.getClawPos());
     }
 
     public void turnWristToTransfer() {

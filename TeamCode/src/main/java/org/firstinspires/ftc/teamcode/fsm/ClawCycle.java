@@ -15,12 +15,12 @@ public class ClawCycle {
     private Outtake outtake;
     private GamepadMapping controls;
     private Claw claw;
-    private ClawCycle.TransferState transferState;
+    public ClawCycle.TransferState transferState;
     private Telemetry telemetry;
     private ElapsedTime loopTime;
     private double startTime;
 
-    // TODO when we go back from hovering, automatic position of claw should be straight
+    // TODO HOVERING state, edit wrist movement, figure out why wont go down to hovering when retracted, automatic to hovering when we extend
 
     public ClawCycle(Telemetry telemetry, GamepadMapping controls, Robot robot) {
         this.robot = robot;
@@ -37,7 +37,7 @@ public class ClawCycle {
         startTime = loopTime.milliseconds();
     }
     public void clawIntakeUpdate() {
-        controls.clawUpdate();
+        controls.update();
         robot.drivetrain.update();
 
         switch (transferState) {
@@ -48,13 +48,11 @@ public class ClawCycle {
             case EXTENDO_FULLY_RETRACTED:
                 // have to constantly set power of slide motors back
                 outtake.returnToRetracted();
-                claw.closeClaw();
-                // may need to change this, but anytime we retract, we move to transfering
-                transferState = ClawCycle.TransferState.TRANSFERING;
 
                 if (controls.extend.value()) {
                     transferState = ClawCycle.TransferState.EXTENDO_FULLY_EXTENDED;
                     intake.extendoFullExtend();
+                    claw.openClaw();
                 }
                 else if (controls.highBasket.value()) {
                     transferState = ClawCycle.TransferState.HIGH_BASKET;
@@ -64,7 +62,9 @@ public class ClawCycle {
                     transferState = ClawCycle.TransferState.HANGING;
                 }
                 if (controls.transferHover.value()) {
+                    claw.openClaw();
                     claw.moveToHovering();
+                    transferState = TransferState.INTAKING;
                 }
                 if (controls.pivot.locked()) {
                     transferState = ClawCycle.TransferState.INTAKING;
@@ -73,12 +73,18 @@ public class ClawCycle {
             case EXTENDO_FULLY_EXTENDED:
                 outtake.returnToRetracted();
                 if (!controls.extend.value()) {
+                    controls.transferHover.set(false);
                     claw.moveToTransfer();
                     intake.extendoFullRetract();
-                    transferState = ClawCycle.TransferState.TRANSFERING;
+                    transferState = TransferState.TRANSFERING;
+                    startTime = loopTime.milliseconds();
                 }
                 if (controls.botToBaseState.value()) {
                     transferState = ClawCycle.TransferState.BASE_STATE;
+                }
+                if (controls.transferHover.value()) {
+                    claw.moveToHovering();
+                    transferState = TransferState.INTAKING;
                 }
                 if (controls.pivot.locked()) {
                     claw.moveToPickingSample();
@@ -94,9 +100,17 @@ public class ClawCycle {
                 outtake.returnToRetracted();
                 claw.controlWristPos();
                 if (!controls.extend.value()) {
-                    transferState = ClawCycle.TransferState.EXTENDO_FULLY_EXTENDED;
+                    controls.transferHover.set(false);
+                    intake.extendoFullRetract();
+                    claw.moveToTransfer();
+                    transferState = TransferState.EXTENDO_FULLY_RETRACTED;
                 }
                 if (!controls.pivot.locked()) {
+                    claw.moveToHovering();
+                } else if (controls.pivot.locked()) {
+                    claw.moveToPickingSample();
+                }
+                else if(controls.transferHover.value()) {
                     claw.moveToHovering();
                 }
                 if (controls.openClaw.value()) {
@@ -104,20 +118,26 @@ public class ClawCycle {
                 } else {
                     claw.closeClaw();
                 }
+                if (!controls.transferHover.value()) {
+                    transferState = TransferState.TRANSFERING;
+                    startTime = loopTime.milliseconds();
+                }
                 break;
-
             case TRANSFERING:
-                // this is automatic, TODO MAY NEED TO ADD ELAPSED TIME, MAKE SURE THAT DOES NOT GET IN THE WAY OF FAILSAFES
                 outtake.returnToRetracted();
-                // block in long-way
-                claw.moveToTransfer();
-                intake.extendoFullRetract();
-                claw.turnWristToTransfer();
-                claw.openClaw();
-                transferState = ClawCycle.TransferState.EXTENDO_FULLY_RETRACTED;
+                robot.intake.extendoFullRetract();
+                robot.intake.claw.moveToTransfer();
+                robot.intake.claw.turnWristToTransfer();
+                if (loopTime.milliseconds() - startTime > 1500 && loopTime.milliseconds() - startTime >= 0){
+                    robot.intake.claw.openClaw();
+                    transferState = TransferState.EXTENDO_FULLY_RETRACTED;
+                    controls.extend.set(false);
+                }
                 break;
             case HIGH_BASKET:
                 outtake.extendToHighBasket();
+                claw.closeClaw();
+                claw.moveToOuttaking();
                 if (controls.flipBucket.value()) {
                     outtake.bucketDeposit();
                 }
@@ -137,7 +157,6 @@ public class ClawCycle {
                 break;
             case SLIDES_RETRACTED:
                 controls.flipBucket.set(false);
-
                 outtake.bucketToReadyForTransfer();
                 outtake.returnToRetracted();
                 intake.extendoFullRetract();
