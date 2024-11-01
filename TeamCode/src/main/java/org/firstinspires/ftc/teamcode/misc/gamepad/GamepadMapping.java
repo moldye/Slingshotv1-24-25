@@ -111,7 +111,7 @@ public class GamepadMapping {
     }
 
     public void clawUpdate() {
-        pivot.update(gamepad2.a); // hover and intaking, button held
+        pivot.update(gamepad2.right_trigger > 0.5); // hover and intaking, button held
         // first driver
         transferHover.update(gamepad1.left_bumper);
         wristYaw = gamepad2.right_stick_x;
