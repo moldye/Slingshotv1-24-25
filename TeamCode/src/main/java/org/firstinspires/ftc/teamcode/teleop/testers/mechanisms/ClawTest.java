@@ -17,7 +17,7 @@ public class ClawTest extends OpMode {
     private ClawCycle cycle;
     private ElapsedTime loopTime;
     private double startTime;
-    private double wristYaw;
+    private double wristYaw = .1; // min wrist pos
 
     @Override
     public void init() {
@@ -36,9 +36,7 @@ public class ClawTest extends OpMode {
         controls.update();
         robot.drivetrain.update();
 
-        double wristSpeed = 0.4;
-        wristYaw += gamepad2.right_stick_x * wristSpeed;
-        wristYaw = Range.clip(wristYaw, .1, .6);
-        robot.intake.claw.wrist.setPosition(wristYaw);
+        // double wristSpeed = 0.4;
+        robot.intake.claw.controlWristPos();
     }
 }

@@ -20,7 +20,7 @@ public class ClawCycle {
     private ElapsedTime loopTime;
     private double startTime;
 
-    // TODO HOVERING state, edit wrist movement, figure out why wont go down to hovering when retracted, automatic to hovering when we extend
+    // TODO edit wrist movement
 
     public ClawCycle(Telemetry telemetry, GamepadMapping controls, Robot robot) {
         this.robot = robot;
@@ -64,26 +64,8 @@ public class ClawCycle {
                     transferState = TransferState.HOVERING;
                 }
                 break;
-//            case EXTENDO_FULLY_EXTENDED:
-//                outtake.returnToRetracted();
-//                if (!controls.extend.value()) {
-//                    controls.transferHover.set(false);
-//                    claw.moveToTransfer();
-//                    intake.extendoFullRetract();
-//                    transferState = TransferState.TRANSFERING;
-//                    startTime = loopTime.milliseconds();
-//                }
-//                if (controls.botToBaseState.value()) {
-//                    transferState = ClawCycle.TransferState.BASE_STATE;
-//                }
-//                if (controls.pivot.locked()) {
-//                    claw.moveToPickingSample();
-//                    transferState = ClawCycle.TransferState.INTAKING;
-//                }
-                // break;
             case INTAKING:
                 outtake.returnToRetracted();
-                claw.controlWristPos();
                 claw.moveToPickingSample();
                 if (!controls.extend.value()) {
                     transferState = TransferState.TRANSFERING;
@@ -93,6 +75,11 @@ public class ClawCycle {
                     transferState = TransferState.HOVERING;
                 } else if (controls.pivot.locked()) {
                     claw.moveToPickingSample();
+                    if (controls.openClaw.value()) {
+                        claw.openClaw();
+                    } else {
+                        claw.closeClaw();
+                    }
                 }
                 if (controls.openClaw.value()) {
                     claw.openClaw();
@@ -105,20 +92,28 @@ public class ClawCycle {
                 robot.intake.extendoFullRetract();
                 claw.moveToTransfer();
                 claw.turnWristToTransfer();
-                if (loopTime.milliseconds() - startTime > 1500 && loopTime.milliseconds() - startTime >= 0){
+                if (loopTime.milliseconds() - startTime >= 1000){
                     claw.openClaw();
-                    transferState = TransferState.EXTENDO_FULLY_RETRACTED;
                     controls.extend.set(false);
+                    controls.transferHover.set(false);
+                    transferState = TransferState.EXTENDO_FULLY_RETRACTED;
                 }
                 break;
             case HOVERING:
+                controls.transferHover.set(true);
                 outtake.returnToRetracted();
                 claw.moveToHovering();
-                claw.openClaw();
+                claw.controlWristPos();
                 if (controls.pivot.locked()) {
                     transferState = ClawCycle.TransferState.INTAKING;
                 }
                 if (!controls.transferHover.value()) {
+                    transferState = TransferState.TRANSFERING;
+                    startTime = loopTime.milliseconds();
+                }
+                if (!controls.extend.value()) {
+                    claw.moveToTransfer();
+                    intake.extendoFullRetract();
                     transferState = TransferState.TRANSFERING;
                     startTime = loopTime.milliseconds();
                 }
