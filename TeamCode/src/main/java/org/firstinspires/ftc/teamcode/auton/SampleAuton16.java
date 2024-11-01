@@ -45,24 +45,22 @@ public class SampleAuton16 extends LinearOpMode {
 
         TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
                 //start by raising slides to go score
+                //Preloaded Spec
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //raise slides
-                    moveLift(2400);
+                    moveLift(2400);                })
+                .lineToSplineHeading(new Pose2d(-9,-34, Math.toRadians(270)))
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    //lower slides a tiny bit
+                    moveLift(2000);
                 })
-                .setReversed(true)
-                //preload to bucket
-                .splineToLinearHeading(new Pose2d(-56,-58,Math.toRadians(45)),Math.toRadians(225))
+                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
+                    //open claw
+                    robot.intake.claw.openClaw();
+                })
+                .waitSeconds(.3)
                 .setReversed(false)
-                .back(3)
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    //flip bucket
-                    outtake.bucketDeposit();
-                })
-                .waitSeconds(0.75)
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    outtake.bucketToReadyForTransfer();
-                    moveLift(0);
-                })
+
 
                 //1st yellow to bucket
                 .lineToConstantHeading(new Vector2d(-58, -56))
