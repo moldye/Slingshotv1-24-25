@@ -81,11 +81,6 @@ public class ClawCycle {
                         claw.closeClaw();
                     }
                 }
-                if (controls.openClaw.value()) {
-                    claw.openClaw();
-                } else {
-                    claw.closeClaw();
-                }
                 break;
             case TRANSFERING:
                 outtake.returnToRetracted();
@@ -116,6 +111,11 @@ public class ClawCycle {
                     intake.extendoFullRetract();
                     transferState = TransferState.TRANSFERING;
                     startTime = loopTime.milliseconds();
+                }
+                if (controls.openClaw.value()) {
+                    claw.openClaw();
+                } else {
+                    claw.closeClaw();
                 }
                 break;
             case HIGH_BASKET:

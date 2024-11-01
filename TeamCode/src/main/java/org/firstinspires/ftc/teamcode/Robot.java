@@ -25,6 +25,7 @@ public class Robot{
     // analog encoder -> 0 on expansion analog ports
     // color sensor -> 1 on control hub i2c ports
 
+    // When looking at bot, the wire for the wrist servo should curl around right side of the claw
     // wrist (gobilda torque) -> 2 on expansion hub
     // claw (mini) -> 0 on expansion hub
     // v4b (max) -> 1 on expansion hub
