@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.misc;
+package org.firstinspires.ftc.teamcode.mechanisms.misc;
 
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.arcrobotics.ftclib.controller.PIDFController;

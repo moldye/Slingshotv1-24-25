@@ -2,9 +2,9 @@ package org.firstinspires.ftc.teamcode.mechanisms.intake;
 
 public class IntakeConstants {
 
-    // pivoted up, pivoted down, transfer pos, clearing samples (half state for intaking)
+    // pivoted up, pivoted down, transfer pos, clearing samples, failsafe clear
     // axon programmed for 0-255, 66 PMW (inverted)
-    private static final double[] pivotPositions = {.4, .97, .4, .6};
+    private static final double[] pivotPositions = {.35, 1, .35, .6, .5};
 
     // neutral pos, back roller push out sample (extendo), back roller transfer
     private static final double[] backRollerPositions = {0.5, 1, -1};
@@ -27,8 +27,8 @@ public class IntakeConstants {
         WRONG_ALLIANCE_COLOR_SAMPLE(pivotPositions[1], backRollerPositions[1], rightLinkagePositions[1], leftLinkagePositions[1]), // pivoted down, pushing out sample, extended
         FULLY_EXTENDED(pivotPositions[1], backRollerPositions[0], rightLinkagePositions[1], leftLinkagePositions[1]), // pivoted down, idle back roller, extended
         TRANSFER(pivotPositions[2], backRollerPositions[2], rightLinkagePositions[0], leftLinkagePositions[0]), // pivoted up, back roller push, retracted
+        FAILSAFE_CLEARING(pivotPositions[4], backRollerPositions[0], rightLinkagePositions[1], leftLinkagePositions[1]),
         OUTTAKING(pivotPositions[2], backRollerPositions[0], rightLinkagePositions[2], leftLinkagePositions[2]);
-
 
         private final double pivotPos;
         private final double rLinkagePos;

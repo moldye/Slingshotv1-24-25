@@ -96,4 +96,11 @@ public class ActiveIntake {
         //telemetry.addData("Back Roller Pos: ", backRollerServo.getPosition());
         telemetry.update();
     }
+
+    public void failsafeClear() {
+        // the goal here would be to extend while clearing at a position that should push out any samples stuck on wire plate
+        pivotAxon.setPosition(IntakeConstants.ActiveIntakeStates.FAILSAFE_CLEARING.pivotPos());
+        motorRollerOnToClear();
+    }
 }
+

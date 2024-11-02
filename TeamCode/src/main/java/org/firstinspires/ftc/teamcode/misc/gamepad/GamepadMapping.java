@@ -35,6 +35,8 @@ public class GamepadMapping {
     public static Toggle intakeOnToIntake;
     public static Toggle intakeOnToClear;
 
+    public Toggle clearFailsafe;
+
     // INTAKE (CLAW)
     public static double wristYaw = 0.0;
 
@@ -88,6 +90,7 @@ public class GamepadMapping {
         intakeOnToIntake = new Toggle(false);
         intakeOnToClear = new Toggle(false);
         transfer = new Toggle(false);
+        clearFailsafe = new Toggle(false);
 
         pivot = new Toggle(false);
         transferHover = new Toggle(false);
@@ -129,6 +132,8 @@ public class GamepadMapping {
 
         intakeOnToIntake.update(gamepad2.right_trigger > 0.5);
         intakeOnToClear.update(gamepad2.left_trigger > 0.5);
+
+        clearFailsafe.update(gamepad2.x);
     }
 
     // v1 robot

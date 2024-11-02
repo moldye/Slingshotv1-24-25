@@ -48,7 +48,7 @@ public class ActiveCycle {
                     transferState = ActiveCycle.TransferState.EXTENDO_FULLY_EXTENDED;
                     intake.extendoFullExtend();
                 } else if (controls.transfer.value()) {
-                    transferState = ActiveCycle.TransferState.TRANSFERING;
+                    transferState = TransferState.TRANSFERING;
                 } else if (controls.highBasket.value()) {
                     transferState = ActiveCycle.TransferState.HIGH_BASKET;
                 } else if (controls.lowBasket.value()) {
@@ -56,6 +56,11 @@ public class ActiveCycle {
                 } else if (controls.L1hang.value()) {
                     transferState = ActiveCycle.TransferState.HANGING;
                 }
+//                if (controls.clearFailsafe.value()) {
+//                    intake.extendoFullExtend();
+//                    intake.activeIntake.failsafeClear();
+//                    transferState = TransferState.EXTENDO_FULLY_EXTENDED;
+//                }
                 break;
             case EXTENDO_FULLY_EXTENDED:
                 outtake.returnToRetracted();
@@ -63,7 +68,8 @@ public class ActiveCycle {
                     intake.activeIntake.flipUp();
                     intake.extendoFullRetract();
                     intake.activeIntake.flipToTransfer();
-                    transferState = ActiveCycle.TransferState.EXTENDO_FULLY_RETRACTED;
+                    transferState = TransferState.TRANSFERING;
+                    startTime = loopTime.milliseconds();
                 }
                 if (controls.intakeOnToIntake.locked() || controls.intakeOnToClear.locked()) {
                     transferState = ActiveCycle.TransferState.INTAKING;
@@ -71,6 +77,11 @@ public class ActiveCycle {
                 if (controls.botToBaseState.value()) {
                     transferState = ActiveCycle.TransferState.BASE_STATE;
                 }
+//                if (!controls.clearFailsafe.value()) {
+//                    intake.extendoFullRetract();
+//                    intake.activeIntake.failsafeClear();
+//                    transferState = TransferState.EXTENDO_FULLY_RETRACTED;
+//                }
                 break;
             case INTAKING:
                 outtake.returnToRetracted();
@@ -90,14 +101,23 @@ public class ActiveCycle {
             case TRANSFERING:
                 // TODO Test Automatic
                 outtake.returnToRetracted();
-                intake.activeIntake.flipUp();
+                intake.activeIntake.flipToTransfer();
                 intake.extendoFullRetract();
-
                 if (loopTime.milliseconds() - startTime >= 1000 && loopTime.milliseconds() - startTime <= 2000){
                     intake.activeIntake.transferSample();
                     transferState = ActiveCycle.TransferState.EXTENDO_FULLY_RETRACTED;
+
+                    if (controls.extend.value()) {
+                        transferState = ActiveCycle.TransferState.EXTENDO_FULLY_EXTENDED;
+                        intake.extendoFullExtend();
+                        break;
+                    }
                 }
-                intake.activeIntake.transferOff();
+//                intake.activeIntake.transferSample();
+//                if (!controls.transfer.value()) {
+//                    intake.activeIntake.transferOff();
+//                    transferState = TransferState.EXTENDO_FULLY_RETRACTED;
+//                }
                 break;
             case HIGH_BASKET:
                 intake.activeIntake.pivotUpForOuttake();
