@@ -94,9 +94,4 @@ public class Robot{
         outtake.resetHardware();
         intake.resetHardware();
     }
-
-    public void updateTelemetry() {
-        intake.activeIntake.updateTelemetry();
-        outtake.updateTelemetry();
-    }
 }

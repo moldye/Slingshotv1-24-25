@@ -5,7 +5,7 @@ public class ClawConstants {
     private static final double[] clawPositions = {.2, .7};
 
     // 90 degrees (sample "up and down" -> original pos & init transfer), 180 degrees (sample "left and right" -> transfer)
-    private static final double[] wristPositions = {.6, .1}; // wrist also changed by joystick
+    private static final double[] wristPositions = {.6, 1}; // wrist also changed by joystick
 
     // transfer, hover, picking up, outtaking (vertical)
     private static final double[] v4bPositions = { .2, .9, 1, .43};

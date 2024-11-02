@@ -45,7 +45,7 @@ public class SlingshotTeleop extends OpMode {
 
     @Override
     public void loop() {
-        telemetry.addData("Color Sensor Is Blue", robot.intake.activeIntake.colorSensor.getIsBlue());
+        // telemetry.addData("Color Sensor Is Blue", robot.intake.activeIntake.colorSensor.getIsBlue());
         cycle.activeIntakeUpdate();
     }
 }

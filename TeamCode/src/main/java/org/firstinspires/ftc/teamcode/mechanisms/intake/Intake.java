@@ -23,9 +23,9 @@ public class Intake {
     private Telemetry telemetry;
 
     public Intake(HardwareMap hwMap, Telemetry telemetry, GamepadMapping controls) {
-        // activeIntake = new ActiveIntake(hwMap, telemetry, controls);
+        activeIntake = new ActiveIntake(hwMap, telemetry, controls);
         // v4bActiveIntake = new v4bActive(hwMap, telemetry, controls);
-        claw = new Claw(hwMap, telemetry, controls);
+        // claw = new Claw(hwMap, telemetry, controls);
 
         rightExtendo = hwMap.get(Servo.class, "rightLinkage");
         leftExtendo = hwMap.get(Servo.class, "leftLinkage");
@@ -56,11 +56,11 @@ public class Intake {
     }
 
     public void resetHardware() {
-        claw.resetClaw();
-//        activeIntake.motorRollerOff();
-//        activeIntake.rollerMotor.setDirection(DcMotorEx.Direction.REVERSE);
-//
-//        activeIntake.flipUp();
+        // claw.resetClaw();
+        activeIntake.motorRollerOff();
+        activeIntake.rollerMotor.setDirection(DcMotorEx.Direction.REVERSE);
+
+        activeIntake.flipUp();
 //        activeIntake.backRollerIdle();
 
         extendoFullRetract();

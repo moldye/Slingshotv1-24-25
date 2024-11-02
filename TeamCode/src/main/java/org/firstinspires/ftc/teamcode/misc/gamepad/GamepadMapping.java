@@ -135,7 +135,7 @@ public class GamepadMapping {
     public void update() {
         joystickUpdate();
 
-        clawUpdate();
+        activeIntakeUpdate();
 
         extend.update(gamepad1.right_bumper);
 
