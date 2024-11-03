@@ -22,18 +22,24 @@ public class SpecimenRedAuton {
                 .followTrajectorySequence(drive ->
                                 drive.trajectorySequenceBuilder(new Pose2d(-12, 60, Math.toRadians(450)))
 
-                                        //goes to box
-                                        //score specimen (preloaded)
+
 
                                         .back(30)
                                         .waitSeconds(.5)
+                                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                            //open claw (preloaded spec)
+                                        })
                                         .forward(5)
+
 
                                         //go ti HP
                                         .setReversed(true)
                                         .lineToSplineHeading(new Pose2d(-36, 35, Math.toRadians(360)))
                                         .splineTo(new Vector2d(-60, 60 ), Math.toRadians(450))
                                         .waitSeconds(.5)
+                                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                            //close claw
+                                        })
 
                                         //go to box
                                         .setReversed(false)
@@ -41,6 +47,9 @@ public class SpecimenRedAuton {
                                         .lineToSplineHeading(new Pose2d(-9, 35, Math.toRadians(450)))
                                         .back(5)
                                         .waitSeconds(.5)
+                                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                            //open claw (second spec)
+                                        })
                                         .forward(5)
 
                                         //go ti HP
@@ -48,6 +57,9 @@ public class SpecimenRedAuton {
                                         .lineToSplineHeading(new Pose2d(-36, 35, Math.toRadians(360)))
                                         .splineTo(new Vector2d(-60, 60 ), Math.toRadians(450))
                                         .waitSeconds(.5)
+                                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                            //close claw
+                                        })
 
                                         //go to box
                                         .setReversed(false)
@@ -55,6 +67,9 @@ public class SpecimenRedAuton {
                                         .lineToSplineHeading(new Pose2d(-6, 35, Math.toRadians(450)))
                                         .back(5)
                                         .waitSeconds(.5)
+                                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                            //open claw (third spec)
+                                        })
                                         .forward(5)
 
 
