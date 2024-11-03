@@ -79,7 +79,8 @@ public class ActiveCycle {
                 }
 //                if (!controls.clearFailsafe.value()) {
 //                    intake.extendoFullRetract();
-//                    intake.activeIntake.failsafeClear();
+//                    intake.activeIntake.flipUp();
+//                    intake.activeIntake.motorRollerOff();
 //                    transferState = TransferState.EXTENDO_FULLY_RETRACTED;
 //                }
                 break;

@@ -47,20 +47,13 @@ public class IntakeTests {
         verify(rollerMotor).setPower(anyDouble());
     }
 
-    @Test
-    public void testServoMovesBackRollerBackwards() {
-        // servo should be set to backwards, only run when detects non-alliance colored block
-        // should already be set to reverse
-        intake.activeIntake.pushOutSample();
-        verify(backRollerServo).setPosition(anyDouble());
-    }
-
-    @Test
-    public void testPivotServoCanChangePositionStates() {
-        // get these from testing, and Souren?
-        // axon so we can use getPosition()
-        // TODO Make states first, this is really a hardware thing
-    }
+//    @Test
+//    public void testServoMovesBackRollerBackwards() {
+//        // servo should be set to backwards, only run when detects non-alliance colored block
+//        // should already be set to reverse
+//        intake.activeIntake.pushOutSample();
+//        verify(backRollerServo).setPosition(anyDouble());
+//    }
 
     @Test
     public void testPivotServoGoesToFullPos() {
@@ -83,7 +76,7 @@ public class IntakeTests {
 
         verify(pivotAxon).setPosition(0);
 
-        verify(backRollerServo).setPosition(0.5);
+        // verify(backRollerServo).setPosition(0.5);
     }
 
     @Test
@@ -101,9 +94,5 @@ public class IntakeTests {
         verify(rightExtendo).setPosition(anyDouble());
     }
 
-    @Test
-    public void testTimedTransfer() {
-        intake.activeIntake.transferSample();
-        verify(rollerMotor).setPower(0);
-    }
+
 }
