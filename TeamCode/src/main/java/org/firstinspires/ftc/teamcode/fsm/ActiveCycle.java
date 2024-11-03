@@ -7,6 +7,7 @@ import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.intake.IntakeConstants;
 import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
+import org.firstinspires.ftc.teamcode.mechanisms.specimen.SpecimenClaw;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
 public class ActiveCycle {
@@ -14,7 +15,7 @@ public class ActiveCycle {
     private Outtake outtake;
     private GamepadMapping controls;
     private Robot robot;
-
+    private SpecimenClaw specimenClaw;
     public ActiveCycle.TransferState transferState;
     private Telemetry telemetry;
     private ElapsedTime loopTime;
@@ -24,6 +25,7 @@ public class ActiveCycle {
         this.intake = robot.intake;
         this.outtake = robot.outtake;
         this.controls = controls;
+        this.specimenClaw = robot.specimenClaw;
 
         this.telemetry = telemetry;
 
@@ -38,6 +40,7 @@ public class ActiveCycle {
 
         switch (transferState) {
             case BASE_STATE:
+                // TODO: claw defaults to open?
                 robot.hardwareSoftReset();
                 transferState = ActiveCycle.TransferState.EXTENDO_FULLY_RETRACTED;
                 break;
@@ -61,6 +64,14 @@ public class ActiveCycle {
 //                    intake.activeIntake.failsafeClear();
 //                    transferState = TransferState.EXTENDO_FULLY_EXTENDED;
 //                }
+                if (controls.openClaw.value()) {
+                    specimenClaw.openClaw();
+                } else {
+                    specimenClaw.closeClaw();
+                }
+                if (controls.scoreSpec.value()) {
+                    transferState = ActiveCycle.TransferState.SPEC_SCORING;
+                }
                 break;
             case EXTENDO_FULLY_EXTENDED:
                 outtake.returnToRetracted();
@@ -73,9 +84,6 @@ public class ActiveCycle {
                 }
                 if (controls.intakeOnToIntake.locked() || controls.intakeOnToClear.locked()) {
                     transferState = ActiveCycle.TransferState.INTAKING;
-                }
-                if (controls.botToBaseState.value()) {
-                    transferState = ActiveCycle.TransferState.BASE_STATE;
                 }
 //                if (!controls.clearFailsafe.value()) {
 //                    intake.extendoFullRetract();
@@ -167,6 +175,16 @@ public class ActiveCycle {
 //                    transferState = ActiveCycle.TransferState.INTAKING;
 //                }
 //                break;
+            case SPEC_SCORING:
+                specimenClaw.closeClaw();
+                outtake.extendToSpecimenHighRack();
+                if (!controls.scoreSpec.value()) {
+                    outtake.returnToRetracted();
+                    // may need to have elapsed time here
+                    specimenClaw.openClaw();
+                    transferState = ActiveCycle.TransferState.EXTENDO_FULLY_RETRACTED;
+                }
+                break;
         }
     }
     public enum TransferState {
@@ -178,6 +196,7 @@ public class ActiveCycle {
         SLIDES_RETRACTED("SLIDES_RETRACTED"),
         HIGH_BASKET("HIGH_BASKET"),
         LOW_BASKET("LOW_BASKET"),
+        SPEC_SCORING("SPEC_SCORING"),
         // PUSH_OUT_BAD_COLOR("PUSH_OUT_BAD_COLOR"),
         HANGING("HANGING");
 

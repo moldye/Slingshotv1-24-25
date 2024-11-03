@@ -130,11 +130,11 @@ public class DriveTrain {
         // but only if at least one is out of the range [-1, 1]
         double denominator = Math.max(Math.abs(drive) + Math.abs(strafe) + Math.abs(turn), 1);
 
-        if (Outtake.getOuttakeDTSlow() && slowMode) {
-            slowMultiplier = 0.25;
-        } else {
-            slowMultiplier = 1;
-        }
+//        if (Outtake.getOuttakeDTSlow() && slowMode) {
+//            slowMultiplier = 0.25;
+//        } else {
+//            slowMultiplier = 1;
+//        }
 
         leftFront.setPower(((drive + strafe + turn) / denominator) * slowMultiplier);
         leftBack.setPower(((drive - strafe + turn) / denominator) * slowMultiplier);

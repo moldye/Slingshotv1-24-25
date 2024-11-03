@@ -60,13 +60,13 @@ public class GamepadMapping {
 
     // SCORING
     // --------------
-    public static double adjustmentSlides = 0.0;
+    public static Toggle scoreSpec;
     public static Toggle openClaw;
     public static Toggle L1hang;
 
     // LOCKED HEADING
     // -----------------
-    public static Toggle toggleLockedHeading;
+    // public static Toggle toggleLockedHeading;
     public static boolean lock90 = false;
     public static boolean lock180 = false;
     public static boolean lock270 = false;
@@ -104,6 +104,7 @@ public class GamepadMapping {
 
         // spec
         openClaw = new Toggle(false);
+        scoreSpec = new Toggle(false);
 
         // OTHER
         botToBaseState = new Toggle(false);
@@ -135,8 +136,6 @@ public class GamepadMapping {
 
         intakeOnToIntake.update(gamepad2.right_trigger > 0.5);
         intakeOnToClear.update(gamepad2.left_trigger > 0.5);
-
-        clearFailsafe.update(gamepad2.x);
     }
 
     // v1 robot
@@ -155,8 +154,8 @@ public class GamepadMapping {
         L1hang.update(gamepad2.dpad_up); // TODO Ask Drivers
 
         // spec
-        openClaw.update(gamepad2.b);
-        adjustmentSlides = gamepad2.left_stick_y;
+        openClaw.update(gamepad2.left_trigger > 0.3);
+        scoreSpec.update(gamepad1.right_trigger > 0.3);
 
         // Reset/Fail Safes (Both controllers should have these)
         botToBaseState.update(gamepad1.dpad_down);
@@ -167,5 +166,7 @@ public class GamepadMapping {
         intakeOnToIntake.update(gamepad1.right_trigger > 0.5);
         intakeOnToClear.update(gamepad1.left_trigger > 0.5);
         transfer.update(gamepad2.y);
+
+        clearFailsafe.update(gamepad1.x);
     }
 }

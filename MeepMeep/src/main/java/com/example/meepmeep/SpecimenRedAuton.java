@@ -22,8 +22,6 @@ public class SpecimenRedAuton {
                 .followTrajectorySequence(drive ->
                                 drive.trajectorySequenceBuilder(new Pose2d(-12, 60, Math.toRadians(450)))
 
-
-
                                         .back(30)
                                         .waitSeconds(.5)
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
