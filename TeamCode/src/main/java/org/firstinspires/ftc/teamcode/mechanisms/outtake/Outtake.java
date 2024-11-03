@@ -86,9 +86,9 @@ public class Outtake {
         moveTicks(OuttakeConstants.SlidePositions.HIGH_BASKET.getSlidePos());
     }
 
-//    public void extendToSpecimenHighRack() {
-//        moveTicks(OuttakeConstants.SlidePositions.SPECIMEN_HIGH_RACK;); // tune target obviously
-//    }
+    public void extendToSpecimenHighRack() {
+        moveTicks(OuttakeConstants.SlidePositions.SPECIMEN_HIGH_RACK.getSlidePos()); // tune target obviously
+    }
 
     public void depositToHP() {
         // this just flips bucket at slide pos 0
@@ -141,6 +141,16 @@ public class Outtake {
 
     public static boolean getOuttakeDTSlow() {
         return outtakeDTSlow;
+    }
+
+    public void adjustSlides() {
+        // right side is strung
+        double currPos = outtakeSlideRight.getCurrentPosition();
+        double adjustTicks = currPos + controls.adjustmentSlides * 20; // tune 20
+        if (adjustTicks >= OuttakeConstants.SlidePositions.RETRACTED.getSlidePos() &&
+                adjustTicks <= OuttakeConstants.SlidePositions.HIGH_BASKET.getSlidePos()) {
+            moveTicks(outtakeSlideLeft.getCurrentPosition() + adjustTicks);
+        }
     }
 
     public void updateTelemetry() {

@@ -57,11 +57,6 @@ public class SpecimenRedAuton {
                                         .waitSeconds(.5)
                                         .forward(5)
 
-
-
-
-
-
                                         //get sample
                                         .splineToSplineHeading(new Pose2d(-25,50,Math.toRadians(120)),Math.toRadians(180))
                                         .lineToSplineHeading(new Pose2d(-48, 50, Math.toRadians(270)))

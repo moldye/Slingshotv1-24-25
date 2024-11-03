@@ -49,7 +49,7 @@ public class GamepadMapping {
     // transfer sample should be automatic here
     // button, driver 1
     public static Toggle transferHover;
-    public static Toggle openClaw;
+    // public static Toggle openClaw;
 
 
     // OUTTAKE
@@ -60,8 +60,8 @@ public class GamepadMapping {
 
     // SCORING
     // --------------
-    public static Toggle latchSpecimen;
-    public static Toggle switchClaw;
+    public static double adjustmentSlides = 0.0;
+    public static Toggle openClaw;
     public static Toggle L1hang;
 
     // LOCKED HEADING
@@ -94,13 +94,16 @@ public class GamepadMapping {
 
         pivot = new Toggle(false);
         transferHover = new Toggle(false);
-        openClaw = new Toggle(false);
+        // openClaw = new Toggle(false);
 
         // OUTTAKE
         flipBucket = new Toggle(false);
         highBasket = new Toggle(false);
         lowBasket = new Toggle(false);
         L1hang = new Toggle(false);
+
+        // spec
+        openClaw = new Toggle(false);
 
         // OTHER
         botToBaseState = new Toggle(false);
@@ -118,7 +121,7 @@ public class GamepadMapping {
         // first driver
         transferHover.update(gamepad1.left_bumper);
         wristYaw = gamepad2.right_stick_x;
-        openClaw.update(gamepad2.b);
+        // openClaw.update(gamepad2.b);
 
         transfer.update(gamepad2.y);
     }
@@ -150,6 +153,10 @@ public class GamepadMapping {
         flipBucket.update(gamepad2.a);
 
         L1hang.update(gamepad2.dpad_up); // TODO Ask Drivers
+
+        // spec
+        openClaw.update(gamepad2.b);
+        adjustmentSlides = gamepad2.left_stick_y;
 
         // Reset/Fail Safes (Both controllers should have these)
         botToBaseState.update(gamepad1.dpad_down);
