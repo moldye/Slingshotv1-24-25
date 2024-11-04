@@ -13,6 +13,10 @@ import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
 
 public class Robot{
+    // TODO stuff souren wants to remember:
+    // - 435 motors
+    // - 245 M belt (for intake)
+
     // odo:
     // 0 control hub -> back
     // 2 control hub -> side/right
@@ -26,7 +30,6 @@ public class Robot{
     // analog encoder -> 0 on expansion analog ports
     // color sensor -> 1 on control hub i2c ports
 
-    // When looking at bot, the wire for the wrist servo should curl around right side of the claw
     // wrist (gobilda torque) -> 2 on expansion hub
     // claw (mini) -> 0 on expansion hub
     // v4b (max) -> 1 on expansion hub
