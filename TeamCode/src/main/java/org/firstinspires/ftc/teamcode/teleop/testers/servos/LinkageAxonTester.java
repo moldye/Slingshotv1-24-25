@@ -16,6 +16,7 @@ public class LinkageAxonTester extends OpMode {
     private GamepadMapping controls;
     private Intake intake;
 
+    public static boolean smallAdjust = false;
     public static double rservoPos = .5;
     public static double lservoPos = .5;
 
@@ -28,11 +29,13 @@ public class LinkageAxonTester extends OpMode {
 
     @Override
     public void loop() {
-        double rServo = rservoPos;
-        double lServo = lservoPos;
-        if (rServo > lServo + .1 || lServo > rServo + .1) {
+        if (smallAdjust) {
             intake.rightExtendo.setPosition(rservoPos);
             intake.leftExtendo.setPosition(lservoPos);
+        } else {
+            intake.rightExtendo.setPosition(rservoPos);
+            intake.rightExtendo.setPosition(rservoPos);
         }
+
     }
 }

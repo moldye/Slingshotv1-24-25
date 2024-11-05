@@ -25,7 +25,7 @@ public class ClawTest extends OpMode {
         robot = new Robot(hardwareMap, telemetry, controls);
         cycle = new ClawCycle(telemetry, controls, robot);
 
-        robot.intake.claw.resetClaw();
+        // robot.intake.claw.resetClaw();
 
         loopTime = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
         startTime = loopTime.milliseconds();
@@ -37,6 +37,12 @@ public class ClawTest extends OpMode {
         robot.drivetrain.update();
 
         // double wristSpeed = 0.4;
-        robot.intake.claw.controlWristPos();
+        // robot.intake.claw.controlWristPos();
+
+        if (controls.extend.value()) {
+            robot.intake.extendoFullExtend();
+        } else {
+            robot.intake.extendoFullRetract();
+        }
     }
 }
