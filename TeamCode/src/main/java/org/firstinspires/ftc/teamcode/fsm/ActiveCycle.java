@@ -119,10 +119,12 @@ public class ActiveCycle {
                     if (controls.extend.value()) {
                         transferState = ActiveCycle.TransferState.EXTENDO_FULLY_EXTENDED;
                         intake.extendoFullExtend();
+                        controls.transfer.set(false);
                         break;
                     }
                 } else if (loopTime.milliseconds() - startTime > 2000) {
                     transferState = ActiveCycle.TransferState.EXTENDO_FULLY_RETRACTED;
+                    controls.transfer.set(false);
                 }
 //                intake.activeIntake.transferSample();
 //                if (!controls.transfer.value()) {

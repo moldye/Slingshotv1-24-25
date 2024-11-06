@@ -123,8 +123,6 @@ public class GamepadMapping {
         transferHover.update(gamepad1.left_bumper);
         wristYaw = gamepad2.right_stick_x;
         // openClaw.update(gamepad2.b);
-
-        transfer.update(gamepad2.y);
     }
 
     public void v4bActiveUpdate() {
@@ -165,7 +163,7 @@ public class GamepadMapping {
     public void activeIntakeUpdate() {
         intakeOnToIntake.update(gamepad1.right_trigger > 0.5);
         intakeOnToClear.update(gamepad1.left_trigger > 0.5);
-        transfer.update(gamepad2.y);
+        transfer.update(gamepad1.right_trigger > 0.5);
 
         clearFailsafe.update(gamepad1.x);
     }

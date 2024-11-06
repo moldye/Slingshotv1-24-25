@@ -4,7 +4,7 @@ public class IntakeConstants {
 
     // pivoted up, pivoted down, transfer pos, clearing samples, failsafe clear
     // axon programmed for 0-255, 66 PMW (inverted)
-    private static final double[] pivotPositions = {.35, 1, .35, .6, .4};
+    private static final double[] pivotPositions = {.35, .98, .35, .6, .4};
 
     // neutral pos, back roller push out sample (extendo), back roller transfer
     private static final double[] backRollerPositions = {0.5, 1, -1};
