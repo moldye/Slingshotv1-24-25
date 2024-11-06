@@ -56,7 +56,8 @@ public class speciSearch implements VisionProcessor {
     //kernal
     public int dilateSize = 1;
     public int erodeSize = 2;
-    //thing
+    //things
+    double bufferWidth = 64;
     private static final Scalar BLUE = new Scalar(0, 0, 255);
 
     public speciSearch(Telemetry telemetry){
@@ -138,6 +139,9 @@ public class speciSearch implements VisionProcessor {
     @Override
     public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight, float scaleBmpPxToCanvasPx, float scaleCanvasDensity, Object userContext) {
 
+    }
+    public double getOffset(){
+        return 0.0;
     }
 //    public ArrayList<double[]> getLines(){
 //        return lineList;
