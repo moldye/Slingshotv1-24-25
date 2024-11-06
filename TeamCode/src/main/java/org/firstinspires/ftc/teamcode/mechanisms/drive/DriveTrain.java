@@ -153,6 +153,11 @@ public class DriveTrain {
         moveRoboCentric(newX,newY,-turn);
     }
 
+    // TODO implement this so that the bot will automatically position itself to the bucket
+    public void positionToBucket() {
+
+    }
+
     public double getHeading() {
         return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
     }
