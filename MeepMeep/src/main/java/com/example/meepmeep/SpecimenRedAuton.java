@@ -20,7 +20,7 @@ public class SpecimenRedAuton {
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setConstraints(70, 55, 2.5, 2, 14)
                 .followTrajectorySequence(drive ->
-                                drive.trajectorySequenceBuilder(new Pose2d(-12, 60, Math.toRadians(450)))
+                                drive.trajectorySequenceBuilder(new Pose2d(-9, 60, Math.toRadians(450)))
 
                                         .back(30)
                                         .waitSeconds(.5)
@@ -32,17 +32,15 @@ public class SpecimenRedAuton {
 
                                         //go ti HP
                                         .setReversed(true)
-                                        .lineToSplineHeading(new Pose2d(-36, 35, Math.toRadians(360)))
-                                        .splineTo(new Vector2d(-60, 60 ), Math.toRadians(450))
+                                        .lineToSplineHeading(new Pose2d(-18, 35, Math.toRadians(360)))
+                                        .splineTo(new Vector2d(-49, 60 ), Math.toRadians(450))
                                         .waitSeconds(.5)
-                                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                            //close claw
-                                        })
+                                        .back(5)
 
                                         //go to box
                                         .setReversed(false)
-                                        .splineTo(new Vector2d(-36, 35), Math.toRadians(360))
-                                        .lineToSplineHeading(new Pose2d(-9, 35, Math.toRadians(450)))
+                                        .splineTo(new Vector2d(-18, 35), Math.toRadians(360))
+                                        .lineToSplineHeading(new Pose2d(-6, 35, Math.toRadians(450)))
                                         .back(5)
                                         .waitSeconds(.5)
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
@@ -52,8 +50,8 @@ public class SpecimenRedAuton {
 
                                         //go ti HP
                                         .setReversed(true)
-                                        .lineToSplineHeading(new Pose2d(-36, 35, Math.toRadians(360)))
-                                        .splineTo(new Vector2d(-60, 60 ), Math.toRadians(450))
+                                        .lineToSplineHeading(new Pose2d(-9, 35, Math.toRadians(360)))
+                                        .splineTo(new Vector2d(-49, 63 ), Math.toRadians(450))
                                         .waitSeconds(.5)
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                                             //close claw
@@ -61,8 +59,8 @@ public class SpecimenRedAuton {
 
                                         //go to box
                                         .setReversed(false)
-                                        .splineTo(new Vector2d(-36, 35), Math.toRadians(360))
-                                        .lineToSplineHeading(new Pose2d(-6, 35, Math.toRadians(450)))
+                                        .splineTo(new Vector2d(-18, 35), Math.toRadians(360))
+                                        .lineToSplineHeading(new Pose2d(-4, 35, Math.toRadians(450)))
                                         .back(5)
                                         .waitSeconds(.5)
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
@@ -71,18 +69,7 @@ public class SpecimenRedAuton {
                                         .forward(5)
 
                                         //get sample
-                                        .splineToSplineHeading(new Pose2d(-25,50,Math.toRadians(120)),Math.toRadians(180))
-                                        .lineToSplineHeading(new Pose2d(-48, 50, Math.toRadians(270)))
-                                        .waitSeconds(0.5)
-                                        .turn(Math.toRadians(-40))
-                                        .waitSeconds(0.5)
-                                        .turn(Math.toRadians(40))
-                                        .waitSeconds(0.5)
-                                        .turn(Math.toRadians(-50))
-                                        .waitSeconds(0.5)
-                                        .turn(Math.toRadians(50))
 
-                                        .back(10)
 
 
 
