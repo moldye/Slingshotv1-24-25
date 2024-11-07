@@ -21,7 +21,7 @@ public class SpecimenRedAuton {
                 .setConstraints(70, 55, 2.5, 2, 14)
                 .followTrajectorySequence(drive ->
                                 drive.trajectorySequenceBuilder(new Pose2d(-9, 60, Math.toRadians(450)))
-
+//                                      score preloaded spec
                                         .back(30)
                                         .waitSeconds(.5)
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
@@ -35,7 +35,10 @@ public class SpecimenRedAuton {
                                         .lineToSplineHeading(new Pose2d(-18, 38, Math.toRadians(360)))
                                         .splineTo(new Vector2d(-49, 60 ), Math.toRadians(450))
                                         .waitSeconds(.5)
+                                        // intake sample
+                                        //outtake sample
                                         .back(4)
+                                        //intake spec
 
                                         //go to box
                                         .setReversed(false)
@@ -48,14 +51,14 @@ public class SpecimenRedAuton {
                                         })
                                         .forward(5)
 
-                                        //go ti HP
+                                        //go to HP
                                         .setReversed(true)
                                         .lineToSplineHeading(new Pose2d(-22, 38, Math.toRadians(353)))
                                         .splineTo(new Vector2d(-49, 60 ), Math.toRadians(450))
                                         .back(2)
                                         .waitSeconds(.5)
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                            //close claw
+                                            //close claw (intake 3rd spec)
                                         })
 
                                         //go to box
@@ -65,11 +68,11 @@ public class SpecimenRedAuton {
                                         .back(5)
                                         .waitSeconds(.5)
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                            //open claw (third spec)
+                                            //open claw (score third spec)
                                         })
                                         .forward(5)
 
-                                        //get sample
+
 
 
 
