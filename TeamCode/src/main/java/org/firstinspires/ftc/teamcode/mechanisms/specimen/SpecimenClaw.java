@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class SpecimenClaw {
-    private Servo clawServo;
+    public Servo clawServo;
     public SpecimenClaw(HardwareMap hwMap) {
         clawServo = hwMap.get(Servo.class, "clawServo");
     }

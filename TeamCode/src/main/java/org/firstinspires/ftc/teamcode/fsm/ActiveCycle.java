@@ -71,15 +71,17 @@ public class ActiveCycle {
 //                    specimenClaw.openClaw();
 //                } else {
 //                    specimenClaw.closeClaw();
+//
 //                }
 //                if (controls.scoreSpec.value()) {
+                //    outtake.extendToRemoveSpecFromWall();
 //                    transferState = ActiveCycle.TransferState.SPEC_SCORING;
+//                    startTime = loopTime.milliseconds();
 //                }
                 break;
             case EXTENDO_FULLY_EXTENDED:
                 outtake.returnToRetracted();
                 if (!controls.extend.value()) {
-                    intake.activeIntake.flipUp();
                     intake.extendoFullRetract();
                     intake.activeIntake.flipToTransfer();
                     transferState = TransferState.EXTENDO_FULLY_RETRACTED;
@@ -187,6 +189,14 @@ public class ActiveCycle {
 //                    // may need to have elapsed time here
 //                    specimenClaw.openClaw();
 //                    transferState = ActiveCycle.TransferState.EXTENDO_FULLY_RETRACTED;
+
+//                    if (loopTime.milliseconds() - startTime <= 1000 && loopTime.milliseconds() - startTime >= 500){
+//                      specimenClaw.openClaw();
+//                    }
+    //                else if (loopTime.milliseconds() - startTime > 1000) {
+    //                    transferState = ActiveCycle.TransferState.EXTENDO_FULLY_RETRACTED;
+    //                    controls.openClaw.set(true);
+    //                }
 //                }
 //                break;
 

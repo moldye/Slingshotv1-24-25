@@ -95,6 +95,10 @@ public class Outtake {
         moveTicks(OuttakeConstants.SlidePositions.RETRACTED.getSlidePos());
     }
 
+    public void extendToRemoveSpecFromWall() {
+        moveTicks(OuttakeConstants.SlidePositions.GRABBING_SPEC.getSlidePos());
+    }
+
     public void resetHardware() {
         returnToRetracted();
         // other resetting bucket stuff here

@@ -45,6 +45,10 @@ public class Robot{
     // slideRight = expansion 2
     // bucketServo = 2 control
 
+    // spec:
+    // spec claw = 1 on control hub
+
+
     public DriveTrain drivetrain;
     // public ReLocalizer ultraSonics;
     public IMU imu;
