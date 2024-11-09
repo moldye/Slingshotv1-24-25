@@ -25,6 +25,7 @@ public class SpecimenRedAuton {
                                         .back(30)
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                                             //tiny slides raise
+//                                            extendtoRemoveSpecFromWall();
                                         })
                                         .waitSeconds(.5)
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
@@ -36,7 +37,7 @@ public class SpecimenRedAuton {
                                         //go ti HP
                                         .setReversed(true)
                                         .lineToConstantHeading(new Vector2d(-19, 38))
-                                        .splineToConstantHeading(new Vector2d(-40, 15), Math.toRadians(90))
+                                        .splineToConstantHeading(new Vector2d(-42, 15), Math.toRadians(90))
 
                                         //ready to push sample1
                                         .forward(45)
