@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
 
 public class SpecimenRedAuton {
     public static void main(String[] args) {
-        MeepMeep meepMeep = new MeepMeep(800);
+        MeepMeep meepMeep = new MeepMeep(700);
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
@@ -23,36 +23,78 @@ public class SpecimenRedAuton {
                                 drive.trajectorySequenceBuilder(new Pose2d(-9, 60, Math.toRadians(450)))
 //                                      score preloaded spec
                                         .back(30)
+                                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                            //tiny slides raise
+//                                            extendtoRemoveSpecFromWall();
+                                        })
                                         .waitSeconds(.5)
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                                             //open claw (preloaded spec)
                                         })
-                                        .forward(8)
+                                        .forward(9)
 
 
                                         //go ti HP
                                         .setReversed(true)
-                                        .lineToSplineHeading(new Pose2d(-18, 38, Math.toRadians(360)))
-                                        .splineTo(new Vector2d(-49, 60 ), Math.toRadians(450))
-                                        .waitSeconds(.5)
-                                        // intake sample
-                                        //outtake sample
-                                        .back(4)
-                                        //intake spec
+                                        .lineToConstantHeading(new Vector2d(-19, 38))
+                                        .splineToConstantHeading(new Vector2d(-42, 15), Math.toRadians(90))
 
-                                        //go to box
-                                        .setReversed(false)
-                                        .splineTo(new Vector2d(-18, 37), Math.toRadians(360))
-                                        .lineToSplineHeading(new Pose2d(-6, 37, Math.toRadians(450)))
-                                        .back(6)
+                                        //ready to push sample1
+                                        .forward(45)
+
+
+                                        //push sample 2
+                                        .setReversed(true)
+                                        .lineToLinearHeading(new Pose2d(-40, 25, Math.toRadians(270)))
+                                        .lineToConstantHeading(new Vector2d(-40, 17))
+                                        .splineToConstantHeading(new Vector2d(-52, 10), Math.toRadians(0))
+
+                                        .back(55)
                                         .waitSeconds(.5)
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                            //open claw (second spec)
+                                            //close claw (intake spec 2)
+                                        })
+                                        .forward(5)
+                                        //go to box
+                                        .setReversed(false)
+                                        .splineTo(new Vector2d(-15, 37), Math.toRadians(360))
+                                        .lineToSplineHeading(new Pose2d(-4, 37, Math.toRadians(450)))
+                                        .back(5)
+                                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                            // tiny slides raise
+                                        })
+                                        .waitSeconds(.5)
+                                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                            //open claw (spec + 1)
+                                        })
+                                        .forward(8)
+
+                                        //go to hp (3rd spec)
+                                        .lineToSplineHeading(new Pose2d(-20, 40, Math.toRadians(360)))
+                                        .splineTo(new Vector2d(-39, 60 ), Math.toRadians(450))
+                                        .back(4)
+                                        .waitSeconds(.5)
+                                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                            //close claw (spec + 2)
+                                        })
+
+                                        //back to box
+                                        .splineTo(new Vector2d(-15, 37), Math.toRadians(360))
+                                        .lineToSplineHeading(new Pose2d(-2, 37, Math.toRadians(450)))
+                                        .back(5)
+                                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                            //tiny slides raise
+                                        })
+                                        .waitSeconds(.5)
+                                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                            //open claw (spec + 2)
                                         })
                                         .forward(5)
 
+
+
                                         //go to HP
-                                        .setReversed(true)
+                                        /*.setReversed(true)
                                         .lineToSplineHeading(new Pose2d(-22, 38, Math.toRadians(353)))
                                         .splineTo(new Vector2d(-49, 60 ), Math.toRadians(450))
                                         .back(2)
@@ -78,7 +120,7 @@ public class SpecimenRedAuton {
 
 
 //                                .waitSeconds(0.5)
-//                                .turn(Math.toRadians(50))
+//                                .turn(Math.toRadians(50))*/
 
 
                                         .build()
