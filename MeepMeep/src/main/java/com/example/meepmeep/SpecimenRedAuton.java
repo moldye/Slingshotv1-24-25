@@ -45,12 +45,13 @@ public class SpecimenRedAuton {
 
                                         //push sample 2
                                         .setReversed(true)
-                                        .lineToLinearHeading(new Pose2d(-40, 25, Math.toRadians(270)))
-                                        .lineToConstantHeading(new Vector2d(-40, 17))
-                                        .splineToConstantHeading(new Vector2d(-52, 10), Math.toRadians(0))
+                                        //.lineToLinearHeading(new Pose2d(-40, 25, Math.toRadians(270)))
+                                        //.lineToConstantHeading(new Vector2d(-40, 17))
+                                        .lineToSplineHeading(new Pose2d(-46, 25, Math.toRadians(255)))
+                                        .splineTo(new Vector2d(-52, 10), Math.toRadians(278))
 
                                         .back(55)
-                                        .waitSeconds(.5)
+                                        .waitSeconds(.3)
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                                             //close claw (intake spec 2)
                                         })
@@ -74,14 +75,15 @@ public class SpecimenRedAuton {
                                         .splineTo(new Vector2d(-39, 60 ), Math.toRadians(450))
                                         .back(4)
                                         .waitSeconds(.5)
+                                        .forward(4)
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                                             //close claw (spec + 2)
                                         })
 
                                         //back to box
-                                        .splineTo(new Vector2d(-15, 37), Math.toRadians(360))
-                                        .lineToSplineHeading(new Pose2d(-2, 37, Math.toRadians(450)))
-                                        .back(5)
+                                        .splineTo(new Vector2d(-20, 40), Math.toRadians(360))
+                                        .lineToSplineHeading(new Pose2d(-2, 40, Math.toRadians(450)))
+                                        .back(7)
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                                             //tiny slides raise
                                         })
