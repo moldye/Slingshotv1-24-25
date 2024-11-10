@@ -11,33 +11,32 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.intake.IntakeConstants;
 import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
+import org.firstinspires.ftc.teamcode.mechanisms.specimen.SpecimenClaw;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Autonomous
 public class SampleAuton16 extends LinearOpMode {
-
     private GamepadMapping controls;
     private Robot robot;
-    private static IntakeConstants.ActiveIntakeStates intakeState;
     private Intake intake;
     private Outtake outtake;
+
     @Override
     public void runOpMode() throws InterruptedException {
         controls = new GamepadMapping(gamepad1, gamepad2);
         robot = new Robot(hardwareMap, telemetry, controls);
         intake = robot.intake;
         outtake = robot.outtake;
+
         robot.outtake.resetEncoders();
+
         moveLift(0);
         outtake.bucketToReadyForTransfer();
         intake.extendoFullRetract();
         intake.activeIntake.flipUp();
 
-        //robot.hardwareHardReset();
-
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-
 
         Pose2d startPose = new Pose2d(-12, -63.5, Math.toRadians(0));
 
