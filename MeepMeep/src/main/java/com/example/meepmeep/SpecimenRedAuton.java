@@ -74,12 +74,13 @@ public class SpecimenRedAuton {
                                         .splineTo(new Vector2d(-39, 60 ), Math.toRadians(450))
                                         .back(4)
                                         .waitSeconds(.5)
+                                        .forward(4)
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                                             //close claw (spec + 2)
                                         })
 
                                         //back to box
-                                        .splineTo(new Vector2d(-15, 37), Math.toRadians(360))
+                                        .splineTo(new Vector2d(-13, 37), Math.toRadians(360))
                                         .lineToSplineHeading(new Pose2d(-2, 37, Math.toRadians(450)))
                                         .back(5)
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
