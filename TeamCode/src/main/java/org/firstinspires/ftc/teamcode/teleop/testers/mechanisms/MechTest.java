@@ -26,6 +26,7 @@ public class MechTest extends OpMode {
 
     @Override
     public void loop() {
+        controls.update();
         if(controls.openClaw.value() && clawOnly) {
             specClaw.openClaw();
         } else if(!controls.openClaw.value() && clawOnly) {
