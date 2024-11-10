@@ -45,7 +45,7 @@ public class SampleAuton16 extends LinearOpMode {
 
         TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
                 //start by raising slides to go score
-                //Preloaded Spec
+//                //Preloaded Spec
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //raise slides
                     moveLift(2400);                })
@@ -56,7 +56,7 @@ public class SampleAuton16 extends LinearOpMode {
                 })
                 .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                     //open claw
-                    robot.intake.claw.openClaw();
+                    //robot.intake.claw.openClaw();
                 })
                 .waitSeconds(.3)
                 .setReversed(false)

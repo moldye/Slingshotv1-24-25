@@ -153,7 +153,7 @@ public class GamepadMapping {
 
         // spec
         openClaw.update(gamepad2.left_trigger > 0.3);
-        scoreSpec.update(gamepad1.right_trigger > 0.3);
+        scoreSpec.update(gamepad2.right_trigger > 0.3);
 
         // Reset/Fail Safes (Both controllers should have these)
         botToBaseState.update(gamepad1.dpad_down);

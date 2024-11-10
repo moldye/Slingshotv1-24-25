@@ -67,23 +67,24 @@ public class ActiveCycle {
 //                    intake.activeIntake.failsafeClear();
 //                    transferState = TransferState.EXTENDO_FULLY_EXTENDED;
 //                }
-//                if (controls.openClaw.value()) {
-//                    specimenClaw.openClaw();
-//                } else {
-//                    specimenClaw.closeClaw();
-//
-//                }
-//                if (controls.scoreSpec.value()) {
-                //    outtake.extendToRemoveSpecFromWall();
-//                    transferState = ActiveCycle.TransferState.SPEC_SCORING;
-//                    startTime = loopTime.milliseconds();
-//                }
+                if (controls.openClaw.value()) {
+                    specimenClaw.openClaw();
+                } else {
+                    specimenClaw.closeClaw();
+
+                }
+                if (controls.scoreSpec.value()) {
+                    outtake.extendToRemoveSpecFromWall();
+                    specimenClaw.closeClaw();
+                    transferState = ActiveCycle.TransferState.SPEC_SCORING;
+                }
                 break;
             case EXTENDO_FULLY_EXTENDED:
                 outtake.returnToRetracted();
                 if (!controls.extend.value()) {
                     intake.extendoFullRetract();
                     intake.activeIntake.flipToTransfer();
+                    controls.transfer.set(false);
                     transferState = TransferState.EXTENDO_FULLY_RETRACTED;
                 }
                 if (controls.intakeOnToIntake.locked() || controls.intakeOnToClear.locked()) {
@@ -113,9 +114,7 @@ public class ActiveCycle {
                 break;
             case TRANSFERING:
                 outtake.returnToRetracted();
-                intake.activeIntake.flipToTransfer();
-                intake.extendoFullRetract();
-                if (loopTime.milliseconds() - startTime <= 2000 && loopTime.milliseconds() - startTime >= 1000){
+                if (loopTime.milliseconds() - startTime <= 700){
                     intake.activeIntake.transferSample();
 
                     if (controls.extend.value()) {
@@ -124,7 +123,7 @@ public class ActiveCycle {
                         controls.transfer.set(false);
                         break;
                     }
-                } else if (loopTime.milliseconds() - startTime > 2000) {
+                } else if (loopTime.milliseconds() - startTime > 700) {
                     transferState = ActiveCycle.TransferState.EXTENDO_FULLY_RETRACTED;
                     controls.transfer.set(false);
                 }
@@ -181,25 +180,24 @@ public class ActiveCycle {
 //                    transferState = ActiveCycle.TransferState.INTAKING;
 //                }
 //                break;
-//            case SPEC_SCORING:
-//                specimenClaw.closeClaw();
-//                outtake.extendToSpecimenHighRack();
-//                if (!controls.scoreSpec.value()) {
-//                    outtake.returnToRetracted();
-//                    // may need to have elapsed time here
-//                    specimenClaw.openClaw();
-//                    transferState = ActiveCycle.TransferState.EXTENDO_FULLY_RETRACTED;
+            case SPEC_SCORING:
+                outtake.extendToSpecimenHighRack();
+                if (!controls.scoreSpec.value()) {
+                    transferState = TransferState.SPEC_RETRACTING;
+                    startTime = loopTime.milliseconds();
+                }
+                break;
+            case SPEC_RETRACTING:
+                outtake.returnToRetracted();
 
-//                    if (loopTime.milliseconds() - startTime <= 1000 && loopTime.milliseconds() - startTime >= 500){
-//                      specimenClaw.openClaw();
-//                    }
-    //                else if (loopTime.milliseconds() - startTime > 1000) {
-    //                    transferState = ActiveCycle.TransferState.EXTENDO_FULLY_RETRACTED;
-    //                    controls.openClaw.set(true);
-    //                }
-//                }
-//                break;
-
+                if (loopTime.milliseconds() - startTime <= 600 && loopTime.milliseconds() - startTime >= 300){
+                    specimenClaw.openClaw();
+                }
+                else if (loopTime.milliseconds() - startTime > 600) {
+                    transferState = ActiveCycle.TransferState.EXTENDO_FULLY_RETRACTED;
+                    controls.openClaw.set(true);
+                }
+                break;
         }
     }
     public enum TransferState {
@@ -212,6 +210,7 @@ public class ActiveCycle {
         HIGH_BASKET("HIGH_BASKET"),
         LOW_BASKET("LOW_BASKET"),
         SPEC_SCORING("SPEC_SCORING"),
+        SPEC_RETRACTING("SPEC_RETRACTING"),
         // PUSH_OUT_BAD_COLOR("PUSH_OUT_BAD_COLOR"),
         HANGING("HANGING");
 
