@@ -33,24 +33,23 @@ public class StretchedSpecimenAuton {
 
 
                                         //go2other3samples
-                                        .splineToLinearHeading(new Pose2d(40,-40,Math.toRadians(50)), Math.toRadians(0))
+                                        .splineToLinearHeading(new Pose2d(24,-40,Math.toRadians(40)), Math.toRadians(40))
 
                                         //first sample
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
 //                                    extendoIntake();
                                         })
                                         .waitSeconds(0.5)
-                                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-//                                    deextend();
-                                        })
-                                        .turn(Math.toRadians(-90))
+
+                                        .lineToLinearHeading(new Pose2d(30,-50,Math.toRadians(-40)))
                                         .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                                                     //outtake sample
                                         })
                                         .waitSeconds(0.5)
 
                                         //second sample
-                                        .turn(Math.toRadians(80))
+                                        .setReversed(true)
+                                        .splineToLinearHeading(new Pose2d(37,-40,Math.toRadians(40)), Math.toRadians(0))
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
 //                                    extendoIntake();
                                         })
@@ -58,7 +57,7 @@ public class StretchedSpecimenAuton {
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
 //                                    deextend();
                                         })
-                                        .turn(Math.toRadians(-90))
+                                        .lineToLinearHeading(new Pose2d(30,-50,Math.toRadians(-40)))
                                         .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                                             //outtake sample
                                         })
@@ -66,7 +65,7 @@ public class StretchedSpecimenAuton {
 
                                         //third sample
 
-                                        .turn(Math.toRadians(70))
+                                        .splineToLinearHeading(new Pose2d(45,-30,Math.toRadians(10)), Math.toRadians(0))
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
 //                                    extendoIntake();
                                         })
@@ -74,12 +73,11 @@ public class StretchedSpecimenAuton {
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
 //                                    deextend();
                                         })
-                                        .turn(Math.toRadians(-80))
+                                        .lineToLinearHeading(new Pose2d(30,-50,Math.toRadians(-40)))
                                         .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                                             //outtake sample
                                         })
                                         .waitSeconds(0.5)
-                                        .turn(Math.toRadians(60))
 
                                         //get spec
 
@@ -92,7 +90,7 @@ public class StretchedSpecimenAuton {
                                         //go to box
 
 
-
+                                        .setReversed(false)
 //                                        .lineToLinearHeading(new Pose2d(12,-30,Math.toRadians(270)))
 //                                        .splineToLinearHeading(new Pose2d(12,-30,Math.toRadians(270)), Math.toRadians(90))
                                         .splineTo(new Vector2d(23,-36),Math.toRadians(180))
