@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 @TeleOp
 public class FSMTest extends OpMode {
     private GamepadMapping controls;
-    private ClawCycle cycle;
+    private ActiveCycle cycle;
     private Robot robot;
     private Intake intake;
     private Outtake outtake;
@@ -22,7 +22,7 @@ public class FSMTest extends OpMode {
     public void init() {
         controls = new GamepadMapping(gamepad1, gamepad2);
         robot = new Robot(hardwareMap, telemetry, controls);
-        cycle = new ClawCycle(telemetry, controls, robot);
+        cycle = new ActiveCycle(telemetry, controls, robot);
 
         intake = robot.intake;
         outtake = robot.outtake;
@@ -50,7 +50,7 @@ public class FSMTest extends OpMode {
     @Override
     public void loop() {
         // already does dt & controls.update();
-        cycle.clawIntakeUpdate();
-        telemetry.addData("transferState", cycle.transferState.toString());
+        cycle.activeIntakeUpdate();
+        telemetry.addData("transferState", cycle.transferState.stateName());
     }
 }

@@ -21,10 +21,10 @@ public class ActiveIntake {
     private Telemetry telemetry;
 
     public ActiveIntake(HardwareMap hwMap, Telemetry telemetry, GamepadMapping controls) {
-        colorSensor = new ColorSensorModule(telemetry, hwMap, true); //just call sensorModule.checkSample() for the color
+        // colorSensor = new ColorSensorModule(telemetry, hwMap, true); //just call sensorModule.checkSample() for the color
         rollerMotor = hwMap.get(DcMotorEx.class, "rollerMotor");
         pivotAxon = hwMap.get(Servo.class, "pivotAxon");
-        backRollerServo = hwMap.get(Servo.class, "backRoller");
+        // backRollerServo = hwMap.get(Servo.class, "backRoller");
 
         rollerMotor.setDirection(DcMotorEx.Direction.REVERSE);
         rollerMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
@@ -43,6 +43,10 @@ public class ActiveIntake {
     public void flipDownToClear() {
         pivotAxon.setPosition(IntakeConstants.ActiveIntakeStates.CLEARING.pivotPos());
         // pivotAnalog.runToPos(IntakeConstants.IntakeState.CLEARING.pivotPos());
+    }
+
+    public void flipToTransfer() {
+        pivotAxon.setPosition(IntakeConstants.ActiveIntakeStates.TRANSFER.pivotPos());
     }
 
     public void flipUp() {
@@ -65,22 +69,22 @@ public class ActiveIntake {
     public void motorRollerOff() {
         rollerMotor.setPower(0);
     }
-    public void motorRollerOnToClear() { rollerMotor.setPower(0.5); }
+    public void motorRollerOnToClear() { rollerMotor.setPower(0.8); }
 
     public void transferSample() {
         // pivotAnalog.runToPos(IntakeConstants.IntakeState.TRANSFER.pivotPos());
-        backRollerServo.setPosition(IntakeConstants.ActiveIntakeStates.TRANSFER.backRollerPos());
+//        backRollerServo.setPosition(IntakeConstants.ActiveIntakeStates.TRANSFER.backRollerPos());
         rollerMotor.setPower(0.53);
     }
 
     public void transferOff() {
         motorRollerOff();
-        backRollerIdle();
+        //backRollerIdle();
     }
 
     public void clearIntake() {
         motorRollerOnToClear();
-        backRollerServo.setPosition(IntakeConstants.ActiveIntakeStates.TRANSFER.backRollerPos());
+//        backRollerServo.setPosition(IntakeConstants.ActiveIntakeStates.TRANSFER.backRollerPos());
     }
 
     public void pivotUpForOuttake() {
@@ -89,7 +93,14 @@ public class ActiveIntake {
 
     public void updateTelemetry() {
         telemetry.addData("Pivot pos", pivotAxon.getPosition());
-        telemetry.addData("Back Roller Pos: ", backRollerServo.getPosition());
+        //telemetry.addData("Back Roller Pos: ", backRollerServo.getPosition());
         telemetry.update();
     }
+
+    public void failsafeClear() {
+        // the goal here would be to extend while clearing at a position that should push out any samples stuck on wire plate
+        pivotAxon.setPosition(IntakeConstants.ActiveIntakeStates.FAILSAFE_CLEARING.pivotPos());
+        motorRollerOnToClear();
+    }
 }
+

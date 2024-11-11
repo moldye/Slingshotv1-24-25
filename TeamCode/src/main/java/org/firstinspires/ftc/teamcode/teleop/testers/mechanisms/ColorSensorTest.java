@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
 @Config
 @TeleOp
-public class TransferTest extends OpMode {
+public class ColorSensorTest extends OpMode {
     // to extend, extend out slides a little bit then pivot down
     private Robot robot;
     private GamepadMapping controls;

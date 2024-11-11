@@ -7,11 +7,16 @@ import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.fsm.ClawCycle;
 import org.firstinspires.ftc.teamcode.mechanisms.drive.DriveTrain;
+import org.firstinspires.ftc.teamcode.mechanisms.specimen.SpecimenClaw;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
 
 public class Robot{
+    // TODO stuff souren wants to remember:
+    // - 435 motors
+    // - 245 M belt (for intake)
+
     // odo:
     // 0 control hub -> back
     // 2 control hub -> side/right
@@ -40,12 +45,17 @@ public class Robot{
     // slideRight = expansion 2
     // bucketServo = 2 control
 
+    // spec:
+    // spec claw = 1 on control hub
+
+
     public DriveTrain drivetrain;
     // public ReLocalizer ultraSonics;
     public IMU imu;
     public Outtake outtake;
     public Intake intake;
     public GamepadMapping controls;
+    public SpecimenClaw specimenClaw;
 
     public Robot(HardwareMap hardwareMap, Telemetry telemetry, GamepadMapping controls) {
         imu = hardwareMap.get(IMU.class, "imu");
@@ -67,6 +77,7 @@ public class Robot{
         intake = new Intake(hardwareMap, telemetry, controls);
         outtake = new Outtake(hardwareMap, 0, .02, 0, 0.0001, 0.03, telemetry, controls); // tune PID values
         //ultraSonics = new ReLocalizer(hardwareMap, imu);
+        specimenClaw = new SpecimenClaw(hardwareMap);
     }
 
 //    public Pose2d reLocalize(){
@@ -92,10 +103,5 @@ public class Robot{
     public void hardwareSoftReset() {
         outtake.resetHardware();
         intake.resetHardware();
-    }
-
-    public void updateTelemetry() {
-        intake.activeIntake.updateTelemetry();
-        outtake.updateTelemetry();
     }
 }

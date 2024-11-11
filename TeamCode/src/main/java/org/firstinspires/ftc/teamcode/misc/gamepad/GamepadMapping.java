@@ -35,8 +35,10 @@ public class GamepadMapping {
     public static Toggle intakeOnToIntake;
     public static Toggle intakeOnToClear;
 
+    public Toggle clearFailsafe;
+
     // INTAKE (CLAW)
-    public static double wristYaw = 0;
+    public static double wristYaw = 0.0;
 
     // INTAKE (v4b ACTIVE)
     // --------------
@@ -47,7 +49,7 @@ public class GamepadMapping {
     // transfer sample should be automatic here
     // button, driver 1
     public static Toggle transferHover;
-    public static Toggle openClaw;
+    // public static Toggle openClaw;
 
 
     // OUTTAKE
@@ -58,13 +60,13 @@ public class GamepadMapping {
 
     // SCORING
     // --------------
-    public static Toggle latchSpecimen;
-    public static Toggle switchClaw;
+    public static Toggle scoreSpec;
+    public static Toggle openClaw;
     public static Toggle L1hang;
 
     // LOCKED HEADING
     // -----------------
-    public static Toggle toggleLockedHeading;
+    // public static Toggle toggleLockedHeading;
     public static boolean lock90 = false;
     public static boolean lock180 = false;
     public static boolean lock270 = false;
@@ -88,16 +90,21 @@ public class GamepadMapping {
         intakeOnToIntake = new Toggle(false);
         intakeOnToClear = new Toggle(false);
         transfer = new Toggle(false);
+        clearFailsafe = new Toggle(false);
 
         pivot = new Toggle(false);
         transferHover = new Toggle(false);
-        openClaw = new Toggle(false);
+        // openClaw = new Toggle(false);
 
         // OUTTAKE
         flipBucket = new Toggle(false);
         highBasket = new Toggle(false);
         lowBasket = new Toggle(false);
         L1hang = new Toggle(false);
+
+        // spec
+        openClaw = new Toggle(false);
+        scoreSpec = new Toggle(false);
 
         // OTHER
         botToBaseState = new Toggle(false);
@@ -111,13 +118,11 @@ public class GamepadMapping {
     }
 
     public void clawUpdate() {
-        pivot.update(gamepad2.a); // hover and intaking, button held
+        pivot.update(gamepad2.right_trigger > 0.5); // hover and intaking, button held
         // first driver
         transferHover.update(gamepad1.left_bumper);
-        wristYaw = gamepad2.right_stick_x * -1;
-        openClaw.update(gamepad2.b);
-
-        transfer.update(gamepad2.y);
+        wristYaw = gamepad2.right_stick_x;
+        // openClaw.update(gamepad2.b);
     }
 
     public void v4bActiveUpdate() {
@@ -135,7 +140,7 @@ public class GamepadMapping {
     public void update() {
         joystickUpdate();
 
-        clawUpdate();
+        activeIntakeUpdate();
 
         extend.update(gamepad1.right_bumper);
 
@@ -146,6 +151,10 @@ public class GamepadMapping {
 
         L1hang.update(gamepad2.dpad_up); // TODO Ask Drivers
 
+        // spec
+        openClaw.update(gamepad2.left_trigger > 0.3);
+        scoreSpec.update(gamepad2.right_trigger > 0.3);
+
         // Reset/Fail Safes (Both controllers should have these)
         botToBaseState.update(gamepad1.dpad_down);
         botToBaseState.update(gamepad2.dpad_down);
@@ -154,6 +163,8 @@ public class GamepadMapping {
     public void activeIntakeUpdate() {
         intakeOnToIntake.update(gamepad1.right_trigger > 0.5);
         intakeOnToClear.update(gamepad1.left_trigger > 0.5);
-        transfer.update(gamepad2.y);
+        transfer.update(gamepad1.right_trigger > 0.5);
+
+        clearFailsafe.update(gamepad1.x);
     }
 }

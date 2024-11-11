@@ -4,8 +4,9 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class SpecimenClaw {
-    private Servo clawServo;
-
+    public Servo clawServo;
+    // open, closed
+    private static double[] clawPositions = {.51, .78};
     public SpecimenClaw(HardwareMap hwMap) {
         clawServo = hwMap.get(Servo.class, "clawServo");
     }
@@ -15,10 +16,26 @@ public class SpecimenClaw {
     }
 
     public void closeClaw() {
-        clawServo.setPosition(0); // obviously tune later
+        clawServo.setPosition(SpecConstants.CLOSED.getClawPos()); // obviously tune later
     }
 
     public void openClaw() {
-        clawServo.setPosition(1); // obviously tune later
+        clawServo.setPosition(SpecConstants.OPEN.getClawPos()); // obviously tune later
+    }
+
+    public enum SpecConstants {
+        OPEN(clawPositions[0]),
+        CLOSED(clawPositions[1]);
+
+        private double clawPos;
+
+        SpecConstants(double clawPos) {
+            this.clawPos = clawPos;
+        }
+
+        public double getClawPos() {
+            return clawPos;
+        }
+
     }
 }

@@ -6,31 +6,37 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
+import org.firstinspires.ftc.teamcode.mechanisms.intake.IntakeConstants;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
-@TeleOp
 @Config
-public class ClawServoTests extends OpMode {
+@TeleOp
+public class LinkageAxonTester extends OpMode {
     private Robot robot;
     private GamepadMapping controls;
-    public static double v4bPos = .2; // axon max
-    public static double wristPos = .1; // gobilda torque
-    public static double clawPos = .5; // axon mini
+    private Intake intake;
+
+    public static boolean smallAdjust = false;
+    public static double rservoPos = .5;
+    public static double lservoPos = .5;
 
     @Override
     public void init() {
         controls = new GamepadMapping(gamepad1, gamepad2);
         robot = new Robot(hardwareMap, telemetry, controls);
-//        robot.intake.claw.clawServo.setPosition(.8);
-//        robot.intake.claw.wrist.setPosition(0);
-
+        intake = robot.intake;
+        //intake.activeIntake.flipUp();
     }
 
     @Override
     public void loop() {
-//        robot.intake.claw.clawServo.setPosition(clawPos);
-        robot.intake.claw.wrist.setPosition(wristPos);
-//        robot.intake.claw.v4b.setPosition(v4bPos);
-       // robot.intake.claw.controlWristPos();
+//        if (smallAdjust) {
+//            intake.rightExtendo.setPosition(rservoPos);
+//            intake.leftExtendo.setPosition(lservoPos);
+//        } else {
+            intake.rightExtendo.setPosition(rservoPos);
+            intake.leftExtendo.setPosition(rservoPos);
+        //}
+
     }
 }

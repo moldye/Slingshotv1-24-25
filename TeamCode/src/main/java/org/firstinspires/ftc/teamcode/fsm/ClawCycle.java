@@ -20,7 +20,7 @@ public class ClawCycle {
     private ElapsedTime loopTime;
     private double startTime;
 
-    // TODO HOVERING state, edit wrist movement, figure out why wont go down to hovering when retracted, automatic to hovering when we extend
+    // TODO edit wrist movement
 
     public ClawCycle(Telemetry telemetry, GamepadMapping controls, Robot robot) {
         this.robot = robot;
@@ -50,9 +50,8 @@ public class ClawCycle {
                 outtake.returnToRetracted();
 
                 if (controls.extend.value()) {
-                    transferState = ClawCycle.TransferState.EXTENDO_FULLY_EXTENDED;
+                    transferState = ClawCycle.TransferState.HOVERING;
                     intake.extendoFullExtend();
-                    claw.openClaw();
                 }
                 else if (controls.highBasket.value()) {
                     transferState = ClawCycle.TransferState.HIGH_BASKET;
@@ -62,76 +61,61 @@ public class ClawCycle {
                     transferState = ClawCycle.TransferState.HANGING;
                 }
                 if (controls.transferHover.value()) {
-                    claw.openClaw();
-                    claw.moveToHovering();
-                    transferState = TransferState.INTAKING;
-                }
-                if (controls.pivot.locked()) {
-                    transferState = ClawCycle.TransferState.INTAKING;
-                }
-                break;
-            case EXTENDO_FULLY_EXTENDED:
-                outtake.returnToRetracted();
-                if (!controls.extend.value()) {
-                    controls.transferHover.set(false);
-                    claw.moveToTransfer();
-                    intake.extendoFullRetract();
-                    transferState = TransferState.TRANSFERING;
-                    startTime = loopTime.milliseconds();
-                }
-                if (controls.botToBaseState.value()) {
-                    transferState = ClawCycle.TransferState.BASE_STATE;
-                }
-                if (controls.transferHover.value()) {
-                    claw.moveToHovering();
-                    transferState = TransferState.INTAKING;
-                }
-                if (controls.pivot.locked()) {
-                    claw.moveToPickingSample();
-                    transferState = ClawCycle.TransferState.INTAKING;
-                }
-                if (controls.openClaw.value()) {
-                    claw.openClaw();
-                } else {
-                    claw.closeClaw();
+                    transferState = TransferState.HOVERING;
                 }
                 break;
             case INTAKING:
                 outtake.returnToRetracted();
-                claw.controlWristPos();
+                claw.moveToPickingSample();
                 if (!controls.extend.value()) {
-                    controls.transferHover.set(false);
-                    intake.extendoFullRetract();
-                    claw.moveToTransfer();
-                    transferState = TransferState.EXTENDO_FULLY_RETRACTED;
-                }
-                if (!controls.pivot.locked()) {
-                    claw.moveToHovering();
-                } else if (controls.pivot.locked()) {
-                    claw.moveToPickingSample();
-                }
-                else if(controls.transferHover.value()) {
-                    claw.moveToHovering();
-                }
-                if (controls.openClaw.value()) {
-                    claw.openClaw();
-                } else {
-                    claw.closeClaw();
-                }
-                if (!controls.transferHover.value()) {
                     transferState = TransferState.TRANSFERING;
                     startTime = loopTime.milliseconds();
+                }
+                if (!controls.pivot.locked()) {
+                    transferState = TransferState.HOVERING;
+                } else if (controls.pivot.locked()) {
+                    claw.moveToPickingSample();
+                    if (controls.openClaw.value()) {
+                        claw.openClaw();
+                    } else {
+                        claw.closeClaw();
+                    }
                 }
                 break;
             case TRANSFERING:
                 outtake.returnToRetracted();
                 robot.intake.extendoFullRetract();
-                robot.intake.claw.moveToTransfer();
-                robot.intake.claw.turnWristToTransfer();
-                if (loopTime.milliseconds() - startTime > 1500 && loopTime.milliseconds() - startTime >= 0){
-                    robot.intake.claw.openClaw();
-                    transferState = TransferState.EXTENDO_FULLY_RETRACTED;
+                claw.moveToTransfer();
+                claw.turnWristToTransfer();
+                if (loopTime.milliseconds() - startTime >= 1000){
+                    claw.openClaw();
                     controls.extend.set(false);
+                    controls.transferHover.set(false);
+                    transferState = TransferState.EXTENDO_FULLY_RETRACTED;
+                }
+                break;
+            case HOVERING:
+                controls.transferHover.set(true);
+                outtake.returnToRetracted();
+                claw.moveToHovering();
+                claw.controlWristPos();
+                if (controls.pivot.locked()) {
+                    transferState = ClawCycle.TransferState.INTAKING;
+                }
+                if (!controls.transferHover.value()) {
+                    transferState = TransferState.TRANSFERING;
+                    startTime = loopTime.milliseconds();
+                }
+                if (!controls.extend.value()) {
+                    claw.moveToTransfer();
+                    intake.extendoFullRetract();
+                    transferState = TransferState.TRANSFERING;
+                    startTime = loopTime.milliseconds();
+                }
+                if (controls.openClaw.value()) {
+                    claw.openClaw();
+                } else {
+                    claw.closeClaw();
                 }
                 break;
             case HIGH_BASKET:
@@ -177,6 +161,7 @@ public class ClawCycle {
         EXTENDO_FULLY_EXTENDED("EXTENDO_FULLY_EXTENDED"),
         INTAKING("INTAKING"),
         TRANSFERING("TRANSFERING"),
+        HOVERING("HOVERING"),
         SLIDES_RETRACTED("SLIDES_RETRACTED"),
         HIGH_BASKET("HIGH_BASKET"),
         LOW_BASKET("LOW_BASKET"),

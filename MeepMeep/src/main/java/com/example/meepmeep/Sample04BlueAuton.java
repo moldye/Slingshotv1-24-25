@@ -29,7 +29,7 @@ public class Sample04BlueAuton {
                                 })
                                 .setReversed(true)
                                 //preload to bucket
-                                .splineToLinearHeading(new Pose2d(-50,-50,Math.toRadians(45)),Math.toRadians(180))
+                                .splineToLinearHeading(new Pose2d(-50,-50,Math.toRadians(45)), Math.toRadians(180))
                                 .setReversed(false)
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                                     //flip bucket

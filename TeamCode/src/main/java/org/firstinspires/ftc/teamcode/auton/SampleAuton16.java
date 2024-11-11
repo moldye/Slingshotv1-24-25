@@ -11,33 +11,32 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.intake.IntakeConstants;
 import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
+import org.firstinspires.ftc.teamcode.mechanisms.specimen.SpecimenClaw;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Autonomous
 public class SampleAuton16 extends LinearOpMode {
-
     private GamepadMapping controls;
     private Robot robot;
-    private static IntakeConstants.ActiveIntakeStates activeIntakeStates;
     private Intake intake;
     private Outtake outtake;
+
     @Override
     public void runOpMode() throws InterruptedException {
         controls = new GamepadMapping(gamepad1, gamepad2);
         robot = new Robot(hardwareMap, telemetry, controls);
         intake = robot.intake;
         outtake = robot.outtake;
+
         robot.outtake.resetEncoders();
+
         moveLift(0);
         outtake.bucketToReadyForTransfer();
         intake.extendoFullRetract();
         intake.activeIntake.flipUp();
 
-        //robot.hardwareHardReset();
-
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-
 
         Pose2d startPose = new Pose2d(-12, -63.5, Math.toRadians(0));
 
@@ -66,11 +65,12 @@ public class SampleAuton16 extends LinearOpMode {
 
                 //1st yellow to bucket
                 .lineToConstantHeading(new Vector2d(-58, -56))
+                .turn(Math.toRadians(28))
                 .turn(Math.toRadians(27))
 //                .splineToLinearHeading(new Pose2d(-50,-59,Math.toRadians(90)),Math.toRadians(45))
 
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                   extendoIntake();
+                    extendoIntake();
                 })
                 .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                     intake.activeIntake.flipDownFull();
@@ -94,20 +94,20 @@ public class SampleAuton16 extends LinearOpMode {
                     intake.activeIntake.flipUp();
                 })
                 .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-                    //raise slides
-                    moveLift(2400);
-                })
-                .waitSeconds(1)
-                .back(4.75)
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    //flip bucket
-                    outtake.bucketDeposit();
-                })
-                .waitSeconds(0.75)
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    outtake.bucketToReadyForTransfer();
-                    moveLift(0);
-                })
+                        //raise slides
+                        moveLift(2400);
+                    })
+                            .waitSeconds(1)
+                            .back(4.75)
+                            .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                //flip bucket
+                                outtake.bucketDeposit();
+                            })
+                            .waitSeconds(0.75)
+                            .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                outtake.bucketToReadyForTransfer();
+                                moveLift(0);
+                            })
 
 
 
@@ -139,7 +139,7 @@ public class SampleAuton16 extends LinearOpMode {
                     intake.activeIntake.flipUp();
                 })
                 .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-                    //raise slides
+                                    //raise slides
                     moveLift(2400);
                 })
                 .waitSeconds(1)
@@ -210,7 +210,7 @@ public class SampleAuton16 extends LinearOpMode {
 //                    extendoIntake();
 //                })
 //                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
-//                    intake.activeIntake.flipDownFull();
+//                    intake.flipDownFull();
 //                })
 //
 //
@@ -222,15 +222,15 @@ public class SampleAuton16 extends LinearOpMode {
 //                .setReversed(true)
 //                .lineToSplineHeading(new Pose2d(-12,-45, Math.toRadians(0)))
 //
-                //TODO: TUNED TO HERE, TO REST IF POSSIBLE
-                //why do we need offset here
+                                                    //TODO: TUNED TO HERE, TO REST IF POSSIBLE
+                                                    //why do we need offset here
 //                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    //offset 0.75
-                    //transfer sample
-//                    intake.activeIntake.motorRollerOnToClear();
+                                                    //offset 0.75
+                                                    //transfer sample
+//                    intake.motorRollerOnToClear();
 //                })
 //                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
-//                    intake.activeIntake.motorRollerOff();
+//                    intake.motorRollerOff();
 //                })
 //                .splineTo(new Vector2d(-54,-58),Math.toRadians(225))
 //
@@ -256,7 +256,7 @@ public class SampleAuton16 extends LinearOpMode {
 //                    extendoIntake();
 //                })
 //                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
-//                    intake.activeIntake.flipDownFull();
+//                    intake.flipDownFull();
 //                })
 //                .waitSeconds(0.5)
 //                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
@@ -266,10 +266,10 @@ public class SampleAuton16 extends LinearOpMode {
 //                .lineToSplineHeading(new Pose2d(-12,-36, Math.toRadians(0)))
 //                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> {
 //                    //transfer sample
-//                    intake.activeIntake.motorRollerOnToClear();
+//                    intake.motorRollerOnToClear();
 //                })
 //                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
-//                    intake.activeIntake.motorRollerOff();
+//                    intake.motorRollerOff();
 //                })
 //                .splineTo(new Vector2d(-50,-50),Math.toRadians(225))
 //
@@ -295,7 +295,7 @@ public class SampleAuton16 extends LinearOpMode {
 //                    extendoIntake();
 //                })
 //                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
-//                    intake.activeIntake.flipDownFull();
+//                    intake.flipDownFull();
 //                })
 //                .waitSeconds(0.5)
 //                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
@@ -305,10 +305,10 @@ public class SampleAuton16 extends LinearOpMode {
 //                .lineToSplineHeading(new Pose2d(-12,-36, Math.toRadians(0)))
 //                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> {
 //                    //transfer sample
-//                    intake.activeIntake.motorRollerOnToClear();
+//                    intake.motorRollerOnToClear();
 //                })
 //                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
-//                    intake.activeIntake.motorRollerOff();
+//                    intake.motorRollerOff();
 //                })
 //                .splineTo(new Vector2d(-50,-50),Math.toRadians(225))
 //
@@ -336,27 +336,27 @@ public class SampleAuton16 extends LinearOpMode {
 
         if (!isStopRequested())
             drive.followTrajectorySequence(trajSeq);
-    }
+        }
 
-    public void extendoIntake(){
-        //extendo out
-        robot.intake.extendoFullExtend();
-        //run intake
-        intake.activeIntake.motorRollerOnToIntake();
-    }
-    public void deextend(){
-        //deeextend
-        robot.intake.activeIntake.pivotAxon.setPosition(IntakeConstants.ActiveIntakeStates.TRANSFER.pivotPos());
-        robot.intake.extendoFullRetract();
-        //stop Intake
-        intake.activeIntake.motorRollerOff();
-    }
-    public void moveLift(int ticks){
-        robot.outtake.outtakeSlideLeft.setTargetPosition(ticks);
-        robot.outtake.outtakeSlideRight.setTargetPosition(ticks);
-        robot.outtake.outtakeSlideLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.outtake.outtakeSlideRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.outtake.outtakeSlideLeft.setPower(1);
-        robot.outtake.outtakeSlideRight.setPower(1);
-    }
+        public void extendoIntake(){
+            //extendo out
+            robot.intake.extendoFullExtend();
+            //run intake
+            intake.activeIntake.motorRollerOnToIntake();
+        }
+        public void deextend(){
+            //deeextend
+            robot.intake.activeIntake.pivotAxon.setPosition(IntakeConstants.ActiveIntakeStates.TRANSFER.pivotPos());
+            robot.intake.extendoFullRetract();
+            //stop Intake
+            intake.activeIntake.motorRollerOff();
+        }
+        public void moveLift(int ticks){
+            robot.outtake.outtakeSlideLeft.setTargetPosition(ticks);
+            robot.outtake.outtakeSlideRight.setTargetPosition(ticks);
+            robot.outtake.outtakeSlideLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.outtake.outtakeSlideRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.outtake.outtakeSlideLeft.setPower(1);
+            robot.outtake.outtakeSlideRight.setPower(1);
+        }
 }

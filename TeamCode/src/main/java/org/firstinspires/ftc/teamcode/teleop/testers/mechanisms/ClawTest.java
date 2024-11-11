@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.teleop.testers.mechanisms;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.fsm.ClawCycle;
@@ -16,6 +17,7 @@ public class ClawTest extends OpMode {
     private ClawCycle cycle;
     private ElapsedTime loopTime;
     private double startTime;
+    private double wristYaw = .1; // min wrist pos
 
     @Override
     public void init() {
@@ -23,7 +25,7 @@ public class ClawTest extends OpMode {
         robot = new Robot(hardwareMap, telemetry, controls);
         cycle = new ClawCycle(telemetry, controls, robot);
 
-        robot.intake.claw.resetClaw();
+        // robot.intake.claw.resetClaw();
 
         loopTime = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
         startTime = loopTime.milliseconds();
@@ -34,12 +36,13 @@ public class ClawTest extends OpMode {
         controls.update();
         robot.drivetrain.update();
 
-        robot.intake.claw.moveToTransfer();
-        robot.intake.claw.turnWristToTransfer();
-        if (loopTime.milliseconds() - startTime > 10000){
-            robot.intake.claw.openClaw();
-        }
+        // double wristSpeed = 0.4;
+        // robot.intake.claw.controlWristPos();
 
-        telemetry.addData("loop time - start time", loopTime.milliseconds() - startTime);
+        if (controls.extend.value()) {
+            robot.intake.extendoFullExtend();
+        } else {
+            robot.intake.extendoFullRetract();
+        }
     }
 }
