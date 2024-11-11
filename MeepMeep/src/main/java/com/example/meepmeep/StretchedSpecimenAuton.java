@@ -1,0 +1,173 @@
+package com.example.meepmeep;
+
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.noahbres.meepmeep.MeepMeep;
+import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
+import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
+public class StretchedSpecimenAuton {
+    public static void main(String[] args) {
+        MeepMeep meepMeep = new MeepMeep(700);
+
+        RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
+                // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
+                .setConstraints(70, 55, 2.5, 2, 14)
+                .followTrajectorySequence(drive ->
+                                drive.trajectorySequenceBuilder(new Pose2d(12, -60, Math.toRadians(270)))
+                                        //preloaded spec
+                                        .back(30)
+                                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                            //tiny slides raise
+                                        })
+                                        .waitSeconds(.5)
+                                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                            //open claw (preloaded spec)
+                                        })
+
+
+                                        //go2other3samples
+                                        .splineToLinearHeading(new Pose2d(40,-40,Math.toRadians(50)), Math.toRadians(0))
+
+                                        //first sample
+                                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+//                                    extendoIntake();
+                                        })
+                                        .waitSeconds(0.5)
+                                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+//                                    deextend();
+                                        })
+                                        .turn(Math.toRadians(-90))
+                                        .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
+                                                    //outtake sample
+                                        })
+                                        .waitSeconds(0.5)
+
+                                        //second sample
+                                        .turn(Math.toRadians(80))
+                                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+//                                    extendoIntake();
+                                        })
+                                        .waitSeconds(0.5)
+                                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+//                                    deextend();
+                                        })
+                                        .turn(Math.toRadians(-90))
+                                        .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
+                                            //outtake sample
+                                        })
+                                        .waitSeconds(0.5)
+
+                                        //third sample
+
+                                        .turn(Math.toRadians(70))
+                                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+//                                    extendoIntake();
+                                        })
+                                        .waitSeconds(0.5)
+                                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+//                                    deextend();
+                                        })
+                                        .turn(Math.toRadians(-80))
+                                        .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
+                                            //outtake sample
+                                        })
+                                        .waitSeconds(0.5)
+                                        .turn(Math.toRadians(60))
+
+                                        //get spec
+
+                                        .lineToLinearHeading(new Pose2d(40,-60,Math.toRadians(90)))
+                                        .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
+                                            //close claw (intake spec 2)
+                                        })
+                                        .waitSeconds(0.5)
+
+                                        //go to box
+
+
+
+//                                        .lineToLinearHeading(new Pose2d(12,-30,Math.toRadians(270)))
+//                                        .splineToLinearHeading(new Pose2d(12,-30,Math.toRadians(270)), Math.toRadians(90))
+                                        .splineTo(new Vector2d(23,-36),Math.toRadians(180))
+                                        .lineToSplineHeading(new Pose2d(8,-36,Math.toRadians(270)))
+                                        .setReversed(true)
+                                        .back(6)
+                                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                            //tiny slides raise
+                                        })
+                                        .waitSeconds(.5)
+                                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                            //open claw (preloaded spec)
+                                        })
+                                        .setReversed(false)
+                                        .forward(6)
+
+                                        //go back to hp
+
+                                        .lineToSplineHeading(new Pose2d(23,-36,Math.toRadians(180)))
+                                        .splineTo(new Vector2d(40,-60),Math.toRadians(270))
+                                        .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
+                                            //close claw (intake spec 2)
+                                        })
+                                        .waitSeconds(0.5)
+
+                                        //go back to box
+
+                                        .splineTo(new Vector2d(23,-36),Math.toRadians(180))
+                                        .lineToSplineHeading(new Pose2d(6,-36,Math.toRadians(270)))
+                                        .setReversed(true)
+                                        .back(6)
+                                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                            //tiny slides raise
+                                        })
+                                        .waitSeconds(.5)
+                                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                            //open claw (preloaded spec)
+                                        })
+                                        .setReversed(false)
+                                        .forward(6)
+
+
+//                                        .splineToLinearHeading(new Pose2d(40,-40,Math.toRadians(50)), Math.toRadians(0))
+
+
+
+
+
+
+
+
+
+
+                                        .build()
+
+
+
+
+
+
+                );
+
+
+
+        BufferedImage img = null;
+        try { img = ImageIO.read(new File("MeepMeep/intothedeep.png")); }
+        catch (IOException e) {}
+
+        meepMeep.setBackground(img)
+                .setDarkMode(true)
+                .setBackgroundAlpha(0.95f)
+                .addEntity(myBot)
+                .start();
+    }
+}
+
+
+
