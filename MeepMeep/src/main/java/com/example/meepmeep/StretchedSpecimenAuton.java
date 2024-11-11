@@ -22,12 +22,15 @@ public class StretchedSpecimenAuton {
                 .followTrajectorySequence(drive ->
                                 drive.trajectorySequenceBuilder(new Pose2d(12, -60, Math.toRadians(270)))
                                         //preloaded spec
-                                        .back(30)
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                            //tiny slides raise
+                                            //raise slides (small)
+//                                    outtake.moveTicks(2400);
                                         })
+                                        .back(30)
+
                                         .waitSeconds(.5)
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                            //lower slides (small)
                                             //open claw (preloaded spec)
                                         })
 
@@ -89,6 +92,10 @@ public class StretchedSpecimenAuton {
 
                                         //go to box
                                         .lineToSplineHeading(new Pose2d(8,-36,Math.toRadians(270)))
+                                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                            //raise slides (small)
+//                                    outtake.moveTicks(2400);
+                                        })
                                         .setReversed(true)
                                         .back(6)
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
@@ -96,6 +103,7 @@ public class StretchedSpecimenAuton {
                                         })
                                         .waitSeconds(.5)
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                            //lower slides (small)
                                             //open claw (preloaded spec)
                                         })
                                         .setReversed(false)
@@ -111,6 +119,10 @@ public class StretchedSpecimenAuton {
 
                                         //go back to box
                                         .lineToSplineHeading(new Pose2d(6,-36,Math.toRadians(270)))
+                                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                            //raise slides (small)
+//                                    outtake.moveTicks(2400);
+                                        })
                                         .setReversed(true)
                                         .back(6)
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
@@ -118,6 +130,7 @@ public class StretchedSpecimenAuton {
                                         })
                                         .waitSeconds(.5)
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                            //lower slides (small)
                                             //open claw (preloaded spec)
                                         })
                                         .setReversed(false)
