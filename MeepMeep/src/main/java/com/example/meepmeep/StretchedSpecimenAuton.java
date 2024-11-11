@@ -43,7 +43,7 @@ public class StretchedSpecimenAuton {
 
                                         .lineToLinearHeading(new Pose2d(30,-50,Math.toRadians(-40)))
                                         .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
-                                                    //outtake sample
+                                            //outtake sample
                                         })
                                         .waitSeconds(0.5)
 
@@ -73,27 +73,21 @@ public class StretchedSpecimenAuton {
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
 //                                    deextend();
                                         })
-                                        .lineToLinearHeading(new Pose2d(30,-50,Math.toRadians(-40)))
+                                        .lineToLinearHeading(new Pose2d(40,-45,Math.toRadians(-40)))
                                         .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                                             //outtake sample
                                         })
                                         .waitSeconds(0.5)
 
                                         //get spec
-
-                                        .lineToLinearHeading(new Pose2d(40,-60,Math.toRadians(90)))
+                                        .lineToLinearHeading(new Pose2d(40,-54,Math.toRadians(90)))
+                                        .back(6)
                                         .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                                             //close claw (intake spec 2)
                                         })
                                         .waitSeconds(0.5)
 
                                         //go to box
-
-
-                                        .setReversed(false)
-//                                        .lineToLinearHeading(new Pose2d(12,-30,Math.toRadians(270)))
-//                                        .splineToLinearHeading(new Pose2d(12,-30,Math.toRadians(270)), Math.toRadians(90))
-                                        .splineTo(new Vector2d(23,-36),Math.toRadians(180))
                                         .lineToSplineHeading(new Pose2d(8,-36,Math.toRadians(270)))
                                         .setReversed(true)
                                         .back(6)
@@ -108,17 +102,14 @@ public class StretchedSpecimenAuton {
                                         .forward(6)
 
                                         //go back to hp
-
-                                        .lineToSplineHeading(new Pose2d(23,-36,Math.toRadians(180)))
-                                        .splineTo(new Vector2d(40,-60),Math.toRadians(270))
+                                        .lineToLinearHeading(new Pose2d(40,-54,Math.toRadians(90)))
+                                        .back(6)
                                         .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                                             //close claw (intake spec 2)
                                         })
                                         .waitSeconds(0.5)
 
                                         //go back to box
-
-                                        .splineTo(new Vector2d(23,-36),Math.toRadians(180))
                                         .lineToSplineHeading(new Pose2d(6,-36,Math.toRadians(270)))
                                         .setReversed(true)
                                         .back(6)
@@ -133,7 +124,29 @@ public class StretchedSpecimenAuton {
                                         .forward(6)
 
 
-//                                        .splineToLinearHeading(new Pose2d(40,-40,Math.toRadians(50)), Math.toRadians(0))
+                                        //go back to hp
+                                        .lineToLinearHeading(new Pose2d(40,-54,Math.toRadians(90)))
+                                        .back(6)
+                                        .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
+                                            //close claw (intake spec 2)
+                                        })
+                                        .waitSeconds(0.5)
+
+
+                                        //potential last spec :_D
+//                                        //go back to box
+//                                        .lineToSplineHeading(new Pose2d(4,-36,Math.toRadians(270)))
+//                                        .setReversed(true)
+//                                        .back(6)
+//                                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+//                                            //tiny slides raise
+//                                        })
+//                                        .waitSeconds(.5)
+//                                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+//                                            //open claw (preloaded spec)
+//                                        })
+
+
 
 
 
