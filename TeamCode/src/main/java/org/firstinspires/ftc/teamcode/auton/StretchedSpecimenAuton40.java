@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.auton;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -16,7 +15,7 @@ import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Autonomous
-public class StretchedSpecimenAuton30 extends LinearOpMode {
+public class StretchedSpecimenAuton40 extends LinearOpMode {
 
     private GamepadMapping controls;
     private Robot robot;
@@ -52,13 +51,13 @@ public class StretchedSpecimenAuton30 extends LinearOpMode {
 
                 //preloaded spec
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    moveLift(1250);
+                    moveLift(1325);
                 })
                 .back(33)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    moveLift(800);
+                    moveLift(700);
                 })
-                .UNSTABLE_addTemporalMarkerOffset(0.3, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(0.4, () -> {
                     //open claw (preloaded spec)
                     specimenClaw.openClaw();
                 })
@@ -104,48 +103,39 @@ public class StretchedSpecimenAuton30 extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     intake.activeIntake.transferSample();
                 })
-                .waitSeconds(0.5)
 
-                //third sample
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    intake.activeIntake.motorRollerOnToIntake();
-                })
-                .splineToLinearHeading(new Pose2d(32,-42,Math.toRadians(35)), Math.toRadians(0))
-                .waitSeconds(0.1)
-                .forward(10)
 
                 .waitSeconds(0.5)
-                .lineToLinearHeading(new Pose2d(40,-45,Math.toRadians(-40)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    intake.activeIntake.transferSample();
-                })
-                .waitSeconds(0.5)
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    intake.activeIntake.flipUp();
-                    intake.extendoFullRetract();
                     intake.activeIntake.motorRollerOff();
                 })
-                //get spec
+                .UNSTABLE_addTemporalMarkerOffset(0.1, () -> {
+                    intake.activeIntake.flipToTransfer();
+                    intake.extendoFullRetract();
+                })
+
+                //go back to hp
                 .lineToLinearHeading(new Pose2d(40,-54,Math.toRadians(90)))
                 .back(8)
                 .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
-                    //close claw (intake spec 2)
+                    //close claw
                     specimenClaw.closeClaw();
                 })
                 .waitSeconds(0.5)
 
+
                 //go to box
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    moveLift(1350);
+                    moveLift(1325);
                 })
-                .lineToSplineHeading(new Pose2d(8,-36,Math.toRadians(270)))
+                .lineToSplineHeading(new Pose2d(8,-38,Math.toRadians(270)))
 
                 .setReversed(true)
-                .back(6)
+                .back(8)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    moveLift(800);
+                    moveLift(700);
                 })
-                .UNSTABLE_addTemporalMarkerOffset(0.3, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(0.4, () -> {
                     //open claw (spec)
                     specimenClaw.openClaw();
                 })
@@ -167,15 +157,15 @@ public class StretchedSpecimenAuton30 extends LinearOpMode {
 
                 //go back to box
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    moveLift(1350);
+                    moveLift(1325);
                 })
-                .lineToSplineHeading(new Pose2d(6,-36,Math.toRadians(270)))
+                .lineToSplineHeading(new Pose2d(5,-38,Math.toRadians(270)))
                 .setReversed(true)
-                .back(6)
+                .back(8)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    moveLift(800);
+                    moveLift(700);
                 })
-                .UNSTABLE_addTemporalMarkerOffset(0.3, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(0.4, () -> {
                     //open claw (spec)
                     specimenClaw.openClaw();
                 })
@@ -190,12 +180,33 @@ public class StretchedSpecimenAuton30 extends LinearOpMode {
 
                 //go back to hp
                 .lineToLinearHeading(new Pose2d(40,-54,Math.toRadians(90)))
-                .back(6)
+                .back(7)
                 .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                     //close claw
                     specimenClaw.closeClaw();
                 })
                 .waitSeconds(0.5)
+
+                //go back to box
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    moveLift(1325);
+                })
+                .lineToSplineHeading(new Pose2d(2,-38,Math.toRadians(270)))
+                .setReversed(true)
+                .back(8)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    moveLift(700);
+                })
+                .UNSTABLE_addTemporalMarkerOffset(0.4, () -> {
+                    //open claw (spec)
+                    specimenClaw.openClaw();
+                })
+                .waitSeconds(.5)
+                .UNSTABLE_addTemporalMarkerOffset(0.3, () -> {
+                    moveLift(0);
+                })
+                .setReversed(false)
+                .forward(6)
 
 
                 //potential last spec :_D
