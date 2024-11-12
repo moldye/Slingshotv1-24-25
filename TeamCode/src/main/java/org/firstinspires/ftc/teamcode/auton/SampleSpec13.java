@@ -56,8 +56,8 @@ public class SampleSpec13 extends LinearOpMode {
                     //lower slides a tiny bit
                     moveLift(0);
                 })
-                .waitSeconds(.2)
-                .UNSTABLE_addTemporalMarkerOffset(0.3, () -> {
+                .waitSeconds(.3)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //open claw
                     robot.specimenClaw.openClaw();
                 })
@@ -105,6 +105,8 @@ public class SampleSpec13 extends LinearOpMode {
                     outtake.bucketDeposit();
                 })
                 .waitSeconds(0.75)
+                // TODO TEST THIS, so spec claw don't hit
+                .forward(1.5)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     outtake.bucketToReadyForTransfer();
                     moveLift(0);
@@ -114,7 +116,7 @@ public class SampleSpec13 extends LinearOpMode {
                 //MNEXT SAMPLE - second yellow
 //                .splineToLinearHeading(new Pose2d(-55,-60,Math.toRadians(90)),Math.toRadians(45))
                 .lineToConstantHeading(new Vector2d(-58, -56))
-                .turn(Math.toRadians(60))
+                .turn(Math.toRadians(55))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     extendoIntake();
                 })
@@ -149,6 +151,8 @@ public class SampleSpec13 extends LinearOpMode {
                     outtake.bucketDeposit();
                 })
                 .waitSeconds(0.75)
+                // TODO TEST THIS, so spec claw don't hit
+                .forward(1.5)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     outtake.bucketToReadyForTransfer();
                     moveLift(0);
@@ -156,7 +160,8 @@ public class SampleSpec13 extends LinearOpMode {
 
 
                 //NEXT SAMPLE - third yellow
-                .splineToLinearHeading(new Pose2d(-36, -27, Math.toRadians(180)), Math.toRadians(90))
+                //.splineToLinearHeading(new Pose2d(-36, -27, Math.toRadians(180)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-47, -51, Math.toRadians(131)), Math.toRadians(225))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     extendoIntake();
                 })
@@ -196,6 +201,8 @@ public class SampleSpec13 extends LinearOpMode {
                     outtake.bucketDeposit();
                 })
                 .waitSeconds(0.75)
+                // TODO TEST THIS, so spec claw don't hit
+                .forward(1.5)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     outtake.bucketToReadyForTransfer();
                     moveLift(0);
