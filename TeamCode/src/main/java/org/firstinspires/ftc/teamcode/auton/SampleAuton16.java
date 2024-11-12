@@ -58,6 +58,7 @@ public class SampleAuton16 extends LinearOpMode {
                     outtake.bucketDeposit();
                 })
                 .waitSeconds(0.75)
+                .forward(5)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     outtake.bucketToReadyForTransfer();
                     moveLift(0);
@@ -65,8 +66,7 @@ public class SampleAuton16 extends LinearOpMode {
 
                 //1st yellow to bucket
                 .lineToConstantHeading(new Vector2d(-58, -56))
-                .turn(Math.toRadians(28))
-                .turn(Math.toRadians(27))
+                .turn(Math.toRadians(30))
 //                .splineToLinearHeading(new Pose2d(-50,-59,Math.toRadians(90)),Math.toRadians(45))
 
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
@@ -82,14 +82,14 @@ public class SampleAuton16 extends LinearOpMode {
                     deextend();
                 })
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-54,-58,Math.toRadians(45)),Math.toRadians(225))
+                .splineToLinearHeading(new Pose2d(-52,-56,Math.toRadians(45)),Math.toRadians(225))
 
                 .setReversed(false)
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(0.2, () -> {
                     //transfer sample
                     intake.activeIntake.transferSample();
                 })
-                .UNSTABLE_addTemporalMarkerOffset(1, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(.7, () -> {
                     intake.activeIntake.transferOff();
                     intake.activeIntake.flipUp();
                 })
@@ -97,24 +97,25 @@ public class SampleAuton16 extends LinearOpMode {
                         //raise slides
                         moveLift(2400);
                     })
-                            .waitSeconds(1)
-                            .back(4.75)
-                            .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                //flip bucket
-                                outtake.bucketDeposit();
-                            })
-                            .waitSeconds(0.75)
-                            .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                outtake.bucketToReadyForTransfer();
-                                moveLift(0);
-                            })
+                .waitSeconds(1)
+                .back(4.75)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    //flip bucket
+                    outtake.bucketDeposit();
+                })
+                .waitSeconds(0.75)
+                .forward(3)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    outtake.bucketToReadyForTransfer();
+                    moveLift(0);
+                })
 
 
 
                 //MNEXT SAMPLE - second yellow
 //                .splineToLinearHeading(new Pose2d(-55,-60,Math.toRadians(90)),Math.toRadians(45))
                 .lineToConstantHeading(new Vector2d(-58, -56))
-                .turn(Math.toRadians(45))
+                .turn(Math.toRadians(48))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     extendoIntake();
                 })
@@ -130,7 +131,7 @@ public class SampleAuton16 extends LinearOpMode {
                 .setReversed(true)
                 .splineToLinearHeading(new Pose2d(-52,-56.5,Math.toRadians(45)),Math.toRadians(225))
                 .setReversed(false)
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(0.3, () -> {
                     //transfer sample
                     intake.activeIntake.transferSample();
                 })
@@ -139,7 +140,7 @@ public class SampleAuton16 extends LinearOpMode {
                     intake.activeIntake.flipUp();
                 })
                 .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-                                    //raise slides
+                    //raise slides
                     moveLift(2400);
                 })
                 .waitSeconds(1)
@@ -149,6 +150,7 @@ public class SampleAuton16 extends LinearOpMode {
                     outtake.bucketDeposit();
                 })
                 .waitSeconds(0.75)
+                .forward(3)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     outtake.bucketToReadyForTransfer();
                     moveLift(0);
@@ -156,7 +158,8 @@ public class SampleAuton16 extends LinearOpMode {
 
 
                 //NEXT SAMPLE - third yellow
-                .splineToLinearHeading(new Pose2d(-36,-29,Math.toRadians(180)),Math.toRadians(90))
+//                .splineToLinearHeading(new Pose2d(-36,-29,Math.toRadians(180)),Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-46, -49, Math.toRadians(137)), Math.toRadians(225))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     extendoIntake();
                 })
@@ -175,7 +178,7 @@ public class SampleAuton16 extends LinearOpMode {
                 .setReversed(true)
                 .splineToLinearHeading(new Pose2d(-51,-56,Math.toRadians(45)),Math.toRadians(225))
                 .setReversed(false)
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(0.2, () -> {
                     //transfer sample
                     intake.activeIntake.transferSample();
                 })
@@ -196,6 +199,7 @@ public class SampleAuton16 extends LinearOpMode {
                     outtake.bucketDeposit();
                 })
                 .waitSeconds(0.75)
+                .forward(3)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     outtake.bucketToReadyForTransfer();
                     moveLift(0);
