@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
-import org.firstinspires.ftc.teamcode.mechanisms.intake.IntakeConstants;
 import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
 import org.firstinspires.ftc.teamcode.mechanisms.specimen.SpecimenClaw;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
@@ -68,11 +67,13 @@ public class ActiveCycle {
 //                    transferState = TransferState.EXTENDO_FULLY_EXTENDED;
 //                }
                 if (controls.openClaw.value()) {
-                    specimenClaw.openClaw();
-                } else {
-                    specimenClaw.closeClaw();
-
+//                    specimenClaw.openClaw();
+                    transferState = TransferState.OPEN_CLAW;
                 }
+//                } else {
+//                    specimenClaw.closeClaw();
+//                    transferState = TransferState.CLOSE_CLAW;
+//                }
                 if (controls.scoreSpec.value()) {
                     outtake.extendToRemoveSpecFromWall();
                     specimenClaw.closeClaw();
@@ -190,12 +191,26 @@ public class ActiveCycle {
             case SPEC_RETRACTING:
                 outtake.returnToRetracted();
 
-                if (loopTime.milliseconds() - startTime <= 600 && loopTime.milliseconds() - startTime >= 300){
+                if (loopTime.milliseconds() - startTime <= 350 && loopTime.milliseconds() - startTime >= 150){
                     specimenClaw.openClaw();
                 }
-                else if (loopTime.milliseconds() - startTime > 600) {
+                else if (loopTime.milliseconds() - startTime > 350) {
                     transferState = ActiveCycle.TransferState.EXTENDO_FULLY_RETRACTED;
                     controls.openClaw.set(true);
+                }
+                break;
+            case OPEN_CLAW:
+                if (controls.openClaw.value()) {
+                    outtake.returnToRetracted();
+                    specimenClaw.openClaw();
+                } else {
+                    outtake.extendToRemoveSpecFromWall();
+                    specimenClaw.closeClaw();
+//                    transferState = TransferState.EXTENDO_FULLY_RETRACTED;
+                }
+                if (controls.scoreSpec.value()) {
+                    specimenClaw.closeClaw();
+                    transferState = TransferState.SPEC_SCORING;
                 }
                 break;
         }
@@ -209,6 +224,7 @@ public class ActiveCycle {
         SLIDES_RETRACTED("SLIDES_RETRACTED"),
         HIGH_BASKET("HIGH_BASKET"),
         LOW_BASKET("LOW_BASKET"),
+        OPEN_CLAW("CLOSE_CLAW"),
         SPEC_SCORING("SPEC_SCORING"),
         SPEC_RETRACTING("SPEC_RETRACTING"),
         // PUSH_OUT_BAD_COLOR("PUSH_OUT_BAD_COLOR"),
