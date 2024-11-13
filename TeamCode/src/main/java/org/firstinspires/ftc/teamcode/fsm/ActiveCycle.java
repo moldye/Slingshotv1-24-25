@@ -77,10 +77,11 @@ public class ActiveCycle {
                 if (controls.scoreSpec.value()) {
                     outtake.extendToRemoveSpecFromWall();
                     specimenClaw.closeClaw();
-                    transferState = ActiveCycle.TransferState.SPEC_SCORING;
+                    transferState = TransferState.SPEC_SCORING;
                 }
                 break;
             case EXTENDO_FULLY_EXTENDED:
+                controls.openClaw.set(false);
                 outtake.returnToRetracted();
                 if (!controls.extend.value()) {
                     intake.extendoFullRetract();
@@ -89,7 +90,7 @@ public class ActiveCycle {
                     transferState = TransferState.EXTENDO_FULLY_RETRACTED;
                 }
                 if (controls.intakeOnToIntake.locked() || controls.intakeOnToClear.locked()) {
-                    transferState = ActiveCycle.TransferState.INTAKING;
+                    transferState = TransferState.INTAKING;
                 }
 //                if (!controls.clearFailsafe.value()) {
 //                    intake.extendoFullRetract();
@@ -101,16 +102,33 @@ public class ActiveCycle {
             case INTAKING:
                 outtake.returnToRetracted();
                 if (!controls.extend.value()) {
-                    transferState = ActiveCycle.TransferState.EXTENDO_FULLY_EXTENDED;
+                    transferState = TransferState.EXTENDO_FULLY_EXTENDED;
                 } else if (controls.intakeOnToIntake.locked()) {
                     intake.activeIntake.flipDownFull();
                     intake.activeIntake.motorRollerOnToIntake();
                 } else if (controls.intakeOnToClear.locked()) {
                     intake.activeIntake.flipDownToClear();
                     intake.activeIntake.clearIntake();
+                    transferState = TransferState.HOLD_SAMPLE;
+                    startTime = loopTime.milliseconds();
                 } else if (!controls.intakeOnToIntake.locked() || !controls.intakeOnToClear.locked()) {
                     intake.activeIntake.flipUp();
                     intake.activeIntake.transferOff();
+                }
+                break;
+            case HOLD_SAMPLE:
+                outtake.returnToRetracted();
+                if (loopTime.milliseconds() - startTime <= 200){
+                    intake.activeIntake.motorRollerOnToIntake();
+
+                    if (controls.extend.value()) {
+                        transferState = ActiveCycle.TransferState.EXTENDO_FULLY_EXTENDED;
+                        intake.extendoFullExtend();
+                        break;
+                    }
+                } else {
+                    intake.activeIntake.motorRollerOff();
+                    transferState = ActiveCycle.TransferState.INTAKING;
                 }
                 break;
             case TRANSFERING:
@@ -191,10 +209,10 @@ public class ActiveCycle {
             case SPEC_RETRACTING:
                 outtake.returnToRetracted();
 
-                if (loopTime.milliseconds() - startTime <= 350 && loopTime.milliseconds() - startTime >= 150){
+                if (loopTime.milliseconds() - startTime <= 400 && loopTime.milliseconds() - startTime >= 200){
                     specimenClaw.openClaw();
                 }
-                else if (loopTime.milliseconds() - startTime > 350) {
+                else if (loopTime.milliseconds() - startTime > 400) {
                     transferState = ActiveCycle.TransferState.EXTENDO_FULLY_RETRACTED;
                     controls.openClaw.set(true);
                 }
@@ -207,6 +225,9 @@ public class ActiveCycle {
                     outtake.extendToRemoveSpecFromWall();
                     specimenClaw.closeClaw();
 //                    transferState = TransferState.EXTENDO_FULLY_RETRACTED;
+                }
+                if (controls.extend.value()) {
+                    transferState = TransferState.EXTENDO_FULLY_EXTENDED;
                 }
                 if (controls.scoreSpec.value()) {
                     specimenClaw.closeClaw();
@@ -224,10 +245,11 @@ public class ActiveCycle {
         SLIDES_RETRACTED("SLIDES_RETRACTED"),
         HIGH_BASKET("HIGH_BASKET"),
         LOW_BASKET("LOW_BASKET"),
-        OPEN_CLAW("CLOSE_CLAW"),
+        OPEN_CLAW("OPEN_CLAW"),
         SPEC_SCORING("SPEC_SCORING"),
         SPEC_RETRACTING("SPEC_RETRACTING"),
         // PUSH_OUT_BAD_COLOR("PUSH_OUT_BAD_COLOR"),
+        HOLD_SAMPLE("HOLD_SAMPLE"),
         HANGING("HANGING");
 
         private String state;

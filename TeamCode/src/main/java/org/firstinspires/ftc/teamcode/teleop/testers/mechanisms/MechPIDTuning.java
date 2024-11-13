@@ -28,7 +28,7 @@ public class MechPIDTuning extends OpMode {
     //for both
     // private String configName = "";
     public static int target = 0;
-    public static double p = .03, i = 0, d = 0, f = .03;
+    public static double p = 0.012, i = 0, d = 0.0001, f = .03;
     private int type = 0; // 0 is slides 1 is arm 2 is analog
 
     private Telemetry dashboardTelemetry;
@@ -37,7 +37,7 @@ public class MechPIDTuning extends OpMode {
         controls = new GamepadMapping(gamepad1, gamepad2);
         // slide = new BasicSlides(hardwareMap, configName, 0,p,i,d,f);
         // arm = new BasicArm(hardwareMap, configName, 0, p,i,d,f, ticksPerDegree);
-        outtake = new Outtake(hardwareMap, 0, .02, 0, 0.0001, 0.03, this.telemetry, controls);
+        outtake = new Outtake(hardwareMap, 0, 0.012, 0, 0.0001, 0.03, this.telemetry, controls);
         // intake = new Intake(hardwareMap, telemetry, controls);
         intake = new Intake(hardwareMap, telemetry, controls);
         dashboardTelemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());

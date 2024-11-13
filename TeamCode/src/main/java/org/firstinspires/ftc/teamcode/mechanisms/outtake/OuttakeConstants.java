@@ -6,7 +6,7 @@ public class OuttakeConstants {
     // transfer ready: .7231126346979301
 
     // transfer ready, tilt, deposit
-    private static double[] bucketPositions = {.7, .5477610423136522, 0};
+    private static double[] bucketPositions = {1, .5477610423136522, .2};
 
     // Retracted, low basket, high basket, specimen high rack, spec mini raise
     private static double[] slidePositions = {0, 1200, 2400, 1400, 1400, 200}; // mini extend
