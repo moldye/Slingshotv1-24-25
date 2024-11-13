@@ -77,9 +77,9 @@ public class SampleSpec13 extends LinearOpMode {
                     intake.activeIntake.flipDownFull();
 //                    intake.motorRollerOnToIntake();
                 })
-                .waitSeconds(0.75)
+                //.waitSeconds(0.75)
                 .forward(10)
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> {
                     deextend();
                 })
                 .setReversed(true)
