@@ -77,7 +77,7 @@ public class ActiveCycle {
                 if (controls.scoreSpec.value()) {
                     outtake.extendToRemoveSpecFromWall();
                     specimenClaw.closeClaw();
-                    transferState = ActiveCycle.TransferState.SPEC_SCORING;
+                    transferState = TransferState.SPEC_SCORING;
                 }
                 break;
             case EXTENDO_FULLY_EXTENDED:
@@ -90,7 +90,7 @@ public class ActiveCycle {
                     transferState = TransferState.EXTENDO_FULLY_RETRACTED;
                 }
                 if (controls.intakeOnToIntake.locked() || controls.intakeOnToClear.locked()) {
-                    transferState = ActiveCycle.TransferState.INTAKING;
+                    transferState = TransferState.INTAKING;
                 }
 //                if (!controls.clearFailsafe.value()) {
 //                    intake.extendoFullRetract();
@@ -102,16 +102,33 @@ public class ActiveCycle {
             case INTAKING:
                 outtake.returnToRetracted();
                 if (!controls.extend.value()) {
-                    transferState = ActiveCycle.TransferState.EXTENDO_FULLY_EXTENDED;
+                    transferState = TransferState.EXTENDO_FULLY_EXTENDED;
                 } else if (controls.intakeOnToIntake.locked()) {
                     intake.activeIntake.flipDownFull();
                     intake.activeIntake.motorRollerOnToIntake();
                 } else if (controls.intakeOnToClear.locked()) {
                     intake.activeIntake.flipDownToClear();
                     intake.activeIntake.clearIntake();
+                    transferState = TransferState.HOLD_SAMPLE;
+                    startTime = loopTime.milliseconds();
                 } else if (!controls.intakeOnToIntake.locked() || !controls.intakeOnToClear.locked()) {
                     intake.activeIntake.flipUp();
                     intake.activeIntake.transferOff();
+                }
+                break;
+            case HOLD_SAMPLE:
+                outtake.returnToRetracted();
+                if (loopTime.milliseconds() - startTime <= 200){
+                    intake.activeIntake.motorRollerOnToIntake();
+
+                    if (controls.extend.value()) {
+                        transferState = ActiveCycle.TransferState.EXTENDO_FULLY_EXTENDED;
+                        intake.extendoFullExtend();
+                        break;
+                    }
+                } else {
+                    intake.activeIntake.motorRollerOff();
+                    transferState = ActiveCycle.TransferState.INTAKING;
                 }
                 break;
             case TRANSFERING:
@@ -232,6 +249,7 @@ public class ActiveCycle {
         SPEC_SCORING("SPEC_SCORING"),
         SPEC_RETRACTING("SPEC_RETRACTING"),
         // PUSH_OUT_BAD_COLOR("PUSH_OUT_BAD_COLOR"),
+        HOLD_SAMPLE("HOLD_SAMPLE"),
         HANGING("HANGING");
 
         private String state;

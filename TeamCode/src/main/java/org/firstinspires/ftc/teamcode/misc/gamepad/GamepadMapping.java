@@ -76,6 +76,7 @@ public class GamepadMapping {
     // --------------
     public static Toggle botToBaseState;
     public static Toggle isBlue;
+    public static Toggle slowMode;
 
     // TESTING BUTTONS
     // NOT TO BE USED FOR COMP
@@ -109,6 +110,7 @@ public class GamepadMapping {
         // OTHER
         botToBaseState = new Toggle(false);
         isBlue = new Toggle(false);
+        slowMode = new Toggle(false);
     }
 
     public void joystickUpdate() {
@@ -141,6 +143,8 @@ public class GamepadMapping {
         joystickUpdate();
 
         activeIntakeUpdate();
+
+        slowMode.update(gamepad1.left_bumper);
 
         extend.update(gamepad1.right_bumper);
 
