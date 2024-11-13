@@ -18,6 +18,7 @@ public class ColorSensorModule {
         this.telemetry = t;
         this.sensor = hm.get(ColorSensor.class, "colorSensor");
         this.isBlue = isBlue;
+
         // blockDistance = sensor.getDistance(DistanceUnit.CM);
     }
     public SampleTypes checkSample(){
