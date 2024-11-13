@@ -55,7 +55,7 @@ public class JamesIsAStupidIdiot {
                                         .waitSeconds(0.5)
 
                                         //place spec
-                                        .splineToLinearHeading(new Pose2d(12,-30, Math.toRadians(-90)), Math.toRadians(90))
+                                        .splineToLinearHeading(new Pose2d(11,-30, Math.toRadians(-90)), Math.toRadians(90))
                                         .waitSeconds(0.5)
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                                             //lower slides (small)
@@ -84,7 +84,7 @@ public class JamesIsAStupidIdiot {
                                         })
                                         .waitSeconds(0.5)
                                         //place
-                                        .splineToLinearHeading(new Pose2d(12,-30, Math.toRadians(-90)), Math.toRadians(90))
+                                        .splineToLinearHeading(new Pose2d(10,-30, Math.toRadians(-90)), Math.toRadians(90))
                                         .waitSeconds(0.5)
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                                             //lower slides (small)
@@ -114,7 +114,7 @@ public class JamesIsAStupidIdiot {
                                         })
                                         .waitSeconds(0.5)
                                         //place
-                                        .splineToLinearHeading(new Pose2d(12,-30, Math.toRadians(-90)), Math.toRadians(90))
+                                        .splineToLinearHeading(new Pose2d(9,-30, Math.toRadians(-90)), Math.toRadians(90))
                                         .waitSeconds(0.5)
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                                             //lower slides (small)
@@ -130,7 +130,7 @@ public class JamesIsAStupidIdiot {
                                         })
                                         .waitSeconds(0.5)
                                         //place
-                                        .splineToLinearHeading(new Pose2d(12,-30, Math.toRadians(-90)), Math.toRadians(90))
+                                        .splineToLinearHeading(new Pose2d(8,-30, Math.toRadians(-90)), Math.toRadians(90))
                                         .waitSeconds(0.5)
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                                             //lower slides (small)
