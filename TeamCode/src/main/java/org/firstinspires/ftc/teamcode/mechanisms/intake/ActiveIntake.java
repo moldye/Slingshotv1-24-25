@@ -74,7 +74,7 @@ public class ActiveIntake {
     public void transferSample() {
         // pivotAnalog.runToPos(IntakeConstants.IntakeState.TRANSFER.pivotPos());
 //        backRollerServo.setPosition(IntakeConstants.ActiveIntakeStates.TRANSFER.backRollerPos());
-        rollerMotor.setPower(0.53);
+        rollerMotor.setPower(0.6);
     }
 
     public void transferOff() {

@@ -52,7 +52,7 @@ public class SampleAuton16 extends LinearOpMode {
                 //preload to bucket
                 .splineToLinearHeading(new Pose2d(-55,-57,Math.toRadians(45)),Math.toRadians(225))
                 .setReversed(false)
-                .back(3)
+                .back(3.5)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //flip bucket
                     outtake.bucketDeposit();
@@ -151,7 +151,7 @@ public class SampleAuton16 extends LinearOpMode {
                     moveLift(2400);
                 })
                 .waitSeconds(1)
-                .back(5)
+                .back(7)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //flip bucket
                     outtake.bucketDeposit();
@@ -188,7 +188,7 @@ public class SampleAuton16 extends LinearOpMode {
                 })
 
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-50,-53,Math.toRadians(45)),Math.toRadians(225))
+                .splineToLinearHeading(new Pose2d(-49,-52,Math.toRadians(45)),Math.toRadians(225))
                 .setReversed(false)
                 .UNSTABLE_addTemporalMarkerOffset(0.2, () -> {
                     //transfer sample
@@ -203,7 +203,7 @@ public class SampleAuton16 extends LinearOpMode {
                     moveLift(2400);
                 })
                 .waitSeconds(1)
-                .back(5)
+                .back(6.5)
 
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //flip bucket
@@ -219,7 +219,8 @@ public class SampleAuton16 extends LinearOpMode {
 
                 // park
                 .setReversed(false)
-                .splineToLinearHeading(new Pose2d(-48, -36, Math.toRadians(90)),Math.toRadians(90))
+                //.splineToLinearHeading(new Pose2d(-48, -36, Math.toRadians(90)),Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-28, -12, Math.toRadians(180)), Math.toRadians(0))
                 .build();
 
         waitForStart();
