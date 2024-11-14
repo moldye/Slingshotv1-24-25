@@ -20,7 +20,7 @@ public class PracticeSpecAuton {
                 .setConstraints(65, 80, 2.5, 5, 12.7)
                 .followTrajectorySequence(drive -> (
                         drive.trajectorySequenceBuilder(new Pose2d(-52, -56.5, Math.toRadians(45)))
-                                .splineToLinearHeading(new Pose2d(-47, -51, Math.toRadians(131)), Math.toRadians(225))
+                                .splineToLinearHeading(new Pose2d(-50, -55, Math.toRadians(120)), Math.toRadians(225))
                                 .build()
                 ));
 

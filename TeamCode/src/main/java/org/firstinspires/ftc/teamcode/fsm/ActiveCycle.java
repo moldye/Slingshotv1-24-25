@@ -19,6 +19,7 @@ public class ActiveCycle {
     private Telemetry telemetry;
     private ElapsedTime loopTime;
     private double startTime;
+    private boolean intakeJustHeld = false;
     public ActiveCycle(Telemetry telemetry, GamepadMapping controls, Robot robot) {
         this.robot = robot;
         this.intake = robot.intake;
@@ -44,16 +45,15 @@ public class ActiveCycle {
                 transferState = ActiveCycle.TransferState.EXTENDO_FULLY_RETRACTED;
                 break;
             case EXTENDO_FULLY_RETRACTED:
-                intake.activeIntake.motorRollerOff();
                 // have to constantly set power of slide motors back
                 outtake.returnToRetracted();
                 if (controls.extend.value()) {
                     transferState = ActiveCycle.TransferState.EXTENDO_FULLY_EXTENDED;
                     intake.extendoFullExtend();
 
-                } else if (controls.transfer.value()) {
+                } else if (controls.transfer.locked()) {
                     transferState = TransferState.TRANSFERING;
-                    startTime = loopTime.milliseconds();
+                    //startTime = loopTime.milliseconds();
                 } else if (controls.highBasket.value()) {
                     transferState = ActiveCycle.TransferState.HIGH_BASKET;
                 } else if (controls.lowBasket.value()) {
@@ -67,17 +67,17 @@ public class ActiveCycle {
 //                    transferState = TransferState.EXTENDO_FULLY_EXTENDED;
 //                }
                 if (controls.openClaw.value()) {
-//                    specimenClaw.openClaw();
                     transferState = TransferState.OPEN_CLAW;
                 }
-//                } else {
-//                    specimenClaw.closeClaw();
-//                    transferState = TransferState.CLOSE_CLAW;
-//                }
                 if (controls.scoreSpec.value()) {
                     outtake.extendToRemoveSpecFromWall();
                     specimenClaw.closeClaw();
                     transferState = TransferState.SPEC_SCORING;
+                }
+                if (controls.intakeOnToIntake.locked()) {
+                    intake.activeIntake.motorRollerOnToIntake();
+                } else {
+                    intake.activeIntake.motorRollerOff();
                 }
                 break;
             case EXTENDO_FULLY_EXTENDED:
@@ -106,51 +106,38 @@ public class ActiveCycle {
                 } else if (controls.intakeOnToIntake.locked()) {
                     intake.activeIntake.flipDownFull();
                     intake.activeIntake.motorRollerOnToIntake();
+                    intakeJustHeld = true;
                 } else if (controls.intakeOnToClear.locked()) {
                     intake.activeIntake.flipDownToClear();
                     intake.activeIntake.clearIntake();
-                    transferState = TransferState.HOLD_SAMPLE;
-                    startTime = loopTime.milliseconds();
-                } else if (!controls.intakeOnToIntake.locked() || !controls.intakeOnToClear.locked()) {
+                } else if (!controls.intakeOnToIntake.locked()) {
+                    intake.activeIntake.flipUp();
+                    intake.activeIntake.transferOff();
+                } else if (!controls.intakeOnToClear.locked()) {
                     intake.activeIntake.flipUp();
                     intake.activeIntake.transferOff();
                 }
                 break;
-            case HOLD_SAMPLE:
-                outtake.returnToRetracted();
-                if (loopTime.milliseconds() - startTime <= 200){
-                    intake.activeIntake.motorRollerOnToIntake();
-
-                    if (controls.extend.value()) {
-                        transferState = ActiveCycle.TransferState.EXTENDO_FULLY_EXTENDED;
-                        intake.extendoFullExtend();
-                        break;
-                    }
-                } else {
-                    intake.activeIntake.motorRollerOff();
-                    transferState = ActiveCycle.TransferState.INTAKING;
-                }
-                break;
             case TRANSFERING:
                 outtake.returnToRetracted();
-                if (loopTime.milliseconds() - startTime <= 700){
-                    intake.activeIntake.transferSample();
-
-                    if (controls.extend.value()) {
-                        transferState = ActiveCycle.TransferState.EXTENDO_FULLY_EXTENDED;
-                        intake.extendoFullExtend();
-                        controls.transfer.set(false);
-                        break;
-                    }
-                } else if (loopTime.milliseconds() - startTime > 700) {
-                    transferState = ActiveCycle.TransferState.EXTENDO_FULLY_RETRACTED;
-                    controls.transfer.set(false);
-                }
-//                intake.activeIntake.transferSample();
-//                if (!controls.transfer.value()) {
-//                    intake.activeIntake.transferOff();
-//                    transferState = TransferState.EXTENDO_FULLY_RETRACTED;
+//                if (loopTime.milliseconds() - startTime <= 700){
+//                    intake.activeIntake.transferSample();
+//
+//                    if (controls.extend.value()) {
+//                        transferState = ActiveCycle.TransferState.EXTENDO_FULLY_EXTENDED;
+//                        intake.extendoFullExtend();
+//                        controls.transfer.set(false);
+//                        break;
+//                    }
+//                } else if (loopTime.milliseconds() - startTime > 700) {
+//                    transferState = ActiveCycle.TransferState.EXTENDO_FULLY_RETRACTED;
+//                    controls.transfer.set(false);
 //                }
+                intake.activeIntake.transferSample();
+                if (!controls.transfer.locked()) {
+                    intake.activeIntake.transferOff();
+                    transferState = TransferState.EXTENDO_FULLY_RETRACTED;
+                }
                 break;
             case HIGH_BASKET:
                 intake.activeIntake.pivotUpForOuttake();
@@ -224,7 +211,6 @@ public class ActiveCycle {
                 } else {
                     outtake.extendToRemoveSpecFromWall();
                     specimenClaw.closeClaw();
-//                    transferState = TransferState.EXTENDO_FULLY_RETRACTED;
                 }
                 if (controls.extend.value()) {
                     transferState = TransferState.EXTENDO_FULLY_EXTENDED;
