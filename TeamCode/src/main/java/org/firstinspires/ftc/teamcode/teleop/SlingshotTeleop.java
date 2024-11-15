@@ -38,8 +38,6 @@ public class SlingshotTeleop extends OpMode {
 //            robot.intake.colorSensor.setIsBlue(false);
 //        }
 //    }
-
-    // TODO ask jihoon, this is so we don't move during init
     @Override
     public void start() {
         // run once when we start

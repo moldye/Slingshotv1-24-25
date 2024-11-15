@@ -156,15 +156,15 @@ public class GamepadMapping {
         clear.update(gamepad1.x); // square
 
         // Outtake (All Gamepad2)
-        lowBasket.update(gamepad2.right_bumper);
+        lowBasket.update(gamepad2.left_trigger > 0.3);
         highBasket.update(gamepad2.left_bumper);
-        flipBucket.update(gamepad2.a);
+        flipBucket.update(gamepad2.y);
 
         //L1hang.update(gamepad2.dpad_down); // TODO Ask Drivers
 
         // spec
-        openClaw.update(gamepad2.left_trigger > 0.3);
-        scoreSpec.update(gamepad2.right_trigger > 0.3);
+        openClaw.update(gamepad2.right_trigger > 0.3);
+        scoreSpec.update(gamepad2.right_bumper);
 
         // Reset/Fail Safes (Both controllers should have these)
 //        botToBaseState.update(gamepad1.dpad_down);
