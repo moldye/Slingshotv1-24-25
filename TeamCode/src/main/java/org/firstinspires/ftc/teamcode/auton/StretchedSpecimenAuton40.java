@@ -53,6 +53,7 @@ public class StretchedSpecimenAuton40 extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(1255);
                 })
+                .waitSeconds(0.5)
                 .back(33)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(700);
@@ -87,14 +88,14 @@ public class StretchedSpecimenAuton40 extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     intake.activeIntake.transferSample();
                 })
-                .waitSeconds(0.5)
+                .waitSeconds(0.3)
 
                 //second sample
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     intake.activeIntake.motorRollerOnToIntake();
                 })
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(33,-46,Math.toRadians(41)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(33,-45,Math.toRadians(41)), Math.toRadians(0))
                 .waitSeconds(0.1)
                 .forward(8)
                 .waitSeconds(0.5)
@@ -105,7 +106,7 @@ public class StretchedSpecimenAuton40 extends LinearOpMode {
                 })
 
 
-                .waitSeconds(0.5)
+                .waitSeconds(0.3)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     intake.activeIntake.motorRollerOff();
                 })
@@ -126,7 +127,7 @@ public class StretchedSpecimenAuton40 extends LinearOpMode {
 
                 //go to box
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    moveLift(1325);
+                    moveLift(1300);
                 })
                 .lineToSplineHeading(new Pose2d(8,-38,Math.toRadians(270)))
 

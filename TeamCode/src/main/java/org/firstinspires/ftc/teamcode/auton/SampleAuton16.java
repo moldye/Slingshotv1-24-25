@@ -117,7 +117,7 @@ public class SampleAuton16 extends LinearOpMode {
                 //MNEXT SAMPLE - second yellow
 //                .splineToLinearHeading(new Pose2d(-55,-60,Math.toRadians(90)),Math.toRadians(45))
                 .lineToConstantHeading(new Vector2d(-56, -52))
-                .turn(Math.toRadians(50))
+                .turn(Math.toRadians(51))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     extendoIntake();
                 })
@@ -188,13 +188,13 @@ public class SampleAuton16 extends LinearOpMode {
                 })
 
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-48,-51,Math.toRadians(45)),Math.toRadians(225))
+                .splineToLinearHeading(new Pose2d(-47,-55,Math.toRadians(45)),Math.toRadians(225))
                 .setReversed(false)
                 .UNSTABLE_addTemporalMarkerOffset(0.2, () -> {
                     //transfer sample
                     intake.activeIntake.transferSample();
                 })
-                .UNSTABLE_addTemporalMarkerOffset(.8, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(.9, () -> {
                     intake.activeIntake.transferOff();
                     intake.activeIntake.flipUp();
                 })
@@ -203,7 +203,7 @@ public class SampleAuton16 extends LinearOpMode {
                     moveLift(2400);
                 })
                 .waitSeconds(1)
-                .back(8)
+                .back(7)
 
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //flip bucket
