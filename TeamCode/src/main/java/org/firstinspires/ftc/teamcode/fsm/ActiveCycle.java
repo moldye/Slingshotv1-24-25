@@ -186,13 +186,13 @@ public class ActiveCycle {
                 intake.extendoFullRetract();
                 transferState = ActiveCycle.TransferState.EXTENDO_FULLY_RETRACTED;
                 break;
-            case HANGING:
-                outtake.hang();
-                if (!controls.L1hang.value()) {
-                    outtake.bucketToReadyForTransfer();
-                    transferState = ActiveCycle.TransferState.SLIDES_RETRACTED;
-                }
-                break;
+//            case HANGING:
+//                outtake.hang();
+//                if (!controls.L1hang.value()) {
+//                    outtake.bucketToReadyForTransfer();
+//                    transferState = ActiveCycle.TransferState.SLIDES_RETRACTED;
+//                }
+//                break;
 //            case PUSH_OUT_BAD_COLOR:
 //                if (loopTime.milliseconds() - startTime <= 1000 && loopTime.milliseconds() - startTime >= 0) {
 //                    intake.activeIntake.pushOutSample();
