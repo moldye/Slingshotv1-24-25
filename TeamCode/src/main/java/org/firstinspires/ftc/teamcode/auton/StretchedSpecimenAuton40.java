@@ -51,7 +51,7 @@ public class StretchedSpecimenAuton40 extends LinearOpMode {
 
                 //preloaded spec
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    moveLift(1325);
+                    moveLift(1255);
                 })
                 .back(33)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {

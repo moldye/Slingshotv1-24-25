@@ -75,7 +75,7 @@ public class V4bCycle {
                     intake.extendoFullRetract();
                     transferState = V4bCycle.TransferState.EXTENDO_FULLY_RETRACTED;
                 }
-                if (controls.intakeOnToIntake.locked() || controls.intakeOnToClear.locked()) {
+                if (controls.intakeOnToIntake.locked() || controls.toClear.locked()) {
                     transferState = V4bCycle.TransferState.INTAKING;
                 }
                 if (controls.botToBaseState.value()) {
@@ -93,9 +93,9 @@ public class V4bCycle {
                 } else if (controls.intakeOnToIntake.locked()) {
                     intake.v4bActiveIntake.motorRollerOnToIntake();
                     // intake.activeIntake.backRollerIdle();
-                } else if (controls.intakeOnToClear.locked()) {
+                } else if (controls.toClear.locked()) {
                     intake.v4bActiveIntake.motorRollerOnToClear();
-                } else if (!controls.intakeOnToIntake.locked() || !controls.intakeOnToClear.locked()) {
+                } else if (!controls.intakeOnToIntake.locked() || !controls.toClear.locked()) {
                     intake.v4bActiveIntake.motorRollerOff();
                     // intake.v4bActiveIntake.transferOff();
                 }

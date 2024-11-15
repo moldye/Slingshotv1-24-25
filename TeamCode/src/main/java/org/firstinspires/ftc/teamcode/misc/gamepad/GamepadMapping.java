@@ -32,8 +32,10 @@ public class GamepadMapping {
     // --------------
     public static Toggle extend;
     public static Toggle transfer;
+    public static Toggle retract;
     public static Toggle intakeOnToIntake;
-    public static Toggle intakeOnToClear;
+    public static Toggle toClear;
+    public static Toggle clear;
 
     public Toggle clearFailsafe;
 
@@ -89,9 +91,11 @@ public class GamepadMapping {
         // INTAKE
         extend = new Toggle(false);
         intakeOnToIntake = new Toggle(false);
-        intakeOnToClear = new Toggle(false);
+        toClear = new Toggle(false);
         transfer = new Toggle(false);
         clearFailsafe = new Toggle(false);
+        retract = new Toggle(false);
+        clear = new Toggle(false);
 
         pivot = new Toggle(false);
         transferHover = new Toggle(false);
@@ -135,7 +139,7 @@ public class GamepadMapping {
         transferHover.update(gamepad1.left_bumper);
 
         intakeOnToIntake.update(gamepad2.right_trigger > 0.5);
-        intakeOnToClear.update(gamepad2.left_trigger > 0.5);
+        toClear.update(gamepad2.left_trigger > 0.5);
     }
 
     // v1 robot
@@ -147,13 +151,16 @@ public class GamepadMapping {
         slowMode.update(gamepad1.left_bumper);
 
         extend.update(gamepad1.right_bumper);
+        // This is only when Souren drives
+        // retract.update(gamepad2.a);
+        clear.update(gamepad1.x); // square
 
         // Outtake (All Gamepad2)
         lowBasket.update(gamepad2.right_bumper);
         highBasket.update(gamepad2.left_bumper);
         flipBucket.update(gamepad2.a);
 
-        L1hang.update(gamepad2.dpad_down); // TODO Ask Drivers
+        //L1hang.update(gamepad2.dpad_down); // TODO Ask Drivers
 
         // spec
         openClaw.update(gamepad2.left_trigger > 0.3);
@@ -166,7 +173,7 @@ public class GamepadMapping {
 
     public void activeIntakeUpdate() {
         intakeOnToIntake.update(gamepad1.right_trigger > 0.5);
-        intakeOnToClear.update(gamepad1.left_trigger > 0.5);
+        toClear.update(gamepad1.left_trigger > 0.5);
         transfer.update(gamepad2.dpad_up);
 
         clearFailsafe.update(gamepad1.x);

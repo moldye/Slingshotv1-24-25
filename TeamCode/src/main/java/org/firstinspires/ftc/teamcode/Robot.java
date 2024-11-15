@@ -97,6 +97,7 @@ public class Robot{
         // reset dt & ultrasonics
         imu.resetYaw();
         // reset specimen claw
+        specimenClaw.openClaw();
     }
 
     // this is for teleop, when we ant to preserve encoder and sensor input

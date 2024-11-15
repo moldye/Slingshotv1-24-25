@@ -10,15 +10,19 @@ import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 @TeleOp
 public class SlingshotTeleop extends OpMode {
     private GamepadMapping controls;
-    private Robot robot;
     private ActiveCycle cycle;
+    private Robot robot;
     @Override
     public void init() {
         controls = new GamepadMapping(gamepad1, gamepad2);
         robot = new Robot(hardwareMap, telemetry, controls);
         cycle = new ActiveCycle(telemetry, controls, robot);
 
+        robot.outtake.resetEncoders();
         robot.outtake.setMotorsToTeleOpMode();
+
+        robot.intake.resetHardware();
+        robot.outtake.resetHardware();
     }
 
 // Only needed for active intake
@@ -45,7 +49,6 @@ public class SlingshotTeleop extends OpMode {
 
     @Override
     public void loop() {
-        // telemetry.addData("Color Sensor Is Blue", robot.intake.activeIntake.colorSensor.getIsBlue());
         cycle.activeIntakeUpdate();
     }
 }

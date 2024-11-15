@@ -128,12 +128,6 @@ public class DriveTrain {
         // but only if at least one is out of the range [-1, 1]
         double denominator = Math.max(Math.abs(drive) + Math.abs(strafe) + Math.abs(turn), 1);
 
-        if (controls.slowMode.locked()) {
-            slowMultiplier = 0.75;
-        } else {
-            slowMultiplier = 1;
-        }
-
         leftFront.setPower(((drive + strafe + turn) / denominator) * slowMultiplier);
         leftBack.setPower(((drive - strafe + turn) / denominator) * slowMultiplier);
         rightFront.setPower(((drive - strafe - turn) / denominator) * slowMultiplier);
@@ -208,6 +202,10 @@ public class DriveTrain {
             }
             setTargetAngle(newTargetAngle);
         }
+    }
+
+    public void setSlowMultiplier(double slow) {
+        slowMultiplier = slow;
     }
 
     public enum DriveMode {
