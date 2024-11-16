@@ -39,7 +39,6 @@ public class ActiveCycle {
 
         switch (transferState) {
             case BASE_STATE:
-                // TODO: claw defaults to open?
                 robot.hardwareSoftReset();
                 transferState = ActiveCycle.TransferState.EXTENDO_FULLY_RETRACTED;
                 break;
@@ -48,9 +47,11 @@ public class ActiveCycle {
                 outtake.returnToRetracted();
                 if (controls.extend.value()) {
                     transferState = ActiveCycle.TransferState.EXTENDO_FULLY_EXTENDED;
+                    controls.flipBucket.set(false);
                     intake.extendoFullExtend();
                 } else if (controls.transfer.locked()) {
                     transferState = TransferState.TRANSFERING;
+                    controls.flipBucket.set(false);
                     //startTime = loopTime.milliseconds();
                 } else if (controls.highBasket.value()) {
                     transferState = ActiveCycle.TransferState.HIGH_BASKET;
@@ -62,13 +63,20 @@ public class ActiveCycle {
 //                    transferState = ActiveCycle.TransferState.HANGING;
 //                }
                 }
+                if (controls.flipBucket.value()) {
+                    outtake.bucketDeposit();
+                } else {
+                    outtake.bucketToReadyForTransfer();
+                }
                 if (controls.openClaw.value()) {
                     transferState = TransferState.OPEN_CLAW;
+                    controls.flipBucket.set(false);
                 }
                 if (controls.scoreSpec.value()) {
                     outtake.extendToRemoveSpecFromWall();
                     specimenClaw.closeClaw();
                     transferState = TransferState.SPEC_SCORING;
+                    controls.flipBucket.set(false);
                 }
                 if (controls.intakeOnToIntake.locked()) {
                     intake.activeIntake.motorRollerOnToIntake();
