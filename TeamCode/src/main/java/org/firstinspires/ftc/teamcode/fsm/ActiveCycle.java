@@ -179,6 +179,7 @@ public class ActiveCycle {
                     transferState = TransferState.EXTENDO_FULLY_EXTENDED;
                     controls.lowBasket.set(false);
                     controls.highBasket.set(false);
+                    controls.flipBucket.set(false);
                 }
                 break;
             case SLIDES_RETRACTED:
