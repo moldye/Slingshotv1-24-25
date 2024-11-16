@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.specimen.SpecimenClaw;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
 @TeleOp
-@Config
+//@Config
 public class MechTest extends OpMode {
     private SpecimenClaw specClaw;
     private GamepadMapping controls;

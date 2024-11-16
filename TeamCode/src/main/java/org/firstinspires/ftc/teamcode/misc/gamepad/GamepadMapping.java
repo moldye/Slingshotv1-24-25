@@ -158,7 +158,7 @@ public class GamepadMapping {
         // Outtake (All Gamepad2)
         lowBasket.update(gamepad2.left_trigger > 0.3);
         highBasket.update(gamepad2.left_bumper);
-        flipBucket.update(gamepad2.y);
+        flipBucket.update(gamepad2.a);
 
         //L1hang.update(gamepad2.dpad_down); // TODO Ask Drivers
 

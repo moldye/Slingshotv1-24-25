@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.fsm.ClawCycle;
 import org.firstinspires.ftc.teamcode.mechanisms.intake.Claw;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
-@TeleOp
+//@TeleOp
 public class ClawTest extends OpMode {
     private Robot robot;
     private GamepadMapping controls;
