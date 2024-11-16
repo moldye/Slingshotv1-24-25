@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-@Autonomous
+//@Autonomous
 public class SampleSpec13 extends LinearOpMode {
 
     private GamepadMapping controls;

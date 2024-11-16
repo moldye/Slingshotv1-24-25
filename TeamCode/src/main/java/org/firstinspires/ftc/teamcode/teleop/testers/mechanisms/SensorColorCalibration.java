@@ -13,7 +13,7 @@ import org.opencv.core.Scalar;
 import java.util.Arrays;
 import java.util.List;
 
-@TeleOp
+//@TeleOp
 public class SensorColorCalibration extends OpMode {
     int iterationCount = 0;
     double[] currentMean = new double[3];

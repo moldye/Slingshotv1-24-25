@@ -51,7 +51,7 @@ public class StretchedSpecimenAuton40 extends LinearOpMode {
 
                 //preloaded spec
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    moveLift(1255);
+                    moveLift(1265);
                 })
                 .waitSeconds(0.5)
                 .back(33)
@@ -127,7 +127,7 @@ public class StretchedSpecimenAuton40 extends LinearOpMode {
 
                 //go to box
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    moveLift(1300);
+                    moveLift(1310);
                 })
                 .lineToSplineHeading(new Pose2d(8,-38,Math.toRadians(270)))
 
@@ -158,7 +158,7 @@ public class StretchedSpecimenAuton40 extends LinearOpMode {
 
                 //go back to box
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    moveLift(1325);
+                    moveLift(1335);
                 })
                 .lineToSplineHeading(new Pose2d(5,-38,Math.toRadians(270)))
                 .setReversed(true)
@@ -190,7 +190,7 @@ public class StretchedSpecimenAuton40 extends LinearOpMode {
 
                 //go back to box
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    moveLift(1325);
+                    moveLift(1335);
                 })
                 .lineToSplineHeading(new Pose2d(2,-38,Math.toRadians(270)))
                 .setReversed(true)

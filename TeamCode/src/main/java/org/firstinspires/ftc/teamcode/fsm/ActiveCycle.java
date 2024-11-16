@@ -99,6 +99,7 @@ public class ActiveCycle {
                 outtake.returnToRetracted();
                 if (!controls.extend.value()) {
                     transferState = TransferState.EXTENDO_FULLY_EXTENDED;
+                    controls.clear.set(false);
                 } else if (controls.intakeOnToIntake.locked()) {
                     intake.activeIntake.flipDownFull();
                     intake.activeIntake.motorRollerOnToIntake();
@@ -112,11 +113,9 @@ public class ActiveCycle {
                 } else if (!controls.intakeOnToIntake.locked()) {
                     intake.activeIntake.flipUp();
                     intake.activeIntake.transferOff();
-                    controls.clear.set(false);
                 } else if (!controls.toClear.locked()) {
                     intake.activeIntake.flipUp();
                     intake.activeIntake.transferOff();
-                    controls.clear.set(false);
                 }
                 break;
             case TRANSFERING:
@@ -220,20 +219,21 @@ public class ActiveCycle {
                 }
                 break;
             case OPEN_CLAW:
+                outtake.returnToRetracted();
                 if (controls.openClaw.value()) {
-                    outtake.returnToRetracted();
+                    //outtake.returnToRetracted();
                     specimenClaw.openClaw();
                 }
                 if (!controls.openClaw.value()) {
-                    outtake.extendToRemoveSpecFromWall();
+                    //outtake.extendToRemoveSpecFromWall();
                     specimenClaw.closeClaw();
                 }
                 if (controls.extend.value()) {
-                    outtake.returnToRetracted();
+                    //outtake.returnToRetracted();
                     transferState = TransferState.EXTENDO_FULLY_EXTENDED;
                 }
                 if (controls.scoreSpec.value()) {
-                    outtake.returnToRetracted();
+                    //outtake.returnToRetracted();
                     specimenClaw.closeClaw();
                     transferState = TransferState.SPEC_SCORING;
                 }

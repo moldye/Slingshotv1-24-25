@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
-@TeleOp
+//@TeleOp
 public class SlowModeTester extends OpMode {
     private GamepadMapping controls;
     private Robot robot;

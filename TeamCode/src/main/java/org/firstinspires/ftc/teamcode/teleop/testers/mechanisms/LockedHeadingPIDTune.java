@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
 @Config
-@TeleOp
+//@TeleOp
 public class LockedHeadingPIDTune extends OpMode {
     // ftc dashboard: 192.168.43.1:8080/dash
     private double drive;
