@@ -32,6 +32,8 @@ public class FSMTest extends OpMode {
 
         robot.intake.resetHardware();
         robot.outtake.resetHardware();
+
+
     }
 
 //    @Override

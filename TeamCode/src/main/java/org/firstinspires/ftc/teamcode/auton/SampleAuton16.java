@@ -35,6 +35,7 @@ public class SampleAuton16 extends LinearOpMode {
         outtake.bucketToReadyForTransfer();
         intake.extendoFullRetract();
         intake.activeIntake.flipUp();
+        robot.specimenClaw.openClaw();
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
@@ -220,7 +221,15 @@ public class SampleAuton16 extends LinearOpMode {
                 // park
                 .setReversed(false)
                 //.splineToLinearHeading(new Pose2d(-48, -36, Math.toRadians(90)),Math.toRadians(90))
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    moveLift(1050);
+                })
                 .splineToLinearHeading(new Pose2d(-28, -12, Math.toRadians(180)), Math.toRadians(0))
+                .back(1)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    moveLift(900);
+                })
+                .waitSeconds(30)
                 .build();
 
         waitForStart();
