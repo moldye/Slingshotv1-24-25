@@ -48,7 +48,7 @@ public class ActiveCycle {
                 if (controls.extend.value()) {
                     transferState = ActiveCycle.TransferState.EXTENDO_FULLY_EXTENDED;
                     controls.flipBucket.set(false);
-                    intake.extendoFullExtend();
+                    //intake.extendoFullExtend();
                 } else if (controls.transfer.locked()) {
                     transferState = TransferState.TRANSFERING;
                     controls.flipBucket.set(false);
@@ -62,11 +62,6 @@ public class ActiveCycle {
 //                } else if (controls.L1hang.value()) {
 //                    transferState = ActiveCycle.TransferState.HANGING;
 //                }
-                }
-                if (controls.flipBucket.value()) {
-                    outtake.bucketDeposit();
-                } else {
-                    outtake.bucketToReadyForTransfer();
                 }
                 if (controls.openClaw.value()) {
                     transferState = TransferState.OPEN_CLAW;
@@ -87,14 +82,22 @@ public class ActiveCycle {
             case EXTENDO_FULLY_EXTENDED:
                 controls.openClaw.set(false);
                 outtake.returnToRetracted();
+                intake.extendoFullExtend();
                 if (!controls.extend.value()) {
                     intake.extendoFullRetract();
                     intake.activeIntake.flipToTransfer();
                     controls.transfer.set(false);
+                    controls.flipBucket.set(false);
                     transferState = TransferState.EXTENDO_FULLY_RETRACTED;
                 }
                 if (controls.intakeOnToIntake.locked() || controls.toClear.locked()) {
                     transferState = TransferState.INTAKING;
+                    controls.flipBucket.set(false);
+                }
+                if (controls.flipBucket.value()) {
+                    outtake.bucketDeposit();
+                } else {
+                    outtake.bucketToReadyForTransfer();
                 }
                 break;
             case INTAKING:

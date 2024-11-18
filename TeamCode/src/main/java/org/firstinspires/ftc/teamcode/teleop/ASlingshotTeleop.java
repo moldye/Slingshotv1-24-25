@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.fsm.ActiveCycle;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
 @TeleOp
-public class SlingshotTeleop extends OpMode {
+public class ASlingshotTeleop extends OpMode {
     private GamepadMapping controls;
     private ActiveCycle cycle;
     private Robot robot;
@@ -18,11 +18,7 @@ public class SlingshotTeleop extends OpMode {
         robot = new Robot(hardwareMap, telemetry, controls);
         cycle = new ActiveCycle(telemetry, controls, robot);
 
-        robot.outtake.resetEncoders();
         robot.outtake.setMotorsToTeleOpMode();
-
-        robot.intake.resetHardware();
-        robot.outtake.resetHardware();
     }
 
 // Only needed for active intake
