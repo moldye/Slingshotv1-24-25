@@ -82,3 +82,5 @@ lint/tmp/
 
 .DS_Store
 .idea
+TeamCode/src/main/java/org/firstinspires/ftc/teamcode/vision/eocvsim_workspace.json
+TeamCode/src/main/java/org/firstinspires/ftc/teamcode/vision/EOCV-SIM.jar
