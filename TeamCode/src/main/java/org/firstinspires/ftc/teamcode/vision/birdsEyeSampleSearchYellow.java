@@ -10,11 +10,13 @@ import static org.opencv.imgproc.Imgproc.MORPH_CROSS;
 import static org.opencv.imgproc.Imgproc.MORPH_ELLIPSE;
 import static org.opencv.imgproc.Imgproc.MORPH_GRADIENT;
 import static org.opencv.imgproc.Imgproc.MORPH_RECT;
+import static org.opencv.imgproc.Imgproc.approxPolyDP;
 import static org.opencv.imgproc.Imgproc.dilate;
 import static org.opencv.imgproc.Imgproc.erode;
 import static org.opencv.imgproc.Imgproc.getStructuringElement;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
@@ -22,9 +24,11 @@ import org.firstinspires.ftc.vision.VisionProcessor;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
+import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
+import org.opencv.core.RotatedRect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
@@ -34,12 +38,12 @@ import java.util.List;
 
 public class birdsEyeSampleSearchYellow implements VisionProcessor {
     //OpenCV sim stuff
-
+    public boolean isBlue;
     public boolean seeYellowFrame = false;
     public boolean seePostThreshold = false;
     public boolean seeMorphology = false;
     public boolean seeCanny = false;
-    public boolean seeHough = true;
+    public boolean seeHough = false;
 
     public Telemetry telemetry = null;
     //matrices, in order of appearance
@@ -58,8 +62,8 @@ public class birdsEyeSampleSearchYellow implements VisionProcessor {
     double avg = 0.0;
 
     //kernals
-    int dilateSize = 3;
-    int erodeSize = 1;
+    public int dilateSize = 1;
+    public int erodeSize = 3;
 
     //line stuff
 
@@ -91,15 +95,22 @@ public class birdsEyeSampleSearchYellow implements VisionProcessor {
         for(int x = 0;x<frameSize.width;x++){
             for(int y = 0;y<frameSize.height;y++){
                 double[] colorAtPoint = yellowBasedFrame.get(y,x);
-                double result = (255-Math.abs(colorAtPoint[0]-avg-200))/3+(255-Math.abs(colorAtPoint[1]-avg-150))/3+(255-colorAtPoint[0])/3;
-//                double result = 255;
+
+                double[] hsv = this.HSVcalc(colorAtPoint);
+                double result;
+                if(isBlue) {
+                    result = (hsv[0] > 220 && hsv[0] < 250 && hsv[1] > 30 && hsv[2] > 20 && hsv[2] < 70) ? 255 : 0;
+                }else{
+                    result = ((hsv[0] > 350 || hsv[0] < 10) && hsv[1] > 60 && hsv[2] > 30) ? 255 : 0;
+
+                }
+                //                double result = 255;
 //                result -=Math.abs(colorAtPoint[0]-avg-200)/2;
 //                result -=Math.abs(colorAtPoint[1]-avg-150)/2;
-                result -= colorAtPoint[2]/2;
+//                result -= colorAtPoint[2]/3;
                 result = Math.max(0,Math.min(result,255));
                 //case red = punish for low g value
                 //case metal = punish for hjgh blue value
-                result = Math.min(result, 255);
                 colorAtPoint[0]=colorAtPoint[1]=colorAtPoint[2]=result;
                 yellowBasedFrame.put(y,x,colorAtPoint);
             }
@@ -128,7 +139,6 @@ public class birdsEyeSampleSearchYellow implements VisionProcessor {
         if(seeMorphology)
             morphTransform.copyTo(frame);
 
-        List<MatOfPoint> contours = new ArrayList<>();
         Mat cannyOut = new Mat();
 
         Canny(postThreshold, cannyOut, cannyThres1, cannyThres2);
@@ -150,9 +160,7 @@ public class birdsEyeSampleSearchYellow implements VisionProcessor {
             Imgproc.line(houghOutput, new Point(l[0], l[1]), new Point(l[2], l[3]), BLUE, 2, Imgproc.LINE_AA, 0);
         }
 
-        telemetry.addLine(frame.type()+"");
         if(seeHough){
-//            telemetry.addLine(houghLines.rows()+"");
             houghOutput.copyTo(frame);
         }
 
@@ -165,16 +173,33 @@ public class birdsEyeSampleSearchYellow implements VisionProcessor {
 
         //findContours
 
-        /*
+        List<MatOfPoint> contours = new ArrayList<>();
+
+        Mat hierarchy = new Mat();
         Imgproc.findContours(morphTransform, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
 
-        if(!seeMorphology) {
-            for (Mat x : contours) {
-                Rect boundRect = Imgproc.boundingRect(x);
-                Imgproc.rectangle(frame, boundRect, BLUE, 2);
+//        approxPolyDP();
+        if(!seeMorphology && !seeHough && !seeCanny && !seePostThreshold) {
+            for (MatOfPoint x : contours) {
+                /// Source variable
+
+                /// New variable
+                MatOfPoint2f  newX = new MatOfPoint2f( x.toArray() );
+
+                RotatedRect boundRect = Imgproc.minAreaRect(newX);
+                Point points[] = new Point[4];
+                boundRect.points(points);
+                if(Imgproc.contourArea(x)>1500) {
+                    for (int i = 0; i < 4; ++i) {
+                        Imgproc.line(frame,
+                                points[i],
+                                points[(i + 1) % 4],
+                                BLUE, 2);
+                    }
+                }
             }
         }
-        */
+
 
         return null;
     }
@@ -186,4 +211,27 @@ public class birdsEyeSampleSearchYellow implements VisionProcessor {
 //    public ArrayList<double[]> getLines(){
 //        return lineList;
 //    }
+    public static double[] HSVcalc(double[] rgb){
+        double[] dout = new double[3];
+        double r = rgb[0]/255;
+        double g = rgb[1]/255;
+        double b = rgb[2]/255;
+        double max = Math.max(r,Math.max(g,b));
+        double min = Math.min(r,Math.min(g,b));
+        double delta = max-min;
+        if(delta == 0){
+            dout[0]=0;
+        }
+        else if(r==max){
+            dout[0] = (60 * ((g - b) / delta) + 360) % 360;
+        }else if(g==max){
+            dout[0] = (60 * ((b - r) / delta) + 120) % 360;
+        }else if(b==max){
+            dout[0] = (60 * ((r - g) / delta) + 240) % 360;
+        }
+        dout[1]=max==0?0:(delta/max)*100;
+        dout[2]=max*100;
+
+        return dout;
+    }
 }
