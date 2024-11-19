@@ -112,7 +112,7 @@ public class YomYom extends LinearOpMode {
                 })
 
                 .setReversed(false)
-                .UNSTABLE_addDisplacementMarkerOffset(6, () -> {
+                .UNSTABLE_addDisplacementMarkerOffset(4, () -> {
 //                                            intake
                     moveExtendo(0);
                 })
@@ -149,7 +149,7 @@ public class YomYom extends LinearOpMode {
                 .splineToSplineHeading(new Pose2d(45,-40, Math.toRadians(29)),Math.toRadians(29))
                 .waitSeconds(0.2)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    moveExtendo(0.16);
+                    moveExtendo(0.18);
                 })
                 //O-zone #3
                 .setReversed(true)
@@ -169,11 +169,11 @@ public class YomYom extends LinearOpMode {
 
 
                 //go back to hp #1
-                .lineToLinearHeading(new Pose2d(40,-59,Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(40,-60,Math.toRadians(90)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     intake.extendoFullRetract();
                 })
-                .back(11)
+                .back(9)
                 .UNSTABLE_addTemporalMarkerOffset(0.1, () -> {
                     //close claw
                     specimenClaw.closeClaw();
