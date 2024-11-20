@@ -32,7 +32,7 @@ public class birdsEyeSampleSearch implements VisionProcessor {
     //OpenCV sim stuff
     public boolean isBlue = false;
     public boolean isRed = false;
-    public boolean seeYellowFrame = false;
+    public boolean seeConvertedFrame = false;
     public boolean seePostThreshold = false;
     public boolean seeMorphology = false;
     public boolean seeCanny = false;
@@ -40,11 +40,9 @@ public class birdsEyeSampleSearch implements VisionProcessor {
 
     public Telemetry telemetry = null;
     //matrices, in order of appearance
-    Mat yellowBasedFrame = new Mat();
+    Mat convertedFrame = new Mat();
     Mat groundSubmat = new Mat();
 
-    //definitions/boundaries of matrices
-    public double thresholdOffset = 50;
 
     Size frameSize = new Size();
 
@@ -55,14 +53,11 @@ public class birdsEyeSampleSearch implements VisionProcessor {
     double avg = 0.0;
 
     //kernals
-    public int dilateSize = 1;
+    public int dilateSize = 0;
     public int erodeSize = 3;
 
     //line stuff
 
-    double cannyThres1 = 0;
-    double cannyThres2 = 0;
-    public int houghThres = 0;
 
     //utilties
     private static final Scalar BLUE = new Scalar(0, 0, 255);
@@ -70,7 +65,6 @@ public class birdsEyeSampleSearch implements VisionProcessor {
     public birdsEyeSampleSearch(Telemetry telemetry){
         this.telemetry = telemetry;
 
-//        telemetry.addLine("t open");
     }
     @Override
     public void init(int width, int height, CameraCalibration calibration) {
@@ -82,15 +76,24 @@ public class birdsEyeSampleSearch implements VisionProcessor {
 //        telemetry.addLine("t opened");
 
         frameSize = frame.size();
-        yellowBasedFrame = frame.clone();
-        groundSubmat = yellowBasedFrame.submat(new Rect(groundTopLeft, groundBottomRight));
+        convertedFrame = frame.clone();
+        groundSubmat = convertedFrame.submat(new Rect(groundTopLeft, groundBottomRight));
         avg = (Core.mean(groundSubmat).val[0]+Core.mean(groundSubmat).val[1]+Core.mean(groundSubmat).val[2])/3;
+
+
+        for(int x = 0;x<frameSize.width;x++) {
+            for (int y = 0; y < frameSize.height; y++) {
+                double[] colorAtPoint = convertedFrame.get(y,x);
+
+            }
+        }
+
         for(int x = 0;x<frameSize.width;x++){
             for(int y = 0;y<frameSize.height;y++){
-                double[] colorAtPoint = yellowBasedFrame.get(y,x);
-                //comment
+                double[] colorAtPoint = convertedFrame.get(y,x);
                 double[] hsv = this.HSVcalc(colorAtPoint);
                 double result;
+                //based on the target sample, match hsv value
                 if(isBlue) {
                     result = (hsv[0] > 220 && hsv[0] < 250 && hsv[1] > 30 && hsv[2] > 20 && hsv[2] < 70) ? 255 : 0;
                 }else if(isRed){
@@ -99,92 +102,50 @@ public class birdsEyeSampleSearch implements VisionProcessor {
                 }else{
                     result = ((hsv[0] > 25 && hsv[0] < 50) && hsv[1] > 60 && hsv[2] > 50) ? 255 : 0;
                 }
-                //                double result = 255;
-//                result -=Math.abs(colorAtPoint[0]-avg-200)/2;
-//                result -=Math.abs(colorAtPoint[1]-avg-150)/2;
-//                result -= colorAtPoint[2]/3;
-                result = Math.max(0,Math.min(result,255));
-                //case red = punish for low g value
-                //case metal = punish for hjgh blue value
+                //set all pixels to white/black
                 colorAtPoint[0]=colorAtPoint[1]=colorAtPoint[2]=result;
-                yellowBasedFrame.put(y,x,colorAtPoint);
+                convertedFrame.put(y,x,colorAtPoint);
             }
         }
-        Imgproc.cvtColor(yellowBasedFrame, yellowBasedFrame, Imgproc.COLOR_BGR2GRAY);
+        Imgproc.cvtColor(convertedFrame, convertedFrame, Imgproc.COLOR_BGR2GRAY);
 
-        if(seeYellowFrame)
-            yellowBasedFrame.copyTo(frame);
-        Mat postThreshold = new Mat();
-        Imgproc.threshold(yellowBasedFrame, postThreshold, thresholdOffset+avg, 255, Imgproc.THRESH_BINARY);
-        if(seePostThreshold)
-            postThreshold.copyTo(frame);
-        //morpho stuff (temp here)
+        if(seeConvertedFrame)
+            convertedFrame.copyTo(frame);
 
         Mat dilateKernel = getStructuringElement(MORPH_RECT,
                 new Size(2 * dilateSize + 1, 2 * dilateSize + 5),
                 new Point(dilateSize, dilateSize));
 
-        Mat erodeKernel = getStructuringElement(MORPH_ELLIPSE,
+        Mat erodeKernel = getStructuringElement(MORPH_RECT,
                 new Size(2 * erodeSize + 1, 2 * erodeSize + 5),
                 new Point(erodeSize, erodeSize));
 
         Mat morphTransform = new Mat();
-        erode(postThreshold, morphTransform, erodeKernel);
+        dilate(convertedFrame, morphTransform, dilateKernel);
+        erode(morphTransform, morphTransform, erodeKernel);
         dilate(morphTransform, morphTransform, dilateKernel);
         if(seeMorphology)
             morphTransform.copyTo(frame);
 
-        Mat cannyOut = new Mat();
-
-        Canny(postThreshold, cannyOut, cannyThres1, cannyThres2);
-
-        if(seeCanny)
-            Imgproc.cvtColor(cannyOut, frame, Imgproc.COLOR_GRAY2BGR);
-
-//        cannyOut.copyTo(frame);
-        Mat houghLines = new Mat();
-        Mat houghOutput = new Mat();
-
-        Imgproc.threshold(yellowBasedFrame, houghOutput, 0, 255, Imgproc.THRESH_BINARY);
-
-        HoughLinesP(cannyOut, houghLines, 1, Math.PI/180, houghThres);
-        ArrayList<double[]> lineList = new ArrayList<>();
-        for (int x = 0; x < houghLines.rows(); x++) {
-            double[] l = houghLines.get(x, 0);
-            lineList.add(l);
-            Imgproc.line(houghOutput, new Point(l[0], l[1]), new Point(l[2], l[3]), BLUE, 2, Imgproc.LINE_AA, 0);
-        }
-
-        if(seeHough){
-            houghOutput.copyTo(frame);
-        }
-
-
-
-
-
-
 
 
         //findContours
-
         List<MatOfPoint> contours = new ArrayList<>();
-
         Mat hierarchy = new Mat();
-        Imgproc.findContours(morphTransform, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
+        Imgproc.findContours(morphTransform, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
 
-//        approxPolyDP();
+//show boundRects
         if(!seeMorphology && !seeHough && !seeCanny && !seePostThreshold) {
             for (MatOfPoint x : contours) {
-                /// Source variable
-
-                /// New variable
+                /// create MatOfPoint -> create boundingRect
                 MatOfPoint2f  newX = new MatOfPoint2f( x.toArray() );
 
                 RotatedRect boundRect = Imgproc.minAreaRect(newX);
+
                 Point[] points = new Point[4];
                 boundRect.points(points);
                 double sl = Math.sqrt(Math.pow(points[0].x, 2)+Math.pow(points[0].y, 2))-Math.sqrt(Math.pow(points[1].x, 2)+Math.pow(points[1].y, 2));
+                //show big ones (blue)
                 if(Imgproc.contourArea(x)>1500) {
                     for (int i = 0; i < 4; ++i) {
                         Imgproc.line(frame,
@@ -194,8 +155,9 @@ public class birdsEyeSampleSearch implements VisionProcessor {
                     }
 
                     Imgproc.putText(frame, String.valueOf(((int)boundRect.angle*100)/100), boundRect.center, 1, 0.75, new Scalar(0,0,0));
-                    //frame, boundRect.angle, boundRect.center, 1, new Scalar(0,0,0)
-                }else if(Math.abs(sl)<15&&Imgproc.contourArea(x)>500){
+                }
+                //show square ones (Red)
+                else if(Math.abs(sl)<15&&Imgproc.contourArea(x)>500){
                     for (int i = 0; i < 4; ++i) {
                         Imgproc.line(frame,
                                 points[i],
@@ -204,7 +166,9 @@ public class birdsEyeSampleSearch implements VisionProcessor {
                         Imgproc.putText(frame, String.valueOf(((int)sl*100)/100), boundRect.center, 1, 0.75, new Scalar(0,0,0));
 
                     }
-                }else{
+                }
+                //rest (blue)
+                else{
                     for (int i = 0; i < 4; ++i) {
                         Imgproc.line(frame,
                                 points[i],
