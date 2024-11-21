@@ -1,10 +1,14 @@
 package org.firstinspires.ftc.teamcode.teleop.testers.servos;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
+@TeleOp
+@Disabled
 public class v4bServoTests extends OpMode {
     private Robot robot;
     private GamepadMapping controls;

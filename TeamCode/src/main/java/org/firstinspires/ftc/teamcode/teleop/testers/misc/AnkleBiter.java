@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.teleop.testers.misc;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -12,6 +13,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.specimen.SpecimenClaw;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
 @TeleOp
+@Disabled
 public class AnkleBiter extends OpMode {
     private DriveTrain drivetrain;
     private IMU imu;

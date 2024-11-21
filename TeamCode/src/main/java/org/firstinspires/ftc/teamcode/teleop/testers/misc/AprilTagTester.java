@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop.testers.misc;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -15,7 +16,8 @@ import java.util.ArrayList;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-//@Autonomous
+@Autonomous
+@Disabled
 public class AprilTagTester extends LinearOpMode {
     OpenCvCamera camera;
     AprilTags aprilTagDetectionPipeline;
