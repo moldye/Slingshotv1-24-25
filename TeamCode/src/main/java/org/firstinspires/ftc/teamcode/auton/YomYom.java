@@ -179,7 +179,7 @@ public class YomYom extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(1350);
                 })
-                .lineToSplineHeading(new Pose2d(-2,-38,Math.toRadians(270)))
+                .lineToSplineHeading(new Pose2d(-4,-38,Math.toRadians(270)))
 
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(900);
@@ -209,7 +209,7 @@ public class YomYom extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(1350);
                 })
-                .lineToSplineHeading(new Pose2d(0,-38,Math.toRadians(270)))
+                .lineToSplineHeading(new Pose2d(-2,-38,Math.toRadians(270)))
 
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(900);
@@ -238,7 +238,7 @@ public class YomYom extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(1350);
                 })
-                .lineToSplineHeading(new Pose2d(4,-38,Math.toRadians(270)))
+                .lineToSplineHeading(new Pose2d(0,-38,Math.toRadians(270)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(900);
                 })
@@ -262,7 +262,7 @@ public class YomYom extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(1350);
                 })
-                .lineToSplineHeading(new Pose2d(6,-38,Math.toRadians(270)))
+                .lineToSplineHeading(new Pose2d(2,-38,Math.toRadians(270)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(900);
                 })
