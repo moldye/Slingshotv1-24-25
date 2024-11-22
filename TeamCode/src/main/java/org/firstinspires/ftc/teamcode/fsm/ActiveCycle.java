@@ -54,9 +54,11 @@ public class ActiveCycle {
                     controls.flipBucket.set(false);
                     //startTime = loopTime.milliseconds();
                 } else if (controls.highBasket.value()) {
+                    outtake.bucketTilt();
                     transferState = ActiveCycle.TransferState.HIGH_BASKET;
                     controls.flipBucket.set(false);
                 } else if (controls.lowBasket.value()) {
+                    outtake.bucketTilt();
                     transferState = ActiveCycle.TransferState.LOW_BASKET;
                     controls.flipBucket.set(false);
 //                } else if (controls.L1hang.value()) {

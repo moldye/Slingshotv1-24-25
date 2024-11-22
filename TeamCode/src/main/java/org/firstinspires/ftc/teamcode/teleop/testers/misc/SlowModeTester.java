@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop.testers.misc;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -9,7 +10,8 @@ import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
-//@TeleOp
+@TeleOp
+@Disabled
 public class SlowModeTester extends OpMode {
     private GamepadMapping controls;
     private Robot robot;
@@ -28,7 +30,12 @@ public class SlowModeTester extends OpMode {
 
     @Override
     public void loop() {
+        controls.update();
+        if (controls.slowMode.value()) {
+            dt.setSlowMultiplier(.25);
+        } else {
+            dt.setSlowMultiplier(1);
+        }
         dt.update();
-        outtake.extendToHighBasket();
     }
 }

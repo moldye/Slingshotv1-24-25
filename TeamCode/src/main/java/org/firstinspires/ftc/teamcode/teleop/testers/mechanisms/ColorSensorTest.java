@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.teleop.testers.mechanisms;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -13,7 +14,8 @@ import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
 @Config
-//@TeleOp
+@TeleOp
+@Disabled
 public class ColorSensorTest extends OpMode {
     // to extend, extend out slides a little bit then pivot down
     private Robot robot;

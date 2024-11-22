@@ -177,7 +177,7 @@ public class YomYom extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(1350);
                 })
-                .lineToSplineHeading(new Pose2d(-2,-38,Math.toRadians(270)))
+                .lineToSplineHeading(new Pose2d(-4,-38,Math.toRadians(270)))
 
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(900);
@@ -260,7 +260,11 @@ public class YomYom extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(1350);
                 })
+<<<<<<< HEAD
                 .lineToSplineHeading(new Pose2d(0,-38,Math.toRadians(270)))
+=======
+                .lineToSplineHeading(new Pose2d(2,-38,Math.toRadians(270)))
+>>>>>>> a9f57200cbf57f363626cdf9f7bf63b8a9900185
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(900);
                 })

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.teleop.testers.mechanisms;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -10,7 +11,8 @@ import org.firstinspires.ftc.teamcode.mechanisms.specimen.SpecimenClaw;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
 @TeleOp
-//@Config
+@Config
+@Disabled
 public class MechTest extends OpMode {
     private SpecimenClaw specClaw;
     private GamepadMapping controls;
