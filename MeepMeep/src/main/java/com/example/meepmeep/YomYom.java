@@ -25,6 +25,7 @@ public class YomYom {
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
 //                                            moveLift(1255);
                                         })
+                                        .waitSeconds(.1)
                                         .lineToConstantHeading(new Vector2d(12,-30))
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
 //                                            moveLift(700);
@@ -120,7 +121,7 @@ public class YomYom {
 
                                         //go back to hp #1
                                         .lineToLinearHeading(new Pose2d(40,-54,Math.toRadians(90)))
-                                        .back(8)
+                                        .back(7)
                                         .UNSTABLE_addTemporalMarkerOffset(0.1, () -> {
                                             //close claw
 //                                            specimenClaw.closeClaw();
@@ -149,7 +150,7 @@ public class YomYom {
 
                                         //go back to hp #2
                                         .lineToLinearHeading(new Pose2d( 40,-54,Math.toRadians(90)))
-                                        .back(8)
+                                        .back(7)
                                         .UNSTABLE_addTemporalMarkerOffset(0.1, () -> {
                                             //close claw
 //                                            specimenClaw.closeClaw();
@@ -160,7 +161,7 @@ public class YomYom {
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
 //                                            moveLift(1300);
                                         })
-                                        .lineToSplineHeading(new Pose2d(5,-33,Math.toRadians(270)))
+                                        .lineToSplineHeading(new Pose2d(8,-33,Math.toRadians(270)))
 
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
 //                                            moveLift(700);
@@ -178,7 +179,7 @@ public class YomYom {
 
                                         //go back to hp #3
                                         .lineToLinearHeading(new Pose2d( 40,-54,Math.toRadians(90)))
-                                        .back(8)
+                                        .back(7)
                                         .UNSTABLE_addTemporalMarkerOffset(0.1, () -> {
                                             //close claw
 //                                            specimenClaw.closeClaw();
@@ -189,7 +190,7 @@ public class YomYom {
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
 //                                            moveLift(1300);
                                         })
-                                        .lineToSplineHeading(new Pose2d(2,-33,Math.toRadians(270)))
+                                        .lineToSplineHeading(new Pose2d(8,-33,Math.toRadians(270)))
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
 //                                            moveLift(700);
                                         })
@@ -201,7 +202,7 @@ public class YomYom {
 
                                         //go back to hp #4
                                         .lineToLinearHeading(new Pose2d( 40,-54,Math.toRadians(90)))
-                                        .back(8)
+                                        .back(7)
                                         .UNSTABLE_addTemporalMarkerOffset(0.1, () -> {
                                             //close claw
 //                                            specimenClaw.closeClaw();
@@ -212,7 +213,7 @@ public class YomYom {
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
 //                                            moveLift(1300);
                                         })
-                                        .lineToSplineHeading(new Pose2d(-1,-33,Math.toRadians(270)))
+                                        .lineToSplineHeading(new Pose2d(8,-33,Math.toRadians(270)))
                                         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
 //                                            moveLift(700);
                                         })

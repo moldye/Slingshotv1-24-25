@@ -48,13 +48,11 @@ public class YomYom extends LinearOpMode {
         drive.setPoseEstimate(startPose);
 
         TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
-
-
                 //preloaded spec
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(1300);
                 })
-                .lineToConstantHeading(new Vector2d(12,-31.5))
+                .lineToConstantHeading(new Vector2d(11,-31.5))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(900);
                 })
@@ -164,11 +162,11 @@ public class YomYom extends LinearOpMode {
 
 
 //                //go back to hp #1
-                .lineToLinearHeading(new Pose2d(40,-57,Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(40,-56,Math.toRadians(90)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     intake.extendoFullRetract();
                 })
-                .back(11)
+                .back(10)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //close claw
                     specimenClaw.closeClaw();
@@ -196,8 +194,8 @@ public class YomYom extends LinearOpMode {
 
 
                 //go back to hp #2
-                .lineToLinearHeading(new Pose2d( 40,-60,Math.toRadians(90)))
-                .back(9)
+                .lineToLinearHeading(new Pose2d( 40,-59,Math.toRadians(90)))
+                .back(8)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //close claw
                     specimenClaw.closeClaw();
@@ -209,7 +207,7 @@ public class YomYom extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(1350);
                 })
-                .lineToSplineHeading(new Pose2d(0,-38,Math.toRadians(270)))
+                .lineToSplineHeading(new Pose2d(-2,-38,Math.toRadians(270)))
 
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(900);
@@ -226,8 +224,8 @@ public class YomYom extends LinearOpMode {
 
 
                 //go back to hp #3
-                .lineToLinearHeading(new Pose2d( 40,-60,Math.toRadians(90)))
-                .back(9)
+                .lineToLinearHeading(new Pose2d( 40,-59,Math.toRadians(90)))
+                .back(8)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //close claw
                     specimenClaw.closeClaw();
@@ -238,7 +236,7 @@ public class YomYom extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(1350);
                 })
-                .lineToSplineHeading(new Pose2d(4,-38,Math.toRadians(270)))
+                .lineToSplineHeading(new Pose2d(0,-38,Math.toRadians(270)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(900);
                 })
@@ -250,8 +248,8 @@ public class YomYom extends LinearOpMode {
                 .waitSeconds(.1)
 
                 //go back to hp #4
-                .lineToLinearHeading(new Pose2d( 40,-60,Math.toRadians(90)))
-                .back(9)
+                .lineToLinearHeading(new Pose2d( 40,-59,Math.toRadians(90)))
+                .back(8)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //close claw
                     specimenClaw.closeClaw();
@@ -262,7 +260,7 @@ public class YomYom extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(1350);
                 })
-                .lineToSplineHeading(new Pose2d(6,-38,Math.toRadians(270)))
+                .lineToSplineHeading(new Pose2d(0,-38,Math.toRadians(270)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(900);
                 })
@@ -271,7 +269,7 @@ public class YomYom extends LinearOpMode {
                     specimenClaw.openClaw();
                     moveLift(0);
                     //extendo full
-//                    intake.extendoFullExtend();
+                    intake.extendoFullExtend();
                 })
                 .waitSeconds(.1)
                 .splineTo(new Vector2d(25,-55),Math.toRadians(-35))
