@@ -13,7 +13,6 @@ import org.firstinspires.ftc.teamcode.mechanisms.specimen.SpecimenClaw;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
 @TeleOp
-@Disabled
 public class AnkleBiter extends OpMode {
     private DriveTrain drivetrain;
     private IMU imu;
@@ -41,7 +40,7 @@ public class AnkleBiter extends OpMode {
     @Override
     public void loop() {
         controls.update();
-        drivetrain.setSlowMultiplier(.25);
+        drivetrain.setSlowMultiplier(.5);
         drivetrain.update();
     }
 }
