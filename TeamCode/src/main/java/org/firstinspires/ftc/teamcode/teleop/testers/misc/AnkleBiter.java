@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.specimen.SpecimenClaw;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
 @TeleOp
+@Disabled
 public class AnkleBiter extends OpMode {
     private DriveTrain drivetrain;
     private IMU imu;

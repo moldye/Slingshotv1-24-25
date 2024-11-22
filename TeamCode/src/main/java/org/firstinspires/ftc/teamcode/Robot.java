@@ -18,8 +18,8 @@ public class Robot{
     // - 245 M belt (for intake)
 
     // odo:
-    // 0 control hub -> back
-    // 2 control hub -> side/right
+    // 0 expansion hub -> encoder, parallel
+    // 0 control hub -> rightBack, perpendicular
 
     // intake:
     // pivot (max) -> 1 on expansion hub
