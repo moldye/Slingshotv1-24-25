@@ -146,7 +146,7 @@ public class StretchedSpecimenAuton {
                                         .waitSeconds(0.5)
 
 
-                                        //potential last spec :_D
+//                                        //potential last spec :_D
 //                                        //go back to box
 //                                        .lineToSplineHeading(new Pose2d(4,-36,Math.toRadians(270)))
 //                                        .setReversed(true)
