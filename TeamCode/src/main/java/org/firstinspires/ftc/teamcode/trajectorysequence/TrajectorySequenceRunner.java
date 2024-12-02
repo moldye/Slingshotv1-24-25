@@ -144,11 +144,17 @@ public class TrajectorySequenceRunner {
                 if (isNewTransition)
                     follower.followTrajectory(currentTrajectory);
 
-                if (!follower.isFollowing()) {
-                    currentSegmentIndex++;
+                //TODO: changed it to make correction continuous even during transition to next traj
+//                if (!follower.isFollowing()) {
+//                    currentSegmentIndex++;
+//
+//                    driveSignal = new DriveSignal();
+//                }
 
+                if (!follower.isFollowing()) {
                     driveSignal = new DriveSignal();
-                } else {
+                    currentSegmentIndex++;
+                }else {
                     driveSignal = follower.update(poseEstimate, poseVelocity);
                     lastPoseError = follower.getLastError();
                 }
@@ -176,18 +182,35 @@ public class TrajectorySequenceRunner {
 
                 if (deltaTime >= currentSegment.getDuration()) {
                     currentSegmentIndex++;
-                    driveSignal = new DriveSignal();
+                    //TODO: changed to keep correction even after end of turn section
+                    //driveSignal = new DriveSignal();
+                    driveSignal = follower.update(poseEstimate, poseVelocity);
+                    lastPoseError = follower.getLastError();
                 }
-            } else if (currentSegment instanceof WaitSegment) {
-                lastPoseError = new Pose2d();
+            } else if (currentSegment instanceof WaitSegment) { //TODO: change to correct during waitSections
+                // Maintain last pose error for correction
+                if (targetPose == null) {
+                    targetPose = currentSegment.getStartPose();
+                }
 
-                targetPose = currentSegment.getStartPose();
-                driveSignal = new DriveSignal();
+                // Use the follower to continuously correct to the target pose
+                driveSignal = follower.update(poseEstimate, poseVelocity);
+                lastPoseError = follower.getLastError();
 
                 if (deltaTime >= currentSegment.getDuration()) {
                     currentSegmentIndex++;
                 }
             }
+//            else if (currentSegment instanceof WaitSegment) {
+//                lastPoseError = new Pose2d();
+//
+//                targetPose = currentSegment.getStartPose();
+//                driveSignal = new DriveSignal();
+//
+//                if (deltaTime >= currentSegment.getDuration()) {
+//                    currentSegmentIndex++;
+//                }
+//            }
 
             while (remainingMarkers.size() > 0 && deltaTime > remainingMarkers.get(0).getTime()) {
                 remainingMarkers.get(0).getCallback().onMarkerReached();
