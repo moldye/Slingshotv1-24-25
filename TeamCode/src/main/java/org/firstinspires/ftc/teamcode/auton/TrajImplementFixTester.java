@@ -55,12 +55,10 @@ public class TrajImplementFixTester extends LinearOpMode {
                 .build();
         waitForStart();
 
-        while(opModeIsActive()){
-            if(gamepad1.a){
-                if (!isStopRequested())
-                    drive.followTrajectorySequence(trajSeq);
-            }
-        }
+        if (!isStopRequested())
+            drive.followTrajectorySequence(trajSeq);
+
+
 
     }
 
