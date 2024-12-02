@@ -150,10 +150,18 @@ public class TrajectorySequenceRunner {
 //
 //                    driveSignal = new DriveSignal();
 //                }
-
                 if (!follower.isFollowing()) {
-                    driveSignal = new DriveSignal();
                     currentSegmentIndex++;
+
+                    if (currentSegmentIndex < currentTrajectorySequence.size()) {
+                        // Target the start pose of the next segment
+                        Pose2d nextStartPose = currentTrajectorySequence.get(currentSegmentIndex).getStartPose();
+                        driveSignal = follower.update(poseEstimate, poseVelocity);
+                        lastPoseError = nextStartPose.minus(poseEstimate);
+                    } else {
+                        // No more segments, stop correcting
+                        driveSignal = new DriveSignal();
+                    }
                 }else {
                     driveSignal = follower.update(poseEstimate, poseVelocity);
                     lastPoseError = follower.getLastError();
