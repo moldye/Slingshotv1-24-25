@@ -20,7 +20,6 @@ public class Auton50 extends LinearOpMode {
 
     private GamepadMapping controls;
     private Robot robot;
-    private static IntakeConstants.ActiveIntakeStates activeIntakeStates;
     private Intake intake;
     private Outtake outtake;
     private SpecimenClaw specimenClaw;
@@ -50,7 +49,7 @@ public class Auton50 extends LinearOpMode {
         TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
                 //preloaded spec
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    moveLift(1300);
+                    moveLift(1320);
                 })
                 .lineToConstantHeading(new Vector2d(11,-31.5))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
@@ -111,7 +110,7 @@ public class Auton50 extends LinearOpMode {
                 })
 
                 .setReversed(false)
-                .UNSTABLE_addDisplacementMarkerOffset(8, () -> {
+                .UNSTABLE_addDisplacementMarkerOffset(8.5, () -> {
 //                                            intake
                     moveExtendo(0);
                     intake.activeIntake.flipDownFull();
@@ -200,7 +199,7 @@ public class Auton50 extends LinearOpMode {
 
                 //go back to hp #2
                 .lineToLinearHeading(new Pose2d( 40,-59,Math.toRadians(90)))
-                .back(10)
+                .back(11)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //close claw
                     specimenClaw.closeClaw();
@@ -231,7 +230,7 @@ public class Auton50 extends LinearOpMode {
 
                 //go back to hp #3
                 .lineToLinearHeading(new Pose2d( 40,-59,Math.toRadians(90)))
-                .back(10)
+                .back(11)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //close claw
                     specimenClaw.closeClaw();
@@ -255,7 +254,7 @@ public class Auton50 extends LinearOpMode {
 
                 //go back to hp #4
                 .lineToLinearHeading(new Pose2d( 40,-59,Math.toRadians(90)))
-                .back(10)
+                .back(11)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //close claw
                     specimenClaw.closeClaw();

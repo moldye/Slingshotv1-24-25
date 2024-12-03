@@ -191,9 +191,9 @@ public class TrajectorySequenceRunner {
                 if (deltaTime >= currentSegment.getDuration()) {
                     currentSegmentIndex++;
                     //TODO: changed to keep correction even after end of turn section
-                    //driveSignal = new DriveSignal();
-                    driveSignal = follower.update(poseEstimate, poseVelocity);
-                    lastPoseError = follower.getLastError();
+                    driveSignal = new DriveSignal();
+//                    driveSignal = follower.update(poseEstimate, poseVelocity);
+//                    lastPoseError = follower.getLastError();
                 }
             } else if (currentSegment instanceof WaitSegment) { //TODO: change to correct during waitSections
                 // Maintain last pose error for correction
