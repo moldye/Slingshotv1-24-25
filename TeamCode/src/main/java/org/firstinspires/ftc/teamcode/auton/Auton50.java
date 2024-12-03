@@ -114,9 +114,13 @@ public class Auton50 extends LinearOpMode {
                 .UNSTABLE_addDisplacementMarkerOffset(8, () -> {
 //                                            intake
                     moveExtendo(0);
+                    intake.activeIntake.flipDownFull();
+                    intake.activeIntake.motorRollerOnToIntake();
                 })
                 .lineToLinearHeading(new Pose2d(35,-39, Math.toRadians(33)))
                 .waitSeconds(0.15)
+
+
                 //O-zone #2
                 .setReversed(true)
                 .UNSTABLE_addTemporalMarkerOffset(0.2, () -> {
@@ -263,7 +267,7 @@ public class Auton50 extends LinearOpMode {
                     moveLift(1350);
                 })
 
-                .lineToSplineHeading(new Pose2d(0,-38,Math.toRadians(270)))
+                .lineToSplineHeading(new Pose2d(0,-40,Math.toRadians(270)))
 
 
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
