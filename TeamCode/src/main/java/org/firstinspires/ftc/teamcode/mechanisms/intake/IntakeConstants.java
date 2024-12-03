@@ -15,7 +15,7 @@ public class IntakeConstants {
 
     // left linkage in, left linkage extended
     // axon programmed for 0-255, 66 PMW
-    private static final double[] leftLinkagePositions = {.52, -.8, .4};
+    private static final double[] leftLinkagePositions = {.5, -.8, .4};
 
     // pivot positions for the v4b for active claw
     // transfer pos, hovering, intaking

@@ -229,7 +229,9 @@ public class ActiveCycle {
                 }
                 else if (loopTime.milliseconds() - startTime > 400) {
                     transferState = ActiveCycle.TransferState.EXTENDO_FULLY_RETRACTED;
-                    controls.openClaw.set(true);
+                    controls.openClaw.set(false);
+                    controls.highBasket.set(false);
+                    controls.lowBasket.set(false);
                 }
                 break;
             case OPEN_CLAW:
