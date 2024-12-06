@@ -180,7 +180,7 @@ public class Auton50 extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(1350);
                 })
-                .lineToSplineHeading(new Pose2d(-6,-38,Math.toRadians(270)))
+                .lineToSplineHeading(new Pose2d(-7,-38,Math.toRadians(270)))
 
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(900);
@@ -189,10 +189,12 @@ public class Auton50 extends LinearOpMode {
                     //open claw (spec)
                     specimenClaw.openClaw();
                 })
-                .waitSeconds(.1)
-                .UNSTABLE_addTemporalMarkerOffset(0.3, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(0.1, () -> {
+                    //open claw (spec)
                     moveLift(0);
+                    specimenClaw.openClaw();
                 })
+                .waitSeconds(.1)
                 .setReversed(false)
 
 
@@ -211,7 +213,7 @@ public class Auton50 extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(1350);
                 })
-                .lineToSplineHeading(new Pose2d(-4,-38,Math.toRadians(270)))
+                .lineToSplineHeading(new Pose2d(-5,-37.5,Math.toRadians(270)))
 
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(900);
@@ -240,7 +242,7 @@ public class Auton50 extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(1350);
                 })
-                .lineToSplineHeading(new Pose2d(-3,-38,Math.toRadians(270)))
+                .lineToSplineHeading(new Pose2d(-5,-37.5,Math.toRadians(270)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(900);
                 })
@@ -265,7 +267,7 @@ public class Auton50 extends LinearOpMode {
                     moveLift(1350);
                 })
 
-                .lineToSplineHeading(new Pose2d(-3,-40,Math.toRadians(270)))
+                .lineToSplineHeading(new Pose2d(-5,-38,Math.toRadians(270)))
 
 
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
