@@ -51,11 +51,11 @@ public class Auton50 extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(1320);
                 })
-                .lineToConstantHeading(new Vector2d(11,-31.5))
+                .lineToConstantHeading(new Vector2d(11.5,-32))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(900);
                 })
-                .UNSTABLE_addTemporalMarkerOffset(0.12, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(0.11, () -> {
                     //open claw (preloaded spec)
                     specimenClaw.openClaw();
                 })
@@ -76,9 +76,8 @@ public class Auton50 extends LinearOpMode {
                     intake.activeIntake.motorRollerOnToIntake();
                 })
 
-                .splineToSplineHeading(new Pose2d(24,-35, Math.toRadians(18)), Math.toRadians(18))
-                .forward(12)
-//                .waitSeconds(0.1)
+                .splineToSplineHeading(new Pose2d(24,-36, Math.toRadians(18)), Math.toRadians(18))
+                .forward(11.5)
 
 
                 //O-zone #1
@@ -115,7 +114,7 @@ public class Auton50 extends LinearOpMode {
                     intake.activeIntake.flipDownFull();
                 })
                 .lineToLinearHeading(new Pose2d(35,-38.5, Math.toRadians(33)))
-                .waitSeconds(0.15)
+                .waitSeconds(0.1)
 
 
                 //O-zone #2
@@ -123,7 +122,7 @@ public class Auton50 extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0.2, () -> {
                     intake.extendoFullExtend();
                 })
-                .lineToSplineHeading(new Pose2d(30,-46, Math.toRadians(325)))
+                .lineToSplineHeading(new Pose2d(30,-42, Math.toRadians(326)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     intake.activeIntake.transferSample();
                 })
@@ -145,14 +144,15 @@ public class Auton50 extends LinearOpMode {
 //                                            intake
                     moveExtendo(0.04);
                 })
-                .lineToLinearHeading(new Pose2d(45,-37, Math.toRadians(29)))
-                .waitSeconds(0.15)
+                .lineToLinearHeading(new Pose2d(45,-36.25, Math.toRadians(29)))
+                .waitSeconds(0.1)
+
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveExtendo(0.18);
                 })
                 //O-zone #3
                 .setReversed(true)
-                .lineToSplineHeading(new Pose2d(40,-48, Math.toRadians(322)))
+                .lineToSplineHeading(new Pose2d(40,-51, Math.toRadians(322)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     intake.activeIntake.transferSample();
                 })
@@ -179,7 +179,7 @@ public class Auton50 extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(1350);
                 })
-                .lineToSplineHeading(new Pose2d(-5,-34.5,Math.toRadians(270)))
+                .lineToSplineHeading(new Pose2d(-5,-34.75,Math.toRadians(270)))
 
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(900);
@@ -188,11 +188,11 @@ public class Auton50 extends LinearOpMode {
                     //open claw (spec)
                     specimenClaw.openClaw();
                 })
-                .waitSeconds(.1)
-                .UNSTABLE_addTemporalMarkerOffset(0.3, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(0.1, () -> {
                     moveLift(0);
                 })
-                .setReversed(false)
+                .waitSeconds(.1)
+
 
 
                 //go back to hp #2
@@ -210,7 +210,7 @@ public class Auton50 extends LinearOpMode {
                     //open claw (spec)
                     specimenClaw.openClaw();
                 })
-                .back(12)
+                .back(12.5)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //close claw
                     specimenClaw.closeClaw();
@@ -222,7 +222,7 @@ public class Auton50 extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(1350);
                 })
-                .lineToSplineHeading(new Pose2d(-5,-34.5,Math.toRadians(270)))
+                .lineToSplineHeading(new Pose2d(-5.75,-34.75,Math.toRadians(270)))
 
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(900);
@@ -231,15 +231,14 @@ public class Auton50 extends LinearOpMode {
                     //open claw (spec)
                     specimenClaw.openClaw();
                 })
-                .waitSeconds(.1)
-                .UNSTABLE_addTemporalMarkerOffset(0.3, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(0.1, () -> {
                     moveLift(0);
                 })
-                .setReversed(false)
+                .waitSeconds(.1)
 
                 //go back to hp #3
                 .lineToLinearHeading(new Pose2d( 40,-59,Math.toRadians(90)))
-                .back(11.5)
+                .back(12)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //close claw
                     specimenClaw.closeClaw();
@@ -250,10 +249,9 @@ public class Auton50 extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(1350);
                 })
-                .lineToSplineHeading(new Pose2d(-5,-34.5,Math.toRadians(270)))
+                .lineToSplineHeading(new Pose2d(-6,-35.25,Math.toRadians(270)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    moveLift(0);
-                    specimenClaw.openClaw();
+                    moveLift(900);
                 })
                 .UNSTABLE_addTemporalMarkerOffset(0.12, () -> {
                     //open claw (spec)
@@ -278,7 +276,7 @@ public class Auton50 extends LinearOpMode {
                     moveLift(1350);
                 })
 
-                .lineToSplineHeading(new Pose2d(-5,-34.5,Math.toRadians(270)))
+                .lineToSplineHeading(new Pose2d(-6,-35.25,Math.toRadians(270)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(900);
                 })
@@ -295,8 +293,6 @@ public class Auton50 extends LinearOpMode {
         waitForStart();
 
         if (!isStopRequested())
-            moveLift(3000);
-            sleep(50);
             drive.followTrajectorySequence(trajSeq);
     }
 

@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.intake.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.outtake.Outtake;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
+import java.util.Scanner;
 
 @Autonomous
 public class OldAuton04 extends LinearOpMode {
@@ -45,7 +46,7 @@ public class OldAuton04 extends LinearOpMode {
                 //start by raising slides to go score
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //raise slides
-                    moveLift(2400);
+                    moveLift(2550);
                 })
                 .setReversed(true)
                 //preload to bucket
@@ -92,13 +93,13 @@ public class OldAuton04 extends LinearOpMode {
                     //transfer sample
                     intake.activeIntake.transferSample();
                 })
-                .UNSTABLE_addTemporalMarkerOffset(1, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(.5, () -> {
                     intake.activeIntake.transferOff();
                     intake.activeIntake.flipUp();
                 })
                 .UNSTABLE_addTemporalMarkerOffset(0.75, () -> {
                         //raise slides
-                        moveLift(2400);
+                        moveLift(2550);
                     })
                 .waitSeconds(1)
                 .back(5.25)
@@ -141,13 +142,13 @@ public class OldAuton04 extends LinearOpMode {
                     //transfer sample
                     intake.activeIntake.transferSample();
                 })
-                .UNSTABLE_addTemporalMarkerOffset(1, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(.6, () -> {
                     intake.activeIntake.transferOff();
                     intake.activeIntake.flipUp();
                 })
                 .UNSTABLE_addTemporalMarkerOffset(0.8, () -> {
                     //raise slides
-                    moveLift(2400);
+                    moveLift(2550);
                 })
                 .waitSeconds(1)
                 .back(7)
@@ -193,13 +194,13 @@ public class OldAuton04 extends LinearOpMode {
                     //transfer sample
                     intake.activeIntake.transferSample();
                 })
-                .UNSTABLE_addTemporalMarkerOffset(.9, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(.6, () -> {
                     intake.activeIntake.transferOff();
                     intake.activeIntake.flipUp();
                 })
                 .UNSTABLE_addTemporalMarkerOffset(0.75, () -> {
                     //raise slides
-                    moveLift(2400);
+                    moveLift(2550);
                 })
                 .waitSeconds(1)
                 .back(7)
@@ -223,9 +224,9 @@ public class OldAuton04 extends LinearOpMode {
                     moveLift(1050);
                 })
                 .splineToLinearHeading(new Pose2d(-28, -12, Math.toRadians(180)), Math.toRadians(0))
-                .back(1)
+                .back(6)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    moveLift(900);
+                    moveLift(880);
                 })
                 .waitSeconds(30)
                 .build();
@@ -239,8 +240,8 @@ public class OldAuton04 extends LinearOpMode {
         public void extendoIntake(){
             //extendo out
             //robot.intake.extendoFullExtend();
-            robot.intake.rightExtendo.setPosition(.2);
-            robot.intake.leftExtendo.setPosition(.2);
+            robot.intake.rightExtendo.setPosition(.19);
+            robot.intake.leftExtendo.setPosition(.19);
             //run intake
             intake.activeIntake.motorRollerOnToIntake();
         }
