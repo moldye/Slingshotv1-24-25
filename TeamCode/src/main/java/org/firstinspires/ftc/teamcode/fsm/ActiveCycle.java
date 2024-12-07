@@ -167,6 +167,7 @@ public class ActiveCycle {
                     transferState = TransferState.EXTENDO_FULLY_EXTENDED;
                     controls.highBasket.set(false);
                     controls.lowBasket.set(false);
+                    controls.flipBucket.set(false);
                 }
                 break;
             case LOW_BASKET:
