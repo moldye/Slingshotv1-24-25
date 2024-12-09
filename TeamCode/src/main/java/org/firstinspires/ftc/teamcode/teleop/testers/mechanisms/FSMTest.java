@@ -27,13 +27,13 @@ public class FSMTest extends OpMode {
         intake = robot.intake;
         outtake = robot.outtake;
 
-        robot.outtake.resetEncoders();
         robot.outtake.setMotorsToTeleOpMode();
+        robot.outtake.resetEncoders();
 
         robot.intake.resetHardware();
         robot.outtake.resetHardware();
 
-        robot.specimenClaw.openClaw();
+        //robot.specimenClaw.openClaw();
     }
 
 //    @Override

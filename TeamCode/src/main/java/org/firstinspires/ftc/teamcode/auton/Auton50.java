@@ -160,19 +160,27 @@ public class Auton50 extends LinearOpMode {
                     intake.activeIntake.flipToTransfer();
                     intake.activeIntake.motorRollerOff();
                 })
+                .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
+                    intake.extendoFullRetract();
+                    specimenClaw.openClaw();
+                })
                 .waitSeconds(0.15)
 
 
 //                //go back to hp #1
-                .lineToLinearHeading(new Pose2d(40,-56,Math.toRadians(90)))
-//                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-//                    intake.extendoFullRetract();
-//                    specimenClaw.openClaw();
-//                })
-                .UNSTABLE_addDisplacementMarkerOffset(0.5, () -> {
+                .UNSTABLE_addDisplacementMarkerOffset(1, () -> {
                     intake.extendoFullRetract();
                     specimenClaw.openClaw();
                 })
+                .lineToLinearHeading(new Pose2d(40,-56,Math.toRadians(90)))
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    intake.extendoFullRetract();
+                    specimenClaw.openClaw();
+                })
+//                .UNSTABLE_addDisplacementMarkerOffset(0.5, () -> {
+//                    intake.extendoFullRetract();
+//                    specimenClaw.openClaw();
+//                })
                 .back(12)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //close claw
