@@ -25,18 +25,18 @@ public class LinkageAxonTester extends OpMode {
         controls = new GamepadMapping(gamepad1, gamepad2);
         robot = new Robot(hardwareMap, telemetry, controls);
         intake = robot.intake;
-        //intake.activeIntake.flipUp();
+        intake.activeIntake.flipUp();
     }
 
     @Override
     public void loop() {
-//        if (smallAdjust) {
-//            intake.rightExtendo.setPosition(rservoPos);
-//            intake.leftExtendo.setPosition(lservoPos);
-//        } else {
+        if (smallAdjust) {
             intake.rightExtendo.setPosition(rservoPos);
-            intake.leftExtendo.setPosition(rservoPos);
-        //}
+            intake.leftExtendo.setPosition(lservoPos);
+        } else {
+            intake.rightExtendo.setPosition(lservoPos);
+            intake.leftExtendo.setPosition(lservoPos);
+        }
 
     }
 }
