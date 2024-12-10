@@ -221,6 +221,16 @@ public class ActiveCycle {
                     transferState = TransferState.SPEC_RETRACTING;
                     startTime = loopTime.milliseconds();
                 }
+                if (controls.highBasket.value()) {
+                    outtake.bucketTilt();
+                    transferState = ActiveCycle.TransferState.HIGH_BASKET;
+                    controls.flipBucket.set(false);
+                }
+                if (controls.lowBasket.value()) {
+                    outtake.bucketTilt();
+                    transferState = ActiveCycle.TransferState.LOW_BASKET;
+                    controls.flipBucket.set(false);
+                }
                 break;
             case SPEC_RETRACTING:
                 outtake.returnToRetracted();
