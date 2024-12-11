@@ -194,6 +194,7 @@ public class ActiveCycle {
                 controls.extend.set(false);
                 controls.lowBasket.set(false);
                 controls.highBasket.set(false);
+                controls.scoreSpec.set(false);
                 // could also do to base state
                 outtake.bucketToReadyForTransfer();
                 outtake.returnToRetracted();
@@ -225,11 +226,13 @@ public class ActiveCycle {
                     outtake.bucketTilt();
                     transferState = ActiveCycle.TransferState.HIGH_BASKET;
                     controls.flipBucket.set(false);
+                    controls.scoreSpec.set(false);
                 }
                 if (controls.lowBasket.value()) {
                     outtake.bucketTilt();
                     transferState = ActiveCycle.TransferState.LOW_BASKET;
                     controls.flipBucket.set(false);
+                    controls.scoreSpec.set(false);
                 }
                 break;
             case SPEC_RETRACTING:
