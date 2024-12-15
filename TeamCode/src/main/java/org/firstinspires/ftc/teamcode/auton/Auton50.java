@@ -181,7 +181,7 @@ public class Auton50 extends LinearOpMode {
 //                    intake.extendoFullRetract();
 //                    specimenClaw.openClaw();
 //                })
-                .back(12)
+                .back(12.5)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     //close claw
                     specimenClaw.closeClaw();
@@ -293,7 +293,7 @@ public class Auton50 extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     moveLift(900);
                 })
-                .UNSTABLE_addTemporalMarkerOffset(0.12, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(0.13, () -> {
                     //open claw (spec)
                     specimenClaw.openClaw();
                     moveLift(0);
