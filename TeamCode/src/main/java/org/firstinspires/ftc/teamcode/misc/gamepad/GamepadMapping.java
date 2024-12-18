@@ -32,12 +32,10 @@ public class GamepadMapping {
     // --------------
     public static Toggle extend;
     public static Toggle transfer;
-    public static Toggle retract;
     public static Toggle intakeOnToIntake;
     public static Toggle toClear;
     public static Toggle clear;
 
-    public Toggle clearFailsafe;
 
     // INTAKE (CLAW)
     public static double wristYaw = 0.0;
@@ -93,8 +91,6 @@ public class GamepadMapping {
         intakeOnToIntake = new Toggle(false);
         toClear = new Toggle(false);
         transfer = new Toggle(false);
-        clearFailsafe = new Toggle(false);
-        retract = new Toggle(false);
         clear = new Toggle(false);
 
         pivot = new Toggle(false);
@@ -176,6 +172,32 @@ public class GamepadMapping {
         toClear.update(gamepad1.left_trigger > 0.5);
         transfer.update(gamepad2.dpad_up);
 
-        clearFailsafe.update(gamepad1.x);
+        //clearFailsafe.update(gamepad1.x);
+    }
+
+    public void resetIntakeControls() {
+        extend.set(false);
+        intakeOnToIntake.set(false);
+        toClear.set(false);
+        transfer.set(false);
+        clear.set(false);
+    }
+
+    public void resetOuttakeControls() {
+        flipBucket.set(false);
+        highBasket.set(false);
+        lowBasket.set(false);
+    }
+
+    public void resetSpecControls() {
+        openClaw.set(false);
+        scoreSpec.set(false);
+    }
+
+    public void resetMultipleControls(Toggle... toggles) {
+        for (Toggle toggle : toggles) {
+            toggle.set(false);
+        }
     }
 }
+

@@ -47,7 +47,7 @@ public class ActiveCycle {
                 outtake.returnToRetracted();
                 if (controls.extend.value()) {
                     transferState = ActiveCycle.TransferState.EXTENDO_FULLY_EXTENDED;
-                    controls.flipBucket.set(false);
+                    controls.resetOuttakeControls();
                     //intake.extendoFullExtend();
                 } else if (controls.transfer.locked()) {
                     transferState = TransferState.TRANSFERING;
@@ -61,9 +61,6 @@ public class ActiveCycle {
                     outtake.bucketTilt();
                     transferState = ActiveCycle.TransferState.LOW_BASKET;
                     controls.flipBucket.set(false);
-//                } else if (controls.L1hang.value()) {
-//                    transferState = ActiveCycle.TransferState.HANGING;
-//                }
                 }
                 if (controls.openClaw.value()) {
                     transferState = TransferState.OPEN_CLAW;
@@ -82,14 +79,14 @@ public class ActiveCycle {
                 }
                 break;
             case EXTENDO_FULLY_EXTENDED:
-                controls.openClaw.set(false);
+                controls.resetSpecControls();
                 outtake.returnToRetracted();
                 intake.extendoFullExtend();
                 if (!controls.extend.value()) {
                     intake.extendoFullRetract();
                     intake.activeIntake.flipToTransfer();
                     controls.transfer.set(false);
-                    controls.flipBucket.set(false);
+                    controls.resetOuttakeControls();
                     transferState = TransferState.EXTENDO_FULLY_RETRACTED;
                 }
                 if (controls.intakeOnToIntake.locked() || controls.toClear.locked()) {
@@ -103,12 +100,6 @@ public class ActiveCycle {
                 }
                 break;
             case INTAKING:
-                // TODO: ASK VIKTOR
-//                if (!controls.slowMode.value()) {
-//                    robot.drivetrain.setSlowMultiplier(.75);
-//                } else {
-//                    robot.drivetrain.setSlowMultiplier(1);
-//                }
                 outtake.returnToRetracted();
                 if (!controls.extend.value()) {
                     transferState = TransferState.EXTENDO_FULLY_EXTENDED;
@@ -165,9 +156,7 @@ public class ActiveCycle {
                 if (controls.extend.value()) {
                     intake.extendoFullExtend();
                     transferState = TransferState.EXTENDO_FULLY_EXTENDED;
-                    controls.highBasket.set(false);
-                    controls.lowBasket.set(false);
-                    controls.flipBucket.set(false);
+                    controls.resetOuttakeControls();
                 }
                 break;
             case LOW_BASKET:
@@ -183,18 +172,12 @@ public class ActiveCycle {
                 if (controls.extend.value()) {
                     intake.extendoFullExtend();
                     transferState = TransferState.EXTENDO_FULLY_EXTENDED;
-                    controls.lowBasket.set(false);
-                    controls.highBasket.set(false);
-                    controls.flipBucket.set(false);
+                    controls.resetOuttakeControls();
                 }
                 break;
             case SLIDES_RETRACTED:
-                controls.flipBucket.set(false);
-                controls.transfer.set(false);
-                controls.extend.set(false);
-                controls.lowBasket.set(false);
-                controls.highBasket.set(false);
-                controls.scoreSpec.set(false);
+                controls.resetOuttakeControls();
+                controls.resetMultipleControls(controls.transfer, controls.extend, controls.scoreSpec);
                 // could also do to base state
                 outtake.bucketToReadyForTransfer();
                 outtake.returnToRetracted();
@@ -225,14 +208,12 @@ public class ActiveCycle {
                 if (controls.highBasket.value()) {
                     outtake.bucketTilt();
                     transferState = ActiveCycle.TransferState.HIGH_BASKET;
-                    controls.flipBucket.set(false);
-                    controls.scoreSpec.set(false);
+                    controls.resetMultipleControls(controls.flipBucket, controls.scoreSpec);
                 }
                 if (controls.lowBasket.value()) {
                     outtake.bucketTilt();
                     transferState = ActiveCycle.TransferState.LOW_BASKET;
-                    controls.flipBucket.set(false);
-                    controls.scoreSpec.set(false);
+                    controls.resetMultipleControls(controls.flipBucket, controls.scoreSpec);
                 }
                 break;
             case SPEC_RETRACTING:
@@ -244,8 +225,7 @@ public class ActiveCycle {
                 else if (loopTime.milliseconds() - startTime > 400) {
                     transferState = ActiveCycle.TransferState.EXTENDO_FULLY_RETRACTED;
                     controls.openClaw.set(false);
-                    controls.highBasket.set(false);
-                    controls.lowBasket.set(false);
+                    controls.resetOuttakeControls();
                 }
                 break;
             case OPEN_CLAW:
