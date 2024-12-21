@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.mechanisms.intake;
+package org.firstinspires.ftc.teamcode.mechanisms.intake.archived;
 
 public class ClawConstants {
     // open, closed

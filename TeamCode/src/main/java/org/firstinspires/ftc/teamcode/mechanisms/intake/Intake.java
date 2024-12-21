@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.mechanisms.intake.archived.Claw;
+import org.firstinspires.ftc.teamcode.mechanisms.intake.archived.v4bActive;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
 
 public class Intake {

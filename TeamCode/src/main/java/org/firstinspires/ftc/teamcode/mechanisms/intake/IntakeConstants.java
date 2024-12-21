@@ -53,8 +53,8 @@ public class IntakeConstants {
         YELLOW(new double[]{215,287,110}, "YELLOW"),
         BLUE(new double[]{55,99,156}, "BLUE"),
         RED(new double[]{173,126,85}, "RED");
-        double[] color;
-        String name;
+        public double[] color;
+        public String name;
         SampleTypes(double[] color, String name){
             this.color = color;
             this.name = name;

@@ -1,9 +1,7 @@
-package org.firstinspires.ftc.teamcode.mechanisms.intake;
+package org.firstinspires.ftc.teamcode.mechanisms.intake.archived;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.misc.gamepad.GamepadMapping;
