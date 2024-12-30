@@ -49,10 +49,11 @@ public class Outtake {
     }
 
     // this is for J-Unit testing only
-    public Outtake(DcMotorEx slidesMotorLeft, DcMotorEx slidesMotorRight, Servo bucketServo) {
+    public Outtake(DcMotorEx slidesMotorLeft, DcMotorEx slidesMotorRight, Servo bucketServo, PIDController controller) {
         this.outtakeSlideLeft = slidesMotorLeft;
         this.outtakeSlideRight = slidesMotorRight;
         this.bucketServo = bucketServo;
+        this.controller = controller;
     }
 
     public void moveTicks(double target) {
@@ -123,7 +124,7 @@ public class Outtake {
     }
 
     public void bucketTilt() {
-        bucketServo.setPosition(OuttakeConstants.BucketPositions.TRANSFERING.getBucketPos());
+        bucketServo.setPosition(OuttakeConstants.BucketPositions.TILT.getBucketPos());
     }
 
     public void hang() {

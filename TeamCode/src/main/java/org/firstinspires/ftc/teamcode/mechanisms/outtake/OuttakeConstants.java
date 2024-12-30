@@ -31,7 +31,7 @@ public class OuttakeConstants {
 
     public enum BucketPositions {
         TRANSFER_READY(bucketPositions[0]),
-        TRANSFERING(bucketPositions[1]),
+        TILT(bucketPositions[1]),
         DEPOSIT(bucketPositions[2]);
 
         private final double bucketPos;

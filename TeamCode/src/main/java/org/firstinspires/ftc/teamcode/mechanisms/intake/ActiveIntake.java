@@ -36,6 +36,12 @@ public class ActiveIntake {
         this.controls = controls;
     }
 
+    // This is for testing only
+    public ActiveIntake(DcMotorEx rollerMotor, Servo pivotAxon) {
+        this.rollerMotor = rollerMotor;
+        this.pivotAxon = pivotAxon;
+    }
+
     public void flipDownFull() {
         pivotAxon.setPosition(IntakeConstants.ActiveIntakeStates.FULLY_EXTENDED.pivotPos());
         // pivotAnalog.runToPos(IntakeConstants.IntakeState.FULLY_EXTENDED.pivotPos());

@@ -37,9 +37,10 @@ public class Intake {
     }
 
     // This is for testing only :)
-    public Intake(DcMotorEx rollerMotor, Servo pivotAxon, Servo backRollerServo, Servo rightExtendo, Servo leftExtendo) {
-        this.rightExtendo = rightExtendo; // -1-.325, min is .325, 0-255
-        this.leftExtendo = leftExtendo; // same as above
+    public Intake(Servo rightExtendo, Servo leftExtendo, ActiveIntake activeIntake) {
+        this.rightExtendo = rightExtendo;
+        this.leftExtendo = leftExtendo;
+        this.activeIntake = activeIntake;
     }
 
     public void extendoFullExtend() {

@@ -18,7 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class driveTrainMathTests {
+public class DriveTrainMathTests {
     // sensing distnace smae is target distance -? goal
     // robot angle 90
     // test constructor with the motors instead, hehe
